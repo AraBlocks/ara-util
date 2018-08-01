@@ -1,0 +1,28 @@
+{
+  "name": "ara-util",
+  "version": "1.0.0",
+  "description": "Utility functions for common Ara tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arablocks/ara-util.git"
+  },
+  "keywords": [
+    "ara",
+    "decentralized",
+    "utility",
+    "distributed"
+  ],
+  "author": "Charles Kelly <charles@arablocks.io>",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/arablocks/ara-util/issues"
+  },
+  "homepage": "https://github.com/arablocks/ara-util#readme",
+  "dependencies": {
+    "has-did-method": "^0.1.0"
+  }
+}
