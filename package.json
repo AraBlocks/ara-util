@@ -4,7 +4,10 @@
   "description": "Utility functions for common Ara tasks",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ": && ava",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "start": "node ."
   },
   "repository": {
     "type": "git",
@@ -23,6 +26,13 @@
   },
   "homepage": "https://github.com/arablocks/ara-util#readme",
   "dependencies": {
+    "ara-crypto": "github:arablocks/ara-crypto",
     "has-did-method": "^0.1.0"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "eslint": "^5.2.0",
+    "eslint-config-ara": "github:arablocks/eslint-config-ara",
+    "eslint-plugin-import": "^2.13.0"
   }
 }
