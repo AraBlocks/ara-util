@@ -2,6 +2,7 @@ const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { toHex } = require('ara-identity/util')
 const hasDIDMethod = require('has-did-method')
 const { secrets } = require('ara-network')
+const { parse } = require('did-uri')
 const crypto = require('ara-crypto')
 const aid = require('ara-identity')
 const { resolve } = require('path')
@@ -14,6 +15,13 @@ const kResolverKey = 'resolver'
 const kAidPrefix = 'did:ara:'
 const kIdentifierLength = 64
 
+/**
+ * Load the keystore for a local secrets file.
+ * @param  {String}  key    
+ * @param  {Boolean} public 
+ * @return {Object}         
+ * @throws {TypeError}
+ */
 async function loadSecretsKeystore(key, public = true) {
   if (!key || 'string' !== typeof key) {
     throw new TypeError('ara-util.loadSecretsKeystore: Key must be non-empty string')
@@ -23,11 +31,18 @@ async function loadSecretsKeystore(key, public = true) {
   return keystore
 }
 
-function hashIdentity(did, encoding = 'hex') {
+/**
+ * Blake2b hashes a DID URI.
+ * @param  {String} did      
+ * @param  {String} encoding 
+ * @return {String}          
+ * @throws {TypeError}
+ */
+function hashDID(did, encoding = 'hex') {
   if (!did || 'string' !== typeof did) {
-    throw new TypeError('ara-util.hashIdentity: DID to hash must be non-empty string')
+    throw new TypeError('ara-util.hashDID: DID to hash must be non-empty string')
   } else if (encoding && 'string' !== typeof encoding) {
-    throw new TypeError('ara-util.hashIdentity: Encoding must be of type string')
+    throw new TypeError('ara-util.hashDID: Encoding must be of type string')
   }
 
   return crypto.blake2b(Buffer.from(did, encoding))
@@ -37,6 +52,12 @@ function hashIdentity(did, encoding = 'hex') {
 function normalize(did) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError('ara-util.normalize: DID URI to normalize must be non-empty string')
+  }
+
+  try {
+    parse(did)
+  } catch (err) {
+    throw err
   }
 
   if (hasDIDMethod(did)) {
@@ -111,25 +132,25 @@ function hash(str, encoding = 'hex') {
   return toHex(crypto.blake2b(Buffer.from(str, encoding)))
 }
 
-async function resolveDdoWithKeystore(did) {
+async function resolveDDOWithKeystore(did) {
   if (!did || 'string' !== did) {
-    throw new TypeError('ara-util.resolveDdoWithKeystore: DID URI must be valid string')
+    throw new TypeError('ara-util.resolveDDOWithKeystore: DID URI must be valid string')
   }
 
   const keystore = await loadSecretsKeystore(kResolverKey)
   return aid.resolve(did, { key: kResolverKey, keystore })
 }
 
-async function getAfsOwnerIdentity(opts) {
+async function getAFSOwnerIdentity(opts) {
   let err
   if (!opts || 'object' !== typeof opts) {
-    err = new TypeError('ara-util.getAfsOwnerIdentity: Expecting opts object')
+    err = new TypeError('ara-util.getAFSOwnerIdentity: Expecting opts object')
   } else if (!opts.did || 'string' !== typeof opts.did) {
-    err = new TypeError('ara-util.getAfsOwnerIdentity: Expecting DID URI to be valid string')
+    err = new TypeError('ara-util.getAFSOwnerIdentity: Expecting DID URI to be valid string')
   } else if (!opts.mnemonic || 'string' !== typeof opts.mnemonic) {
-    err = new TypeError('ara-util.getAfsOwnerIdentity: Expecting mnemonic to be valid string')
+    err = new TypeError('ara-util.getAFSOwnerIdentity: Expecting mnemonic to be valid string')
   } else if (!opts.password || 'string' !== typeof opts.password) {
-    err = new TypeError('ara-util.getAfsOwnerIdentity: Expecting password to be valid string')
+    err = new TypeError('ara-util.getAFSOwnerIdentity: Expecting password to be valid string')
   }
 
   if (err) {
@@ -137,7 +158,7 @@ async function getAfsOwnerIdentity(opts) {
   }
 
   const { did, mnemonic, password } = opts
-  const ddo = await resolveDdoWithKeystore(did)
+  const ddo = await resolveDDOWithKeystore(did)
   const owner = getDocumentOwner(ddo)
   return aid.create({ mnemonic, owner, password })
 }
@@ -168,7 +189,7 @@ async function validate(opts) {
     throw err
   }
 
-  const ddo = await resolveDdoWithKeystore(did)
+  const ddo = await resolveDDOWithKeystore(did)
   if (!ddo) {
     throw new TypeError('ara-util.validate: Unable to resolve DID')
   }
@@ -191,14 +212,14 @@ function _getDocument(ddo) {
 }
 
 module.exports = {
-  resolveDdoWithKeystore,
-  getAfsOwnerIdentity,
+  resolveDDOWithKeystore,
+  getAFSOwnerIdentity,
   loadSecretsKeystore,
   isCorrectPassword,
   getDocumentKeyHex,
   getDocumentOwner,
   hasDIDMethod,
-  hashIdentity,
+  hashDID,
   normalize,
   hash
 }
