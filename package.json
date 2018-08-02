@@ -28,13 +28,16 @@
   "dependencies": {
     "ara-context": "github:arablocks/ara-context",
     "ara-crypto": "github:arablocks/ara-crypto",
+    "ara-filesystem": "github:arablocks/ara-filesystem",
     "ara-identity": "github:arablocks/ara-identity",
     "ara-network": "github:arablocks/ara-network",
     "did-uri": "^0.2.5",
-    "has-did-method": "^0.1.0"
+    "has-did-method": "^0.1.0",
+    "is-zero-buffer": "^1.0.1",
+    "pify": "^3.0.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^1.0.0-beta.6",
     "eslint": "^5.2.0",
     "eslint-config-ara": "github:arablocks/eslint-config-ara",
     "eslint-plugin-import": "^2.13.0"
