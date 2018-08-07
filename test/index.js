@@ -169,7 +169,6 @@ test('validate(opts) invalid opts', async (t) => {
   await t.throws(util.validate(), TypeError)
   await t.throws(util.validate('opts'), TypeError)
   await t.throws(util.validate({ }), TypeError)
-  await t.throws(util.validate({ password: 123 }), TypeError)
   await t.throws(util.validate({ did: null, password: kPassword }), TypeError)
   await t.throws(util.validate({ did: 'did', owner: 'owner', password: kPassword }))
   await t.throws(util.validate({ did, password: 'wrongPass' }), Error)
