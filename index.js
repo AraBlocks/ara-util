@@ -229,8 +229,6 @@ async function getAFSOwnerIdentity(opts) {
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('ara-util.validate: Expecting opts object')
-  } else if (!opts.password || 'string' !== typeof opts.password) {
-    throw new TypeError('ara-util.validate: Expecting password to be non-empty string')
   }
 
   let { did } = opts
