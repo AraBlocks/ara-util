@@ -30,8 +30,10 @@
     "ara-crypto": "github:arablocks/ara-crypto",
     "ara-filesystem": "github:arablocks/ara-filesystem",
     "ara-identity": "github:arablocks/ara-identity",
-    "ara-network": "github:arablocks/ara-network",
+    "ara-runtime-configuration": "github:arablocks/ara-runtime-configuration",
+    "ara-secret-storage": "github:arablocks/ara-secret-storage",
     "did-uri": "^0.2.5",
+    "extend": "^3.0.2",
     "has-did-method": "^0.1.0",
     "is-zero-buffer": "^1.0.1",
     "pify": "^3.0.0"
