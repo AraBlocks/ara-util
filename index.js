@@ -172,7 +172,6 @@ async function resolveDDO(did) {
     secret: kResolverSecret,
     keyring: secret.resolver
   }
-  console.log('OPTS', opts)
   return aid.resolve(did, opts)
 }
 
