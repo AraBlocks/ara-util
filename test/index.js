@@ -18,17 +18,6 @@ test.before(async (t) => {
   t.context = { identity, ddo }
 })
 
-test('loadSecretsKeystore(key, public) invalid params', async (t) => {
-  await t.throws(util.loadSecretsKeystore(), TypeError)
-  await t.throws(util.loadSecretsKeystore(111), TypeError)
-})
-
-test('loadSecretsKeystore(key, public) valid params', async (t) => {
-  const keystore = await util.loadSecretsKeystore('resolver')
-  t.true('object' === typeof keystore)
-  t.true(Boolean(keystore.crypto))
-})
-
 test('hashIdentity(did, encoding) invalid params', (t) => {
   t.throws(() => util.hashDID(), TypeError)
   t.throws(() => util.hashDID(1234), TypeError)
@@ -121,15 +110,15 @@ test('hash(str, encoding) valid hash', (t) => {
   t.true(web3.utils.isHex(hashed))
 })
 
-test('resolveDDOWithKeystore(did) invalid did', async (t) => {
-  await t.throws(util.resolveDDOWithKeystore(), TypeError)
-  await t.throws(util.resolveDDOWithKeystore(123), TypeError)
+test('resolveDDO(did) invalid did', async (t) => {
+  await t.throws(util.resolveDDO(), TypeError)
+  await t.throws(util.resolveDDO(123), TypeError)
 })
 
-test('resolveDDOWithKeystore(did) resolution', async (t) => {
+test('resolveDDO(did) resolution', async (t) => {
   const ddo = getDDO(t)
   const did = util.getDID(ddo)
-  const resolvedDDO = await util.resolveDDOWithKeystore(did)
+  const resolvedDDO = await util.resolveDDO(did)
   t.is(ddo.publicKey[0].owner, resolvedDDO.publicKey[0].owner)
 })
 
