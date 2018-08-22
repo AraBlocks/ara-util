@@ -162,16 +162,17 @@ function hash(str, encoding = 'hex') {
  * @return {Object}
  * @throws {TypeError}
  */
-async function resolveDDO(did) {
+async function resolveDDO(did, opts) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError('DID URI must be valid string.')
   }
 
-  const opts = {
+  opts = opts || {
     name: kResolverName,
     secret: kResolverSecret,
     keyring: secret.resolver
   }
+  console.log('OPTS', opts)
   return aid.resolve(did, opts)
 }
 
