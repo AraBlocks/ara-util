@@ -170,3 +170,5 @@ test('validate(opts)', async (t) => {
   t.true(result && 'object' === typeof result)
   t.is(result.did, did.slice(kAidPrefix.length))
 })
+
+// TODO(cckelly) getDID tests
