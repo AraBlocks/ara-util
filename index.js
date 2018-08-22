@@ -7,6 +7,7 @@ const context = require('ara-context')()
 const { secret } = require('./rc')()
 const aid = require('ara-identity')
 const { resolve } = require('path')
+const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
 
@@ -291,5 +292,6 @@ module.exports = {
   validate,
   hashDID,
   getDID,
-  hash
+  hash,
+  web3
 }
