@@ -6,13 +6,23 @@ const { web3 } = require('ara-context')()
  * @param  {String} name
  * @param  {Array} values
  * @return {String}
- * @throws {Error}
+ * @throws {Error,TypeError}
  */
 function encodeFunctionCall(abi, functionName, values) {
+  if (!abi || 'object' !== typeof abi || !Array.isArray(abi)) {
+    throw new TypeError('ABI must be an array')
+  } else if (!functionName || 'string' !== typeof functionName) {
+    throw new TypeError('Function Name must be of type string')
+  } else if (values && ('object' !== typeof values || !Array.isArray(values))) {
+    throw new TypeError('Values must be an array')
+  }
+
   const jsonInterface = abi.find(f => functionName === f.name)
   const { inputs } = jsonInterface
 
-  if (values.length !== inputs.length) {
+  values = values || []
+
+  if (values && values.length !== inputs.length) {
     throw new Error('Provided args count does not match ABI count')
   }
 
@@ -29,6 +39,8 @@ function encodeFunctionCall(abi, functionName, values) {
 function encodeParameter(type, parameter) {
   if (!type || 'string' !== typeof type) {
     throw new TypeError('Type must be valid string')
+  } else if (!parameter) {
+    throw new TypeError('Parameter cannot be null')
   }
 
   return web3.eth.abi.encodeParameter(type, parameter)
