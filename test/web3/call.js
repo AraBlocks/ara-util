@@ -1,11 +1,11 @@
 const test = require('ava')
-const { call } = require('../call')
-const tx = require('../tx')
+const { call } = require('../../web3/call')
+const tx = require('../../web3/tx')
 const context = require('ara-context')()
 const { create: createIdentity } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
 const { kPassword, supplyAccount } = require('./_util')
-const { deploy } = require('../contract')
+const { deploy } = require('../../web3/contract')
 
 test.before(async (t) => {
   // create account
@@ -21,7 +21,7 @@ test.before(async (t) => {
   await supplyAccount(address, defaultAccounts, oneEthInWei)
 
   // deploy
-  const { abi, bytecode } = require('../build/contracts/Test2.json')
+  const { abi, bytecode } = require('../../build/contracts/Test2.json')
   const { options } = await deploy({ account, abi, bytecode })
   t.context = {
     address: options.address,
