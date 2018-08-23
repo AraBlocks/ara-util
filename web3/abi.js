@@ -16,10 +16,6 @@ function encodeFunctionCall(abi, functionName, values) {
     throw new Error('Provided args count does not match ABI count')
   }
 
-  values.forEach((val, i, arr) => {
-    const str = val.toString()
-    arr[i] = str
-  })
   return web3.eth.abi.encodeFunctionCall(jsonInterface, values)
 }
 
