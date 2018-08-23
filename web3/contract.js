@@ -27,20 +27,24 @@ async function deploy(opts) {
   const { address } = account
   const args = opts.arguments || []
 
+  let contract
+  let result
   try {
-    const contract = await new web3.eth.Contract(abi)
+    const instance = new web3.eth.Contract(abi)
+    contract = await instance
       .deploy({
         data: bytecode,
         arguments: args
       })
     const gasLimit = await contract.estimateGas()
-    return contract.send({
+    result = await contract.send({
       from: address,
       gas: gasLimit
     })
   } catch (err) {
     throw err
   }
+  return result
 }
 
 /**
