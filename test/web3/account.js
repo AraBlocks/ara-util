@@ -2,7 +2,7 @@ const test = require('ava')
 const context = require('ara-context')()
 const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
-const account = require('../account')
+const account = require('../../web3/account')
 
 const {
   kPassword,

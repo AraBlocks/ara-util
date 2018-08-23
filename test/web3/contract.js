@@ -1,11 +1,11 @@
 const test = require('ava')
-const { call } = require('../call')
-const { deploy, get, estimateGas } = require('../contract')
+const { call } = require('../../web3/call')
+const { deploy, get, estimateGas } = require('../../web3/contract')
 const context = require('ara-context')()
 const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
-const testWithArg = require('../build/contracts/Test1.json')
-const testWithoutArg = require('../build/contracts/Test2.json')
+const testWithArg = require('../../build/contracts/Test1.json')
+const testWithoutArg = require('../../build/contracts/Test2.json')
 
 const {
   kPassword,

@@ -1,10 +1,5 @@
 const { web3 } = require('ara-context')()
 
-const {
-  create,
-  sendSignedTransaction
-} = require('./tx')
-
 /**
  * Deploys a new contract to the provided network.
  * @param  {Object} opts
@@ -29,7 +24,7 @@ async function deploy(opts) {
   }
 
   const { account, abi, bytecode } = opts
-  const { address } = opts.account
+  const { address } = account
   const args = opts.arguments || []
 
   try {
@@ -43,7 +38,6 @@ async function deploy(opts) {
       from: address,
       gas: gasLimit
     })
-
   } catch (err) {
     throw err
   }
