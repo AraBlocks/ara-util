@@ -22,21 +22,21 @@ test.before(async (t) => {
 
 test('load(opts) invalid opts', async (t) => {
   const did = getDID(t)
-  await t.throws(account.load(), TypeError, 'Expecting opts object')
+  await t.throwsAsync(account.load(), TypeError, 'Expecting opts object')
 
   // did validation
-  await t.throws(account.load({ did: 123 }), TypeError, 'Expecting DID URI to be non-empty string')
+  await t.throwsAsync(account.load({ did: 123 }), TypeError, 'Expecting DID URI to be non-empty string')
   const withoutPrefix = did.replace(kPrefix, '')
-  await t.throws(account.load({ did: withoutPrefix, password: kPassword }), Error, 'Invalid DID protocol')
+  await t.throwsAsync(account.load({ did: withoutPrefix, password: kPassword }), Error, 'Invalid DID protocol')
 
   // password validation
-  await t.throws(account.load({ did, password: 123 }), TypeError, 'Expecting password to be non-empty string')
+  await t.throwsAsync(account.load({ did, password: 123 }), TypeError, 'Expecting password to be non-empty string')
 })
 
 test('load(opts) incorrect password', async (t) => {
   const did = getDID(t)
-  await t.throws(account.load({ did, password: 'wrongPass' }), Error, 'Incorrect password')
-  await t.notThrows(account.load({ did, password: kPassword }))
+  await t.throwsAsync(account.load({ did, password: 'wrongPass' }), Error, 'Incorrect password')
+  await t.notThrowsAsync(account.load({ did, password: kPassword }))
 })
 
 test('load(opts) valid opts', async (t) => {
