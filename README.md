@@ -56,6 +56,11 @@ correctness. If given incorrect input, a function will throw a
 * [util.web3.abi.encodeParameter(type, parameter)](#encodeParameter)
 * [util.web3.abi.encodeParameters(typesArray, parameters)](#encodeParameters)
 * [util.web3.contract.get(abi, address)](#get)
+* [util.web3.ethify(input, [hexify])](#ethify)
+* [util.web3.isAddress(address)](#isAddress)
+* [util.web3.sha3(params)](#sha3)
+* [util.web3.toBuffer(input, [encoding])](#toBuffer)
+* [util.web3.toHex(input, [encoding])](#toHex)
 * [util.web3.tx.estimateCost(tx, \[denomination\])](#estimateCost)
 * [util.web3.tx.sign(tx, privateKey)](#sign)
 
@@ -350,7 +355,7 @@ const encoded = util.web3.abi.encodeParameter('bytes', '0xFF')
 
 ### `util.web3.abi.encodeParameters(typesArray, parameters)` <a name="encodeParameters"></a>
 
-> ** Stability: 2** - Stable
+> **Stability: 2** - Stable
 
 Encodes multiple function parameters to their `ABI` signatures.
 
@@ -363,7 +368,7 @@ const encoded = util.web3.abi.encodeParameter(['bytes', 'string'], ['0xFF', 'Hel
 
 ### `util.web3.contract.get(abi, address)` <a name="get"></a>
 
-> ** Stability: 2** - Stable
+> **Stability: 2** - Stable
 
 Gets a contract instance based on its `ABI` and deployed `address`
 
@@ -373,6 +378,72 @@ Gets a contract instance based on its `ABI` and deployed `address`
 ```js
 const address = '0xef61059258414a65bf2d94a4fd3b503b5fee8b48'
 const contract = util.web3.contract.get(abi, address)
+```
+
+### `util.web3.ethify(input, [hexify])` <a name="ethify"></a>
+
+> **Stability: 2** - Stable
+
+Prepend `0x` to a hex string for passing to Solidity contract functions.
+
+- `input` - `String` or `Buffer` to be converted
+- `hexify` - should the `String` be converted to hex prior to prepending
+
+```js
+const str = util.web3.ethify('ef61059258414a65bf2d94a4fd3b503b5fee8b48', true)
+// 0xef61059258414a65bf2d94a4fd3b503b5fee8b48
+```
+
+### `util.web3.isAddress(address)` <a name="isAddress"></a>
+
+> **Stability: 2** - Stable
+
+Validates whether a hex string is a valid Ethereum address.
+
+- `address` - string to validate
+
+```js
+let isAddress = util.web3.isAddress('0xef61059258414a65bf2d94a4fd3b503b5fee8b48') // true
+isAddress = util.web3.isAddress('Hello') // false
+```
+
+### `util.web3.sha3(params)` <a name="sha3"></a>
+
+> **Stability: 2** - Stable
+
+`ABI` encodes and `SHA3` hashes given parameters.
+
+- `params` - parameters of any type or object containing parameters
+
+```js
+const result = util.web3.sha3({ param1: 1, param2: 2 })
+```
+
+### `util.web3.toBuffer(input, [encoding])` <a name="toBuffer"></a>
+
+> **Stability: 2** - Stable
+
+Converts a `string` to a `buffer`.
+
+- `input` - `string` to convert
+- `encoding` - encoding of string for conversion
+
+```js
+const buf = util.web3.toBuffer('hi')
+// <Buffer 68 69>
+```
+
+### `util.web3.toHex(input, [encoding])` <a name="toHex"></a>
+
+> **Stability: 2** - Stable
+
+Convert a string, number, of buffer to a valid hex string.
+
+- `input` - input to conver
+- `encoding` - encoding to use when converting to `String`
+
+```js
+const hex = util.web3.toHex(Buffer.from('hello')) // '6869'
 ```
 
 ### `util.web3.tx.estimateCost(tx, [denomination])` <a name="estimateCost"></a>
