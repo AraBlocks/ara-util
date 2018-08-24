@@ -113,9 +113,9 @@ function getDocumentOwner(ddo) {
   if (0 === doc.authentication.length) {
     throw new RangeError('Identity doesn\'t list an owner in authentication.')
   }
-  const { authenticationKey } = doc.authentication[0]
+  const { publicKey } = doc.authentication[0]
 
-  const id = authenticationKey.slice(0, authenticationKey.indexOf('#'))
+  const id = publicKey.slice(0, publicKey.indexOf('#'))
   return normalize(id)
 }
 
