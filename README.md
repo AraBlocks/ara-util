@@ -379,7 +379,7 @@ const contract = util.web3.contract.get(abi, address)
 
 > **Stability: 2** - Stable
 
-Estimates the cost of a transaction. The returned value can be a particular denomination, defaults to `ether`.
+Estimates the cost of a transaction. The returned value can be a particular denomination, defaults to `ether`. You can find valid denomination values [here](https://web3js.readthedocs.io/en/1.0/web3-utils.html#fromwei).
 
 - `tx` - `EthereumTx` object of the transaction
 - `denomination` - unit to return the cost in
