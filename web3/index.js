@@ -1,5 +1,5 @@
-const { web3 } = require('ara-context')
-const toBuffer = require('buffer-from')
+const { web3 } = require('ara-context')()
+const bufferFrom = require('buffer-from')
 const contract = require('./contract')
 const isBuffer = require('is-buffer')
 const account = require('./account')
@@ -43,7 +43,7 @@ function sha3(params) {
  * @return {String}
  */
 function ethify(input, hexify = false) {
-  if ('string' !== typeof input || !isBuffer(input)) {
+  if ('string' !== typeof input && !isBuffer(input)) {
     throw new TypeError('Input must be string or buffer')
   }
 
@@ -61,7 +61,7 @@ function ethify(input, hexify = false) {
  * @throws {TypeError}
  */
 function toHex(input, encoding = 'hex') {
-  if ('number' !== typeof input || 'string' !== typeof input || !isBuffer(input)) {
+  if ('number' !== typeof input && 'string' !== typeof input && !isBuffer(input)) {
     throw new TypeError('Input must be number, string, or buffer')
   } else if (encoding && 'string' !== typeof encoding) {
     throw new TypeError('Encoding must be a valid string')
@@ -70,11 +70,11 @@ function toHex(input, encoding = 'hex') {
   if (isBuffer(input)) {
     return input.toString(encoding)
   } else if ('number' === typeof input) {
-    return toHex(toBuffer([input]))
+    return toHex(bufferFrom([input]))
   } else if ('string' === typeof input) {
-    return toHex(toBuffer(input))
+    return toHex(bufferFrom(input))
   } else {
-    return toHex(toBuffer(input))
+    return toHex(bufferFrom(input))
   }
 }
 
@@ -94,18 +94,23 @@ function toBuffer(input, encoding = 'hex') {
 
   if ('string' === typeof input) {
     input = input.replace(/^0x/, '')
-    return toBuffer(input, encoding)
+    return bufferFrom(input, encoding)
   } else if (input) {
-    return toBuffer(input.toString(), encoding)
+    return bufferFrom(input.toString(), encoding)
   } else {
     return null
   }
 }
 
 module.exports = {
+  isAddress,
+  toBuffer,
   contract,
   account,
+  ethify,
+  toHex,
   call,
+  sha3,
   abi,
   tx
 }
