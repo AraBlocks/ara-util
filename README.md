@@ -289,12 +289,27 @@ Creates an `EthereumTx` object that can be published to the current network. Sig
 - `opts`
   - `account` - the account that will be initiating the transaction
   - `to` - the address of the contract of the transaction
+  - `data` - function data to encode as part of the transaction
+    - `abi` - contract ABI
+    - `functionName` - name of function that's being called
+    - `values` - function argument values as an array
 - `signTx` - should this transaction be signed
 
 ```js
 const account = await util.web3.account.load({ did, password })
 const signedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
 const unsignedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
+
+const contractAddress = '0xef61059258414a65bf2d94a4fd3b503b5fee8b48'
+const anotherTx = await util.web3.tx.create({
+  account,
+  to: contractAddress,
+  data: {
+    abi,
+    functionName: 'setPrice',
+    values: [100]
+  }
+})
 ```
 
 ### `async util.web3.tx.sendSignedTransaction(tx)` <a name="sendSignedTransaction"></a>
