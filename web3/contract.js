@@ -44,7 +44,11 @@ async function deploy(opts) {
   } catch (err) {
     throw err
   }
-  return result
+  
+  return {
+    contract: result,
+    gasLimit
+  }
 }
 
 /**
