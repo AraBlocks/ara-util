@@ -115,10 +115,22 @@ test('resolveDDO(did) invalid did', async (t) => {
   await t.throws(util.resolveDDO(123), TypeError)
 })
 
+test('resolveDDO(did) missing secret', async (t) => {
+  const ddo = getDDO(t)
+  const did = util.getDID(ddo)
+  await t.throws(util.resolveDDO(did, {}), Error)
+})
+
+test('resolveDDO(did) missing keyring', async (t) => {
+  const ddo = getDDO(t)
+  const did = util.getDID(ddo)
+  await t.throws(util.resolveDDO(did, { secret }), Error)
+})
+
 test('resolveDDO(did) resolution', async (t) => {
   const ddo = getDDO(t)
   const did = util.getDID(ddo)
-  const resolvedDDO = await util.resolveDDO(did)
+  const resolvedDDO = await util.resolveDDO(did, { secret: 'secret' })
   t.is(ddo.publicKey[0].owner, resolvedDDO.publicKey[0].owner)
 })
 
