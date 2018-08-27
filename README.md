@@ -246,7 +246,7 @@ await call({ abi, address: contractAddress, functionName: 'myContractFunction' }
 
 > **Stability: 2** - Stable
 
-Deploys a contract to the network of the current `Web3` provider.
+Deploys a contract to the network of the current `Web3` provider. This returns an instance of the deployed `Contract` as well as the `gasLimit` that was used for deploying this contract.
 
 - `abi` - `ABI` of the compiled Solidity contract to deploy
 - `bytecode` - bytecode of compiled contract
@@ -255,7 +255,7 @@ Deploys a contract to the network of the current `Web3` provider.
 ```js
 const { abi, bytecode } = require('./build/contracts/MyContract.json')
 const account = await util.web3.account.load({ did, password })
-const result = await deploy({ account, abi, bytecode })
+const { contract, gasLimit } = await deploy({ account, abi, bytecode })
 ```
 
 ### `async util.web3.contract.estimateGas(tx, opts)` <a name="estimateGas"></a>
