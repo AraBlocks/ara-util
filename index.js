@@ -1,6 +1,4 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
-const { KeyringError } = require('./errors')
-const { key}
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const { resolve } = require('path')
@@ -175,7 +173,7 @@ async function resolveDDO(did, opts) {
   }
 
   if (!await keyringExists(rc.network.identity.keyring || opts.keyring)) {
-    throw new KeyringError(`Keyring does not exist (${rc.network.identity.keyring || opts.keyring})`)
+    throw new Error(`Keyring does not exist (${rc.network.identity.keyring || opts.keyring})`)
   }
 
   opts = opts || {
