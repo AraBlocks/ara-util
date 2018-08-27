@@ -37,17 +37,15 @@ async function deploy(opts) {
         arguments: args
       })
     const gasLimit = await contract.estimateGas()
-    result = await contract.send({
-      from: address,
-      gas: gasLimit
-    })
+    return {
+      contract: contract.send({
+        from: address,
+        gas: gasLimit
+      }),
+      gasLimit
+    }
   } catch (err) {
     throw err
-  }
-  
-  return {
-    contract: result,
-    gasLimit
   }
 }
 
