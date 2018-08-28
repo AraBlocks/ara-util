@@ -1,22 +1,19 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
-const { toHex } = require('ara-identity/util')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
-const ss = require('ara-secret-storage')
-const context = require('ara-context')()
-const { secret } = require('./rc')()
-const aid = require('ara-identity')
 const { resolve } = require('path')
+const { toHex } = require('ara-identity/util')
+const context = require('ara-context')()
 const web3 = require('./web3')
 const pify = require('pify')
+const aid = require('ara-identity')
+const ss = require('ara-secret-storage')
 const fs = require('fs')
 
 const kAraKeystore = 'keystore/ara'
 
 const {
   kIdentifierLength,
-  kResolverSecret,
-  kResolverName,
   kAidPrefix
 } = require('./constants')
 
@@ -160,6 +157,9 @@ function hash(str, encoding = 'hex') {
 /**
  * Resolves an identity
  * @param  {String} did
+ * @param  {String} opts.secret Secret for the resolver key
+ * @param  {String} [opts.keyring] Keyring containing the resolver key
+ * @param  {String} [opts.name] Name of the resolver key
  * @return {Object}
  * @throws {TypeError}
  */
@@ -168,10 +168,18 @@ async function resolveDDO(did, opts) {
     throw new TypeError('DID URI must be valid string.')
   }
 
+  if (!opts.secret) {
+    throw new Error('Missing `secret` for resolving an identity')
+  }
+
+  if (!await keyringExists(rc.network.identity.keyring || opts.keyring)) {
+    throw new Error(`Keyring does not exist (${rc.network.identity.keyring || opts.keyring})`)
+  }
+
   opts = opts || {
-    name: kResolverName,
-    secret: kResolverSecret,
-    keyring: secret.resolver
+    name: rc.network.identity.resolver || opts.name,
+    secret: opts.secret,
+    keyring: rc.network.identity.keyring || opts.keyring
   }
   return aid.resolve(did, opts)
 }
@@ -202,7 +210,7 @@ async function getAFSOwnerIdentity(opts) {
   }
 
   const { did, mnemonic, password } = opts
-  const ddo = await resolveDDO(did)
+  const ddo = await resolveDDO(did, opts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -244,7 +252,7 @@ async function validate(opts) {
     throw err
   }
 
-  const ddo = await resolveDDO(did)
+  const ddo = await resolveDDO(did, opts)
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
   }
