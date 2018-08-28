@@ -4,7 +4,7 @@ const os = require('os')
 const { resolve } = require('path')
 
 const kAraDir = '.ara'
-const kSecretDir = 'secret'
+const kSecretDir = 'keyrings'
 
 const defaults = () => ({
   secret: {
