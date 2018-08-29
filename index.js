@@ -1,3 +1,4 @@
+const { kEd25519VerificationKey2018 } = require('ld-cryptosuite-registry')
 const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { toHex } = require('ara-identity/util')
 const hasDIDMethod = require('has-did-method')
@@ -113,7 +114,11 @@ function getDocumentOwner(ddo) {
   if (0 === doc.authentication.length) {
     throw new RangeError('Identity doesn\'t list an owner in authentication.')
   }
-  const { publicKey } = doc.authentication[0]
+
+  const { publicKey } = doc.authentication.find((element) => {
+    const { type } = element
+    return type === kEd25519VerificationKey2018
+  })
 
   const id = publicKey.slice(0, publicKey.indexOf('#'))
   return normalize(id)
