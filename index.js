@@ -229,7 +229,7 @@ async function validate(opts) {
     throw new TypeError('Expecting opts object.')
   }
 
-  let { did } = opts
+  let { did, ddo } = opts
   const { owner, password } = opts
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
@@ -249,7 +249,9 @@ async function validate(opts) {
     throw err
   }
 
-  const ddo = await resolveDDO(did)
+  if (!ddo) {
+    ddo = await resolveDDO(did)
+  }
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
   }
