@@ -221,6 +221,7 @@ async function getAFSOwnerIdentity(opts) {
  * @param  {String} opts.password
  * @param  {String} [opts.did]
  * @param  {String} [opts.owner]
+ * @param  {Object} [opts.ddo]
  * @return {Object}
  * @throws {Error,TypeError}
  */
