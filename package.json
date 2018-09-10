@@ -20,6 +20,10 @@
     "distributed"
   ],
   "author": "Charles Kelly <charles@arablocks.io>",
+  "contributors": {
+    "name": "Eric Jiang",
+    "email": "eric@arablocks.io"
+  },
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/arablocks/ara-util/issues"
