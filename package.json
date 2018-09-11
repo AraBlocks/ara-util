@@ -46,6 +46,7 @@
     "ava": "^1.0.0-beta.6",
     "eslint": "^5.2.0",
     "eslint-config-ara": "github:arablocks/eslint-config-ara",
-    "eslint-plugin-import": "^2.13.0"
+    "eslint-plugin-import": "^2.13.0",
+    "sinon": "^6.2.0"
   }
 }
