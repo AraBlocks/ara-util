@@ -8,8 +8,8 @@ const kSecretDir = 'keyrings'
 
 const defaults = () => ({
   secret: {
-    archiver: resolve(os.homedir(), kAraDir, kSecretDir, 'ara-archiver.pub'),
-    resolver: resolve(os.homedir(), kAraDir, kSecretDir, 'ara-resolver.pub')
+    archiver: resolve(os.homedir(), kAraDir, kSecretDir, 'archiver.pub'),
+    resolver: resolve(os.homedir(), kAraDir, kSecretDir, 'resolver.pub')
   }
 })
 

@@ -7,6 +7,7 @@ const keyring = require('../keyring')
 const test = require('ava')
 const util = require('../')
 const fs = require('fs')
+const rc = require('../rc')
 
 const kPassword = 'myPass'
 const kAidPrefix = 'did:ara:'
@@ -177,27 +178,17 @@ test('exists(opts) invalid opts', async (t) => {
   await t.throws(keyring.exists(), Error)
 })
 
-test.before((t) => {
-  t.context.fsStub = sinon.stub(fs, 'lstat')
-  t.context.fsStub.callsFake(() => {
-    return { ctime: 10 }
-  })
-})
 
 test('exists(opts)', async (t) => {
-  t.true(await keyring.exists('/home/someone/.ara/keyrings/keyring.pub'))
-})
-
-test.after((t) => {
-  t.context.fsStub.reset()
+  t.true(await keyring.exists(rc.network.identity.keyring))
 })
 
 test('getSecret(opts) invalid opts', async (t) => {
-  const password = '10'
+  const password = 'test'
   const network = 'archiver'
-  const keyring = '/home/someone/.ara/keyrings/keyring.pub'
-  const secret = '10'
-  const did = 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e'
+  const keyring = rc.network.identity.keyring
+  const secret = 'test'
+  const did = rc.network.identity.whoami
 
   await t.throws(keyring.getSecret(), TypeError)
   await t.throws(keyring.getSecret({}), Error)
@@ -207,20 +198,16 @@ test('getSecret(opts) invalid opts', async (t) => {
   await t.throws(keyring.getSecret({ keyring, secret, password, did }), Error)
 })
 
-t.before((t) => {
-  t.context.readFileStub = sinon.stub(fs, 'readFile')
-})
-
 test('getSecret(opts)', async (t) => {
-  const password = '10'
+  const password = 'test'
   const network = 'archiver'
-  const keyring = '/home/someone/.ara/keyrings/keyring.pub'
-  const secret = '10'
-  const did = 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e'
+  const keyring = rc.network.identity.keyring
+  const secret = 'test'
+  const did = rc.network.identity.whoami
 
-  const secret = await keyring.getSecret({ did, secret, keyring, password, network })
+  const secretKey = await keyring.getSecret({ did, secret, keyring, password, network })
 
-  console.log("SECRET:", secret)
+  console.log("SECRET:", secretKey)
 })
 
 test('getPublic(opts) invalid opts', async (t) => {
