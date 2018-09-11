@@ -9,7 +9,7 @@ RUN apt-get update && \
 ARG dir
 
 ## Mount working directory
-ADD $dir /usr/local/app
+COPY $dir /usr/local/app
 
 ## Use mount as working directory
 WORKDIR /usr/local/app

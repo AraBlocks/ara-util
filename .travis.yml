@@ -5,7 +5,7 @@ node_js:
 services:
   - docker
 before_install:
-  - docker build -t arablocks/test . --build-arg dir=$TRAVIS_BUILD_DIR
+  - docker build -t arablocks/test . --build-arg dir=./build/AraBlocks/ara-util
   - docker run arablocks/test /bin/sh -c "cd /usr/local/app; npm run test"
 install:
   - npm install
