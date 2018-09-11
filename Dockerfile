@@ -30,4 +30,4 @@ RUN ./scripts/nave usemain stable
 
 RUN curl -o- https://raw.githubusercontent.com/AraBlocks/tools/master/setup.sh?token=ADil2DM0xaSMe1AtxA-JI0u3i_dgXT57ks5boUAiwA%3D%3D | bash
 
-RUN larad -s test &
+RUN npm install && true
