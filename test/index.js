@@ -1,10 +1,12 @@
 const { create: createAFS } = require('ara-filesystem')
-const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
-const context = require('ara-context')()
+const { create } = require('ara-identity')
 const { parse } = require('did-uri')
+const context = require('ara-context')()
+const keyring = require('../keyring')
 const test = require('ava')
 const util = require('../')
+const fs = require('fs')
 
 const kPassword = 'myPass'
 const kAidPrefix = 'did:ara:'
@@ -170,5 +172,63 @@ test('validate(opts)', async (t) => {
   t.true(result && 'object' === typeof result)
   t.is(result.did, did.slice(kAidPrefix.length))
 })
+
+test('exists(opts) invalid opts', async (t) => {
+  await t.throws(keyring.exists(), Error)
+})
+
+test.before((t) => {
+  t.context.fsStub = sinon.stub(fs, 'lstat')
+  t.context.fsStub.callsFake(() => {
+    return { ctime: 10 }
+  })
+})
+
+test('exists(opts)', async (t) => {
+  t.true(await keyring.exists('/home/someone/.ara/keyrings/keyring.pub'))
+})
+
+test.after((t) => {
+  t.context.fsStub.reset()
+})
+
+test('getSecret(opts) invalid opts', async (t) => {
+  const password = '10'
+  const network = 'archiver'
+  const keyring = '/home/someone/.ara/keyrings/keyring.pub'
+  const secret = '10'
+  const did = 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e'
+
+  await t.throws(keyring.getSecret(), TypeError)
+  await t.throws(keyring.getSecret({}), Error)
+  await t.throws(keyring.getSecret({ keyring }), Error)
+  await t.throws(keyring.getSecret({ keyring, secret }), Error)
+  await t.throws(keyring.getSecret({ keyring, secret, password }), Error)
+  await t.throws(keyring.getSecret({ keyring, secret, password, did }), Error)
+})
+
+t.before((t) => {
+  t.context.readFileStub = sinon.stub(fs, 'readFile')
+})
+
+test('getSecret(opts)', async (t) => {
+  const password = '10'
+  const network = 'archiver'
+  const keyring = '/home/someone/.ara/keyrings/keyring.pub'
+  const secret = '10'
+  const did = 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e'
+
+  const secret = await keyring.getSecret({ did, secret, keyring, password, network })
+
+  console.log("SECRET:", secret)
+})
+
+test('getPublic(opts) invalid opts', async (t) => {
+})
+
+test('getPublic(opts)', async (t) => {
+})
+
+
 
 // TODO(cckelly) getDID tests
