@@ -2,8 +2,11 @@ const { KeyringError } = require('./errors')
 const { keyRing } = require('ara-network/keys')
 const { resolve } = require('path')
 const { unpack } = require('ara-network/keys')
-const { lstat } = require('fs') 
+const { lstat } = require('fs')
+const sinon = require('sinon')
+const http = require('http')
 const pify = require('pify')
+const url = require('url')
 const rc = require('./rc')()
 
 /**
@@ -12,9 +15,25 @@ const rc = require('./rc')()
  * @param  {String} keyring Path to the keyring
  * @return {Boolean} Whether the keyring exists
  */
-async function keyringExists(keyring) {
+async function exists(keyring) {
+  if (!keyring && !rc.network.identity.keyring) {
+    throw new Error(`Missing \`keyring\` and default keyring for checking existance of keyring`)
+  }
+
   try {
-    return Boolean(await pify(lstat)(resolve(rc.network.identity.keyring || keyring)))
+    const keyringPath = rc.network.identity.keyring || keyring
+    const uri = url.parse(keyringPath)
+
+    let result
+    if ('http:' === uri.protocol && 'https:' === uri.protocol) {
+      result = await http.request(Object.assign({}, uri, { method: 'HEAD' }))
+
+      console.log("HTTP RESULT:", result)
+    } else {
+      result = await pify(lstat)(resolve(keyringPath))
+    }
+
+    return Boolean(result)
   } catch (e) {
     throw new Error(`Error occurred while checking keyring ${keyring} existance`, e)
   }
@@ -30,39 +49,59 @@ async function keyringExists(keyring) {
  * @param  {String} [opts.keyring] Path to keyring
  * @return {Object} Unpacked keyring
  */
-async function getSecret(did, key, opts) {
+async function getSecret(opts) {
   if (!opts) {
     throw new Error('Missing `opts` for getting secret key')
   }
 
-  if (opts && 'object' !== typeof opts) {
+  if ('object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
   }
 
+  if (!keyring && !rc.network.identity.keyring) {
+    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${key}`)
+  }
+
   if (!opts.secret) {
-    throw new KeyringError(`Missing \`secret\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`secret\` for getting secret key of ${key}`)
   }
 
   if (!opts.password) {
-    throw new KeyringError(`Missing \`password\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`password\` for getting secret key of ${key}`)
   }
 
-  const parsedDID = new DID(did)
-  const publicKey = Buffer.from(parsedDID.identifier, 'hex')
+  if (!opts.did) {
+    throw new Error(`Missing \`did\` for getting secret key of ${key}`)
+  }
 
-  password = crypto.blake2b(Buffer.from(opts.password))
+  if (!opts.network) {
+    throw new Error(`Missing \`network\` for getting secret key of ${key}`)
+  }
 
-  const hash = crypto.blake2b(publicKey).toString('hex')
-  const path = resolve(rc.network.identity.root, hash, 'keystore/ara')
-  const secret = Buffer.from(opts.secret)
-  const keystore = JSON.parse(await pify(readFile)(path, 'utf8'))
-  const secretKey = ss.decrypt(keystore, { key: password.slice(0, 16) })
+  try {
+    const parsedDID = new DID(opts.did)
+    const publicKey = Buffer.from(parsedDID.identifier, 'hex')
 
-  const keyring = keyRing(rc.network.identity.keyring || opts.keyring, { secret: secretKey })
-  const buffer = await keyring.get(key)
-  const unpacked = unpack({ buffer })
+    password = crypto.blake2b(Buffer.from(opts.password))
 
-  return unpacked
+    const hash = crypto.blake2b(publicKey).toString('hex')
+    const path = resolve(rc.network.identity.root, hash, 'keystore/ara')
+    const secret = Buffer.from(opts.secret)
+    const idFile = await pify(readFile)(path, 'utf8')
+    const keystore = JSON.parse(idFile)
+    const secretKey = ss.decrypt(keystore, { key: password.slice(0, 16) })
+
+    const keyring = keyRing(rc.network.identity.keyring || opts.keyring, { secret: secretKey })
+    const buffer = await keyring.get(opts.network)
+    const unpacked = unpack({ buffer })
+
+    return unpacked
+  } catch (e) {
+    throw new Error({ 
+      message: `Error occurred while getting secret key of ${key}`,
+      stack: e.stack
+    })
+  }
 }
 
 /**
@@ -73,31 +112,46 @@ async function getSecret(did, key, opts) {
  * @param  {String} [opts.keyring] Path to keyring
  * @return {Object} Unpacked keyring
  */
-async function getPublic(key, opts) {
+async function getPublic(opts) {
   if (!opts) {
-    throw new Error('Missing `opts` for getting secret key')
+    throw new Error('Missing `opts` for getting public key')
   }
 
   if (opts && 'object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
   }
 
-  if (!opts.secret) {
-    throw new KeyringError(`Missing \`secret\` for getting secret key of ${key}`)
+  if (!keyring && !rc.network.identity.keyring) {
+    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${key}`)
   }
 
-  const secret = Buffer.from(opts.secret)
+  if (!opts.secret) {
+    throw new Error(`Missing \`secret\` for getting public key of ${key}`)
+  }
 
-  const keyring = keyRing(rc.network.identity.keyring || opts.keyring, { secret })
+  if (!opts.network) {
+    throw new Error(`Missing \`network\` for getting public key of ${key}`)
+  }
 
-  const buffer = await keyring.get(key)
-  const unpacked = unpack({ buffer })
+  try {
+    const secret = Buffer.from(opts.secret)
 
-  return unpacked
+    const keyring = keyRing(rc.network.identity.keyring || opts.keyring, { secret })
+
+    const buffer = await keyring.get(opts.network)
+    const unpacked = unpack({ buffer })
+
+    return unpacked
+  } catch (e) {
+    throw new Error({ 
+      message: `Error occurred while getting public key of ${key}`,
+      stack: e.stack
+    })
+  }
 }
 
 module.exports = {
-  keyringExists,
+  exists,
   getPublic,
   getSecret,
 }
