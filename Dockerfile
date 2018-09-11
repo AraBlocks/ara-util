@@ -6,13 +6,18 @@ RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get -y install git curl build-essential python
 
-ARG dir
+ARG commit
+ARG repo
 
 ## Mount working directory
-COPY $dir /usr/local/app
+COPY . /usr/local/app
 
 ## Use mount as working directory
 WORKDIR /usr/local/app
+
+RUN echo "$repo $commit"
+RUN git clone git@github.com:$repo.git /usr/local/app
+RUN git checkout $commit
 
 ## ssh key
 RUN mkdir -p /root/.ssh/
