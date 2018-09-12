@@ -1,13 +1,16 @@
-const { KeyringError } = require('./errors')
+const { readFile } = require('fs')
 const { keyRing } = require('ara-network/keys')
 const { resolve } = require('path')
 const { unpack } = require('ara-network/keys')
 const { lstat } = require('fs')
+const { DID } = require('did-uri')
+const crypto = require('ara-crypto')
 const sinon = require('sinon')
 const http = require('http')
 const pify = require('pify')
 const url = require('url')
 const rc = require('./rc')()
+const ss = require('ara-secret-storage')
 
 /**
  * Checks if a keyring exists on local system
@@ -27,8 +30,6 @@ async function exists(keyring) {
     let result
     if ('http:' === uri.protocol && 'https:' === uri.protocol) {
       result = await http.request(Object.assign({}, uri, { method: 'HEAD' }))
-
-      console.log("HTTP RESULT:", result)
     } else {
       result = await pify(lstat)(resolve(keyringPath))
     }
@@ -58,24 +59,24 @@ async function getSecret(opts) {
     throw new TypeError('Passed `opts` are not object')
   }
 
-  if (!keyring && !rc.network.identity.keyring) {
-    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${key}`)
+  if (!opts.keyring && !rc.network.identity.keyring) {
+    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${opts.network}`)
   }
 
   if (!opts.secret) {
-    throw new Error(`Missing \`secret\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`secret\` for getting secret key of ${opts.network}`)
   }
 
   if (!opts.password) {
-    throw new Error(`Missing \`password\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`password\` for getting secret key of ${opts.network}`)
   }
 
   if (!opts.did) {
-    throw new Error(`Missing \`did\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`did\` for getting secret key of ${opts.network}`)
   }
 
   if (!opts.network) {
-    throw new Error(`Missing \`network\` for getting secret key of ${key}`)
+    throw new Error(`Missing \`network\` for getting secret key`)
   }
 
   try {
@@ -97,10 +98,8 @@ async function getSecret(opts) {
 
     return unpacked
   } catch (e) {
-    throw new Error({ 
-      message: `Error occurred while getting secret key of ${key}`,
-      stack: e.stack
-    })
+    throw e
+    throw new Error(`Error occurred while getting secret key of ${opts.network} (${e})`)
   }
 }
 
