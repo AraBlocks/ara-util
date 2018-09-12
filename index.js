@@ -187,6 +187,7 @@ async function resolveDDO(did, opts) {
  * @param  {String} opts.did
  * @param  {String} opts.mnemonic
  * @param  {String} opts.password
+ * @param  {Object} [opts.keyringOpts]
  * @return {Object}
  * @throws {TypeError}
  */
@@ -207,7 +208,7 @@ async function getAFSOwnerIdentity(opts) {
   }
 
   const { did, mnemonic, password } = opts
-  const ddo = await resolveDDO(did)
+  const ddo = await resolveDDO(did, opts.keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -222,6 +223,7 @@ async function getAFSOwnerIdentity(opts) {
  * @param  {String} [opts.did]
  * @param  {String} [opts.owner]
  * @param  {Object} [opts.ddo]
+ * @param  {Object} [opts.keyringOpts]
  * @return {Object}
  * @throws {Error,TypeError}
  */
@@ -251,7 +253,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    ddo = await resolveDDO(did)
+    ddo = await resolveDDO(did, opts.keyringOpts)
   }
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
