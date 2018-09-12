@@ -1,40 +1,40 @@
-const { create: createAFS } = require('ara-filesystem')
-const { writeIdentity } = require('ara-identity/util')
-const { create } = require('ara-identity')
+const { create: createAFS } = require('ara-filesystem/create')
 const { parse } = require('did-uri')
 const context = require('ara-context')()
 const keyring = require('../keyring')
 const test = require('ava')
 const util = require('../')
 const fs = require('fs')
-const rc = require('../rc')
+const rc = require('../rc')()
 
-const kPassword = 'myPass'
-const kAidPrefix = 'did:ara:'
+const AID_PREFIX = 'did:ara:'
 
 const getDDO = t => t.context.ddo
 
 test.before(async (t) => {
-  const identity = await create({ context, password: kPassword })
-  await writeIdentity(identity)
-  const { ddo } = identity
-  t.context = { identity, ddo }
+  t.context = {
+    identity: rc.network.identity.whoami,
+    keyring: rc.network.identity.keyring,
+    secret: 'test',
+    archiverNetworkName: 'archiver',
+    password: 'c'
+  }
 })
 
 test('hashIdentity(did, encoding) invalid params', (t) => {
   t.throws(() => util.hashDID(), TypeError)
   t.throws(() => util.hashDID(1234), TypeError)
-  t.throws(() => util.hashDID('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e', 1234), TypeError)
-  t.throws(() => util.hashDID('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e', 'wrongEncoding'), TypeError)
+  t.throws(() => util.hashDID(t.context.identity, 1234), TypeError)
+  t.throws(() => util.hashDID(t.context.identity, 'wrongEncoding'), TypeError)
 })
 
 test('hashIdentity(did, encoding) valid identity', (t) => {
   const { web3 } = context
-  let result = util.hashDID('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e')
+  let result = util.hashDID(t.context.identity)
   t.true('string' === typeof result)
   t.true(web3.utils.isHex(result))
 
-  result = util.hashDID('14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e')
+  result = util.hashDID(t.context.identity)
   t.true('string' === typeof result)
   t.true(web3.utils.isHex(result))
 })
@@ -45,7 +45,7 @@ test('normalize(did) invalid did', (t) => {
 })
 
 test('normalize(did) valid normalize', (t) => {
-  let normalized = util.normalize('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e')
+  let normalized = util.normalize(t.context.identity)
   t.true(!normalized.includes(kAidPrefix))
 
   normalized = util.normalize('14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e')
@@ -65,7 +65,7 @@ test('isCorrectPassword(opts) valid check', async (t) => {
   let correct = await util.isCorrectPassword({ ddo, password: 'wrongPass' })
   t.false(correct)
 
-  correct = await util.isCorrectPassword({ ddo, password: kPassword })
+  correct = await util.isCorrectPassword({ ddo, password: t.context.password })
   t.true(correct)
 })
 
@@ -79,7 +79,7 @@ test('getDocumentOwner(ddo) invalid ddo', (t) => {
 test('getDocumentOwner(ddo) valid ddo', async (t) => {
   const ddo = getDDO(t)
   const owner = util.getDID(ddo)
-  const { afs } = await createAFS({ owner, password: kPassword })
+  const { afs } = await createAFS({ owner, password: t.context.password })
   const { ddo: afsDdo } = afs
 
   const docOwner = util.getDocumentOwner(afsDdo)
@@ -102,13 +102,12 @@ test('getDocumentKeyHex(ddo) valid ddo', (t) => {
 test('hash(str, encoding) invalid', (t) => {
   t.throws(() => util.hash(), TypeError)
   t.throws(() => util.hash(1234), TypeError)
-  t.throws(() => util.hash('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e', 'wrongEncoding'))
+  t.throws(() => util.hash(t.context.identity, 'wrongEncoding'))
 })
 
 test('hash(str, encoding) valid hash', (t) => {
-  const did = '14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e'
   const { web3 } = context
-  const hashed = util.hash(did)
+  const hashed = util.hash(t.context.identity)
   t.true(hashed && 'string' === typeof hashed)
   t.true(web3.utils.isHex(hashed))
 })
@@ -131,26 +130,26 @@ test('getAFSOwnerIdentity(opts) invalid opts', async (t) => {
   await t.throws(util.getAFSOwnerIdentity({ did: 'did:ara:1234' }), TypeError)
 
   await t.throws(util.getAFSOwnerIdentity({
-    did: 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e',
+    did: t.context.identity,
     mnemonic: 1234
   }))
   await t.throws(util.getAFSOwnerIdentity({
-    did: 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e',
+    did: t.context.identity,
     mnemonic: 'this is a mnemonic this is a mnemonic this is a mnemonic',
   }))
   await t.throws(util.getAFSOwnerIdentity({
-    did: 'did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e',
+    did: t.context.identity,
     mnemonic: 'this is a mnemonic this is a mnemonic this is a mnemonic',
     password: 1234
   }))
 })
 
 test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
-  const identity = await create({ context, password: kPassword })
+  const identity = await create({ context, password: t.context.password })
   const { mnemonic, did } = identity
   const owner = did.did
-  const { afs } = await createAFS({ owner, password: kPassword })
-  const resolvedOwner = await util.getAFSOwnerIdentity({ did: afs.did, mnemonic, password: kPassword })
+  const { afs } = await createAFS({ owner, password: t.context.password })
+  const resolvedOwner = await util.getAFSOwnerIdentity({ did: afs.did, mnemonic, password: t.context.password })
 
   t.is(identity.account.address, resolvedOwner.account.address)
 })
@@ -161,59 +160,74 @@ test('validate(opts) invalid opts', async (t) => {
   await t.throws(util.validate(), TypeError)
   await t.throws(util.validate('opts'), TypeError)
   await t.throws(util.validate({ }), TypeError)
-  await t.throws(util.validate({ did: null, password: kPassword }), TypeError)
-  await t.throws(util.validate({ did: 'did', owner: 'owner', password: kPassword }))
+  await t.throws(util.validate({ did: null, password: t.context.password }), TypeError)
+  await t.throws(util.validate({ did: 'did', owner: 'owner', password: t.context.password }))
   await t.throws(util.validate({ did, password: 'wrongPass' }), Error)
 })
 
 test('validate(opts)', async (t) => {
   const ddo = getDDO(t)
   const did = util.getDID(ddo)
-  const result = await util.validate({ did, password: kPassword })
+  const result = await util.validate({ did, password: t.context.password })
   t.true(result && 'object' === typeof result)
   t.is(result.did, did.slice(kAidPrefix.length))
 })
 
-test('exists(opts) invalid opts', async (t) => {
-  await t.throws(keyring.exists(), Error)
-})
+// test.only('exists(opts) invalid opts', async (t) => {
+//   await t.throws(() => { keyring.exists() }, Error)
+// })
 
-
-test('exists(opts)', async (t) => {
+test.only('exists(opts)', async (t) => {
+  t.true(await keyring.exists())
   t.true(await keyring.exists(rc.network.identity.keyring))
 })
 
-test('getSecret(opts) invalid opts', async (t) => {
-  const password = 'test'
-  const network = 'archiver'
-  const keyring = rc.network.identity.keyring
-  const secret = 'test'
-  const did = rc.network.identity.whoami
+test.only('getSecret(opts) invalid opts', async (t) => {
+  const password = t.context.password
+  const network = t.context.archiverNetworkName 
+  const keyring = t.context.keyring
+  const secret = t.context.secret
+  const did = t.context.identity
 
-  await t.throws(keyring.getSecret(), TypeError)
-  await t.throws(keyring.getSecret({}), Error)
-  await t.throws(keyring.getSecret({ keyring }), Error)
-  await t.throws(keyring.getSecret({ keyring, secret }), Error)
-  await t.throws(keyring.getSecret({ keyring, secret, password }), Error)
-  await t.throws(keyring.getSecret({ keyring, secret, password, did }), Error)
+  await t.throws(() => { keyring.getSecret() }, TypeError)
+  await t.throws(() => { keyring.getSecret({}) }, Error)
+  await t.throws(() => { keyring.getSecret({ keyring }) }, Error)
+  await t.throws(() => { keyring.getSecret({ keyring, secret }) }, Error)
+  await t.throws(() => { keyring.getSecret({ keyring, secret, password }) }, Error)
+  await t.throws(() => { keyring.getSecret({ keyring, secret, password, did }) }, Error)
 })
 
-test('getSecret(opts)', async (t) => {
-  const password = 'test'
-  const network = 'archiver'
-  const keyring = rc.network.identity.keyring
-  const secret = 'test'
-  const did = rc.network.identity.whoami
+test.only('getSecret(opts)', async (t) => {
+  const secretKey = await keyring.getSecret({
+    did: t.context.identity,
+    secret: t.context.secret,
+    keyring: t.context.keyring,
+    password: t.context.password, 
+    network: t.context.archiverNetworkName 
+  })
 
-  const secretKey = await keyring.getSecret({ did, secret, keyring, password, network })
-
-  console.log("SECRET:", secretKey)
+  t.truthy(secretKey)
 })
 
 test('getPublic(opts) invalid opts', async (t) => {
+  const network = t.context.archiverNetworkName 
+  const keyring = t.context.keyring
+  const secret = t.context.secret
+
+  await t.throws(() => { keyring.getPublic() }, TypeError)
+  await t.throws(() => { keyring.getPublic({}) }, Error)
+  await t.throws(() => { keyring.getPublic({ keyring }) }, Error)
+  await t.throws(() => { keyring.getPublic({ keyring, secret }) }, Error)
 })
 
 test('getPublic(opts)', async (t) => {
+  const publicKey = await keyring.getPublic({
+    secret: t.context.secret,
+    keyring: t.context.keyring,
+    network: t.context.archiverNetworkName 
+  })
+
+  t.truthy(publicKey)
 })
 
 
