@@ -207,8 +207,8 @@ async function getAFSOwnerIdentity(opts) {
     throw err
   }
 
-  const { did, mnemonic, password } = opts
-  const ddo = await resolveDDO(did, opts.keyringOpts)
+  const { did, mnemonic, password, keyringOpts } = opts
+  const ddo = await resolveDDO(did, keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -233,7 +233,7 @@ async function validate(opts) {
   }
 
   let { did, ddo } = opts
-  const { owner, password } = opts
+  const { owner, password, keyringOpts } = opts
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
   }
@@ -253,7 +253,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    ddo = await resolveDDO(did, opts.keyringOpts)
+    ddo = await resolveDDO(did, keyringOpts)
   }
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
