@@ -171,6 +171,8 @@ function hash(str, encoding = 'hex') {
 async function resolveDDO(did, opts) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError('DID URI must be valid string.')
+  } else if (opts && 'object' !== typeof opts) {
+    throw new TypeError('Expecting opts to be an object.')
   }
 
   opts = opts || {
@@ -187,6 +189,7 @@ async function resolveDDO(did, opts) {
  * @param  {String} opts.did
  * @param  {String} opts.mnemonic
  * @param  {String} opts.password
+ * @param  {Object} [opts.keyringOpts]
  * @return {Object}
  * @throws {TypeError}
  */
@@ -200,14 +203,16 @@ async function getAFSOwnerIdentity(opts) {
     err = new TypeError('Expecting mnemonic to be valid string.')
   } else if (!opts.password || 'string' !== typeof opts.password) {
     err = new TypeError('Expecting password to be valid string.')
+  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
+    throw new TypeError('Expecting opts.keyringOpts to be an object.')
   }
 
   if (err) {
     throw err
   }
 
-  const { did, mnemonic, password } = opts
-  const ddo = await resolveDDO(did)
+  const { did, mnemonic, password, keyringOpts } = opts
+  const ddo = await resolveDDO(did, keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -222,16 +227,19 @@ async function getAFSOwnerIdentity(opts) {
  * @param  {String} [opts.did]
  * @param  {String} [opts.owner]
  * @param  {Object} [opts.ddo]
+ * @param  {Object} [opts.keyringOpts]
  * @return {Object}
  * @throws {Error,TypeError}
  */
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
+  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
+    throw new TypeError('Expecting opts.keyringOpts to be an object.')
   }
 
   let { did, ddo } = opts
-  const { owner, password } = opts
+  const { owner, password, keyringOpts } = opts
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
   }
@@ -251,7 +259,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    ddo = await resolveDDO(did)
+    ddo = await resolveDDO(did, keyringOpts)
   }
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
