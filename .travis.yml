@@ -1,16 +1,18 @@
 sudo: required
 language: node_js
 node_js:
-  - "8.9.4"
+- 8.9.4
 services:
-  - docker
+- docker
 before_install:
-  - docker build -t arablocks/test . --build-arg commit=$TRAVIS_COMMIT --build-arg repo=$TRAVIS_REPO_SLUG 
-  - docker run arablocks/test /bin/sh -c "cd /root; npm run test"
+- openssl aes-256-cbc -K $encrypted_ce504b994273_key -iv $encrypted_ce504b994273_iv
+  -in ./config/deploy_rsa.enc -out ./config/id_rsa -d
+- docker build -t arablocks/test .
+- docker run arablocks/test /bin/sh -c "cd /root; npm run test"
 install:
-  - npm install
+- npm install --only=dev
 script:
-  - npm run lint
+- npm run lint
 cache:
   directories:
-    - "node_modules"
+  - node_modules
