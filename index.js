@@ -171,6 +171,8 @@ function hash(str, encoding = 'hex') {
 async function resolveDDO(did, opts) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError('DID URI must be valid string.')
+  } else if (opts && 'object' !== typeof opts) {
+    throw new TypeError('Expecting opts to be an object.')
   }
 
   opts = opts || {
@@ -201,6 +203,8 @@ async function getAFSOwnerIdentity(opts) {
     err = new TypeError('Expecting mnemonic to be valid string.')
   } else if (!opts.password || 'string' !== typeof opts.password) {
     err = new TypeError('Expecting password to be valid string.')
+  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
+    throw new TypeError('Expecting opts.keyringOpts to be an object.')
   }
 
   if (err) {
@@ -230,6 +234,8 @@ async function getAFSOwnerIdentity(opts) {
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
+  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
+    throw new TypeError('Expecting opts.keyringOpts to be an object.')
   }
 
   let { did, ddo } = opts
