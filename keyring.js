@@ -120,16 +120,16 @@ async function getPublic(opts) {
     throw new TypeError('Passed `opts` are not object')
   }
 
-  if (!keyring && !rc.network.identity.keyring) {
-    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${key}`)
+  if (!opts.keyring && !rc.network.identity.keyring) {
+    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${opts.network}`)
   }
 
   if (!opts.secret) {
-    throw new Error(`Missing \`secret\` for getting public key of ${key}`)
+    throw new Error(`Missing \`secret\` for getting public key of ${opts.network}`)
   }
 
   if (!opts.network) {
-    throw new Error(`Missing \`network\` for getting public key of ${key}`)
+    throw new Error(`Missing \`network\` for getting public key of ${opts.network}`)
   }
 
   try {

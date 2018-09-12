@@ -125,23 +125,23 @@ test('resolveDDO(did) resolution', async (t) => {
 })
 
 test('getAFSOwnerIdentity(opts) invalid opts', async (t) => {
-  await t.throws(util.getAFSOwnerIdentity(), TypeError)
-  await t.throws(util.getAFSOwnerIdentity({ }), TypeError)
-  await t.throws(util.getAFSOwnerIdentity({ did: 'did:ara:1234' }), TypeError)
+  await t.throws(() => { util.getAFSOwnerIdentity() }, TypeError)
+  await t.throws(() => { util.getAFSOwnerIdentity({ }) }, TypeError)
+  await t.throws(() => { util.getAFSOwnerIdentity({ did: 'did:ara:1234' }) }, TypeError)
 
-  await t.throws(util.getAFSOwnerIdentity({
+  await t.throws(() => { util.getAFSOwnerIdentity({
     did: t.context.identity,
     mnemonic: 1234
-  }))
-  await t.throws(util.getAFSOwnerIdentity({
+  }) }, Error)
+  await t.throws(() => { util.getAFSOwnerIdentity({
     did: t.context.identity,
     mnemonic: 'this is a mnemonic this is a mnemonic this is a mnemonic',
-  }))
-  await t.throws(util.getAFSOwnerIdentity({
+  }) }, Error)
+  await t.throws(() => { util.getAFSOwnerIdentity({
     did: t.context.identity,
     mnemonic: 'this is a mnemonic this is a mnemonic this is a mnemonic',
     password: 1234
-  }))
+  }) }, Error)
 })
 
 test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
@@ -157,12 +157,12 @@ test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
 test('validate(opts) invalid opts', async (t) => {
   const ddo = getDDO(t)
   const did = util.getDID(ddo)
-  await t.throws(util.validate(), TypeError)
-  await t.throws(util.validate('opts'), TypeError)
-  await t.throws(util.validate({ }), TypeError)
-  await t.throws(util.validate({ did: null, password: t.context.password }), TypeError)
-  await t.throws(util.validate({ did: 'did', owner: 'owner', password: t.context.password }))
-  await t.throws(util.validate({ did, password: 'wrongPass' }), Error)
+  await t.throws(() => { util.validate() }, TypeError)
+  await t.throws(() => { util.validate('opts') }, TypeError)
+  await t.throws(() => { util.validate({ }) }, TypeError)
+  await t.throws(() => { util.validate({ did: null, password: t.context.password }) }, TypeError)
+  await t.throws(() => { util.validate({ did: 'did', owner: 'owner', password: t.context.password }) }, Error)
+  await t.throws(() => { util.validate({ did, password: 'wrongPass' }) }, Error)
 })
 
 test('validate(opts)', async (t) => {
@@ -173,16 +173,12 @@ test('validate(opts)', async (t) => {
   t.is(result.did, did.slice(kAidPrefix.length))
 })
 
-// test.only('exists(opts) invalid opts', async (t) => {
-//   await t.throws(() => { keyring.exists() }, Error)
-// })
-
-test.only('exists(opts)', async (t) => {
+test('exists(opts)', async (t) => {
   t.true(await keyring.exists())
   t.true(await keyring.exists(rc.network.identity.keyring))
 })
 
-test.only('getSecret(opts) invalid opts', async (t) => {
+test('getSecret(opts) invalid opts', async (t) => {
   const password = t.context.password
   const network = t.context.archiverNetworkName 
   const keyring = t.context.keyring
@@ -197,7 +193,7 @@ test.only('getSecret(opts) invalid opts', async (t) => {
   await t.throws(() => { keyring.getSecret({ keyring, secret, password, did }) }, Error)
 })
 
-test.only('getSecret(opts)', async (t) => {
+test('getSecret(opts)', async (t) => {
   const secretKey = await keyring.getSecret({
     did: t.context.identity,
     secret: t.context.secret,
