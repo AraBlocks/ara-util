@@ -1,4 +1,3 @@
-const { kEd25519VerificationKey2018 } = require('ld-cryptosuite-registry')
 const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { toHex } = require('ara-identity/util')
 const hasDIDMethod = require('has-did-method')
@@ -20,6 +19,13 @@ const {
   kResolverName,
   kAidPrefix
 } = require('./constants')
+
+const {
+  kEd25519VerificationKey2018,
+  kSecp256k1VerificationKey2018
+} = require('ld-cryptosuite-registry')
+
+const ETH_PUBLIC_KEY_DROPPED_CHARS = 26
 
 /**
  * Blake2b hashes a DID URI.
@@ -97,6 +103,24 @@ async function isCorrectPassword(opts) {
 
   const publicKey = secretKey.slice(32).toString('hex')
   return publicKeyHex === publicKey
+}
+
+async function getAddressFromDID(did) {
+  if (!did || 'string' !== typeof did) {
+    throw new TypeError(`Expected DID to be a non-empty string. Got ${did}. Ensure identity exists.`)
+  }
+  try {
+    const ddo = await resolveDDO(did)
+
+    let { publicKeyHex } = ddo.publicKey.find((element) => {
+      const { type } = element
+      return type === kSecp256k1VerificationKey2018
+    })
+    const hashpk = web3.sha3(`0x${publicKeyHex}`)
+    return web3.ethify(hashpk.slice(ETH_PUBLIC_KEY_DROPPED_CHARS))
+  } catch (err) {
+    throw err
+  }
 }
 
 /**
@@ -300,6 +324,7 @@ function _getDocument(ddo) {
 module.exports = {
   getAFSOwnerIdentity,
   isCorrectPassword,
+  getAddressFromDID,
   getDocumentKeyHex,
   getDocumentOwner,
   hasDIDMethod,
