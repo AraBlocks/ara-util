@@ -25,7 +25,7 @@ const {
   kSecp256k1VerificationKey2018
 } = require('ld-cryptosuite-registry')
 
-const ETH_PUBLIC_KEY_DROPPED_CHARS = 26
+const ETH_ADDRESS_LENGTH = 40
 
 /**
  * Blake2b hashes a DID URI.
@@ -117,7 +117,7 @@ async function getAddressFromDID(did) {
       return type === kSecp256k1VerificationKey2018
     })
     const hashpk = web3.sha3(`0x${publicKeyHex}`)
-    return web3.ethify(hashpk.slice(ETH_PUBLIC_KEY_DROPPED_CHARS))
+    return web3.ethify(hashpk.slice(-ETH_ADDRESS_LENGTH))
   } catch (err) {
     throw err
   }
