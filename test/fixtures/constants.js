@@ -7,7 +7,7 @@ module.exports = {
   ddo: {
     '@context': 'https://w3id.org/did/v1',
     id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-    publicKey: [{
+    publicKey: [ {
       id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#owner',
       type: 'Ed25519VerificationKey2018',
       owner: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
@@ -28,8 +28,8 @@ module.exports = {
       publicKeyHex: '438b21df4533e5ad4e537c2a152315d384780384b93a451087d93d7fb6cb67c2',
       publicKeyBase58: '5YfNB78G9xaKbFQYrJF7Rr3nRPaGAD9Z23MH4DbgBx2D',
       publicKeyBase64: 'EOLId9FM+WtTlN8KhUjFdOEeAOEuTpFEIfZPX+2y2fC'
-    }],
-    authentication: [{
+    } ],
+    authentication: [ {
       publicKey: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#owner',
       type: 'Ed25519SignatureAuthentication2018'
     }, {
@@ -38,7 +38,7 @@ module.exports = {
     }, {
       publicKey: 'did:ara:5b039baf6fcdc87c8fcfa24f0795861d6f09804ec4fbcfce2979c654094e9b48#owner',
       type: 'Ed25519VerificationKey2018'
-    }],
+    } ],
     service: [],
     created: '2018-09-13T17:52:57.237Z',
     updated: '2018-09-13T17:52:57.237Z',
