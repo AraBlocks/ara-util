@@ -8,7 +8,7 @@ const fs = require('fs')
 const ss = require('ara-secret-storage')
 const rc = require('../rc')()
 
-test.before(async (t) => {
+test.before((t) => {
   t.context = {
     sandbox: sinon.createSandbox(),
     identityUnnormalized: rc.network.identity.whoami.replace('did:ara', ''),
@@ -76,19 +76,16 @@ test('getSecret(opts) invalid opts', async (t) => {
     password, keyring: keyringPath, identity: did
   } = t.context
 
-  await t.throwsAsync(() => keyring.getSecret(), Error)
-  await t.throwsAsync(() => keyring.getSecret({}), Error)
-  await t.throwsAsync(() =>
-    keyring.getSecret({
+  await t.throwsAsync(keyring.getSecret(), Error)
+  await t.throwsAsync(keyring.getSecret({}), Error)
+  await t.throwsAsync(keyring.getSecret({
       keyring: keyringPath
     }), Error)
-  await t.throwsAsync(() =>
-    keyring.getSecret({
+  await t.throwsAsync(keyring.getSecret({
       keyring: keyringPath,
       password
     }), Error)
-  await t.throwsAsync(() =>
-    keyring.getSecret({
+  await t.throwsAsync(keyring.getSecret({
       keyring: keyringPath,
       password,
       did
@@ -110,14 +107,12 @@ test('getSecret(opts)', async (t) => {
 test('getPublic(opts) invalid opts', async (t) => {
   const { keyring: keyringPath, secret } = t.context
 
-  await t.throwsAsync(() => keyring.getPublic(), Error)
-  await t.throwsAsync(() => keyring.getPublic({}), Error)
-  await t.throwsAsync(() =>
-    keyring.getPublic({
+  await t.throwsAsync(keyring.getPublic(), Error)
+  await t.throwsAsync(keyring.getPublic({}), Error)
+  await t.throwsAsync(keyring.getPublic({
       keyring: keyringPath
     }), Error)
-  await t.throwsAsync(() =>
-    keyring.getPublic({
+  await t.throwsAsync(keyring.getPublic({
       keyring: keyringPath,
       secret
     }), Error)
