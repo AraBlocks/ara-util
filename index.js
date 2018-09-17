@@ -4,7 +4,7 @@ const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
 const context = require('ara-context')()
-const { secret } = require('./rc')()
+const rc = require('./rc')()
 const aid = require('ara-identity')
 const { resolve } = require('path')
 const web3 = require('./web3')
@@ -15,8 +15,6 @@ const kAraKeystore = 'keystore/ara'
 
 const {
   kIdentifierLength,
-  kResolverSecret,
-  kResolverName,
   kAidPrefix
 } = require('./constants')
 
@@ -195,17 +193,32 @@ function hash(str, encoding = 'hex') {
  * @throws {TypeError}
  */
 async function resolveDDO(did, opts) {
-  if (!did || 'string' !== typeof did) {
-    throw new TypeError('DID URI must be valid string.')
-  } else if (opts && 'object' !== typeof opts) {
-    throw new TypeError('Expecting opts to be an object.')
+  if (!did) {
+    throw new Error('Expecting first parameter, `did`, to be defined')
   }
 
-  opts = opts || {
-    name: kResolverName,
-    secret: kResolverSecret,
-    keyring: secret.resolver
+  if ('string' !== typeof did) {
+    throw new TypeError('Expecting first parameter, `did`, to be String')
   }
+
+  if (!opts) {
+    throw new Error('Expecting second parameter, `opts`, to be defined')
+  }
+
+  if ('object' !== typeof opts) {
+    throw new TypeError('Expecting second parameter, `opts`, to be Object')
+  }
+
+  if (!opts.secret) {
+    throw new Error('Expecting key of second parameter, `opts.secret`, to be defined')
+  }
+
+  opts = Object.assign({}, {
+    name: rc.network.identity.resolver,
+    secret: opts.secret,
+    keyring: rc.network.identity.keyring
+  }, opts)
+
   return aid.resolve(did, opts)
 }
 
@@ -229,16 +242,16 @@ async function getAFSOwnerIdentity(opts) {
     err = new TypeError('Expecting mnemonic to be valid string.')
   } else if (!opts.password || 'string' !== typeof opts.password) {
     err = new TypeError('Expecting password to be valid string.')
-  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
-    throw new TypeError('Expecting opts.keyringOpts to be an object.')
+  } else if (!opts.secret) {
+    err = new Error('Expecting `secret` to be defined')
   }
 
   if (err) {
     throw err
   }
 
-  const { did, mnemonic, password, keyringOpts } = opts
-  const ddo = await resolveDDO(did, keyringOpts)
+  const { did, mnemonic, password } = opts
+  const ddo = await resolveDDO(did, opts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -260,12 +273,14 @@ async function getAFSOwnerIdentity(opts) {
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
-  } else if (opts.keyringOpts && 'object' !== typeof opts.keyringOpts) {
-    throw new TypeError('Expecting opts.keyringOpts to be an object.')
   }
 
-  let { did, ddo } = opts
-  const { owner, password, keyringOpts } = opts
+  if (!opts.secret) {
+    throw new Error('Expecting key of first parameter, `opts.secret`, to be defined')
+  }
+
+  let { did } = opts
+  const { owner, password } = opts
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
   }
@@ -284,9 +299,7 @@ async function validate(opts) {
     throw err
   }
 
-  if (!ddo) {
-    ddo = await resolveDDO(did, keyringOpts)
-  }
+  const ddo = await resolveDDO(did, opts)
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
   }
@@ -311,12 +324,11 @@ async function validate(opts) {
  * @throws {TypeError}
  */
 function getDID({ id }) {
-  if (!id || 'object' !== typeof id) {
+  if (!id) {
     throw new TypeError('Cannot find DID on DDO.')
   }
 
-  const { did } = id
-  return did
+  return id
 }
 
 function _getDocument(ddo) {
