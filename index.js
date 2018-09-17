@@ -137,8 +137,7 @@ function getDocumentOwner(ddo) {
     throw new RangeError('Identity doesn\'t list an owner in authentication.')
   }
 
-  const { publicKey } = doc.authentication.find((element) => {
-    const { type } = element
+  const { publicKey } = doc.authentication.find(({ type }) => {
     return type === kEd25519VerificationKey2018
   })
 
