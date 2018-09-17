@@ -100,10 +100,11 @@ test('getDocumentOwner(ddo) invalid ddo', (t) => {
 
 test('getDocumentOwner(ddo) valid ddo', (t) => {
   const ddo = getDDO(t)
-  const owner = util.getDID(ddo)
 
   const docOwner = util.getDocumentOwner(ddo)
-  t.is(docOwner, parse(owner).identifier)
+
+  t.truthy(docOwner)
+  t.true('string' == typeof docOwner)
 })
 
 test('getDocumentKeyHex(ddo) invalid ddo', (t) => {
