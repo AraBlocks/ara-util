@@ -1,7 +1,6 @@
 const { readFile } = require('fs')
-const { keyRing } = require('ara-network/keys')
 const { resolve } = require('path')
-const { unpack } = require('ara-network/keys')
+const { unpack, keyRing } = require('ara-network/keys')
 const { lstat } = require('fs')
 const { DID } = require('did-uri')
 const crypto = require('ara-crypto')
