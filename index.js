@@ -67,7 +67,6 @@ function normalize(did) {
       }
     }
   }
-
   return did
 }
 
@@ -312,11 +311,12 @@ async function validate(opts) {
  * @throws {TypeError}
  */
 function getDID({ id }) {
-  if (!id) {
+  if (!id || 'object' !== typeof id) {
     throw new TypeError('Cannot find DID on DDO.')
   }
 
-  return id
+  const { did } = id
+  return did
 }
 
 function _getDocument(ddo) {
