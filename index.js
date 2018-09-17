@@ -67,6 +67,7 @@ function normalize(did) {
       }
     }
   }
+
   return did
 }
 
@@ -177,6 +178,8 @@ function hash(str, encoding = 'hex') {
     throw new TypeError('Expecting input to be valid string.')
   } else if (encoding && 'string' !== typeof encoding) {
     throw new TypeError('Encoding must be of type string.')
+  } else if (0 === Buffer.from(str, encoding).length) {
+    throw new Error(`${str} with ${encoding} results in an empty buffer`)
   }
 
   const result = blake2b(Buffer.from(str, encoding))
@@ -309,12 +312,11 @@ async function validate(opts) {
  * @throws {TypeError}
  */
 function getDID({ id }) {
-  if (!id || 'object' !== typeof id) {
+  if (!id) {
     throw new TypeError('Cannot find DID on DDO.')
   }
 
-  const { did } = id
-  return did
+  return id
 }
 
 function _getDocument(ddo) {
