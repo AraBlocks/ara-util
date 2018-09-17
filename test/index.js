@@ -5,7 +5,6 @@ const sinon = require('sinon')
 const test = require('ava')
 const aid = require('ara-identity')
 const fs = require('fs')
-const ss = require('ara-secret-storage')
 const rc = require('../rc')()
 
 const getDDO = t => t.context.ddo
@@ -17,9 +16,7 @@ test.before((t) => {
     keyring: rc.network.identity.keyring,
   })
 
-  t.context.sandbox.stub(fs, 'readFile').callsFake((_, __, cb) => { 
-    return cb(null, JSON.stringify(t.context.araKeystore))
-  })
+  t.context.sandbox.stub(fs, 'readFile').callsFake((_, __, cb) => cb(null, JSON.stringify(t.context.araKeystore)))
 
   t.context.sandbox.stub(fs, 'lstat').callsFake(() => ({ ctime: 10 }))
 
@@ -136,11 +133,11 @@ test('hash(str, encoding) valid hash', (t) => {
 })
 
 test('resolveDDO(did) invalid did', async (t) => {
-  await t.throwsAsync( util.resolveDDO(), Error)
-  await t.throwsAsync( util.resolveDDO(123), TypeError)
-  await t.throwsAsync( util.resolveDDO('123'), Error)
-  await t.throwsAsync( util.resolveDDO('123', 123), TypeError)
-  await t.throwsAsync( util.resolveDDO('123', {}), Error)
+  await t.throwsAsync(util.resolveDDO(), Error)
+  await t.throwsAsync(util.resolveDDO(123), TypeError)
+  await t.throwsAsync(util.resolveDDO('123'), Error)
+  await t.throwsAsync(util.resolveDDO('123', 123), TypeError)
+  await t.throwsAsync(util.resolveDDO('123', {}), Error)
 })
 
 test('resolveDDO(did) resolution', async (t) => {
@@ -152,9 +149,9 @@ test('resolveDDO(did) resolution', async (t) => {
 })
 
 test('getAFSOwnerIdentity(opts) invalid opts', async (t) => {
-  await t.throwsAsync( util.getAFSOwnerIdentity(), TypeError)
-  await t.throwsAsync( util.getAFSOwnerIdentity({}), TypeError)
-  await t.throwsAsync( util.getAFSOwnerIdentity({ did: 'did:ara:1234' }), TypeError)
+  await t.throwsAsync(util.getAFSOwnerIdentity(), TypeError)
+  await t.throwsAsync(util.getAFSOwnerIdentity({}), TypeError)
+  await t.throwsAsync(util.getAFSOwnerIdentity({ did: 'did:ara:1234' }), TypeError)
 })
 
 test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
@@ -181,7 +178,11 @@ test('validate(opts) invalid opts', async (t) => {
 test('validate(opts)', async (t) => {
   const ddo = getDDO(t)
   const did = util.getDID(ddo)
-  const result = await util.validate({ did, password: t.context.password, secret: t.context.secret })
+  const result = await util.validate({
+    did,
+    password: t.context.password,
+    secret: t.context.secret
+  })
   t.true(result && 'object' === typeof result)
   t.is(result.did, did.slice(t.context.aidPrefix.length))
 })

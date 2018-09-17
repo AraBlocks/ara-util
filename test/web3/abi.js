@@ -45,26 +45,26 @@ test('encodeParameters() invalid params', (t) => {
   t.throws(() => encodeParameters([]), TypeError)
   t.throws(() => encodeParameters({ }), TypeError)
   t.throws(() => encodeParameters(''), TypeError)
-  t.throws(() => encodeParameters(['bytes', 'number']), TypeError)
-  t.throws(() => encodeParameters(['bytes'], [1, 2]), Error)
-  t.throws(() => encodeParameters(['string'], [ 111 ]), Error)
+  t.throws(() => encodeParameters([ 'bytes', 'number' ]), TypeError)
+  t.throws(() => encodeParameters([ 'bytes' ], [ 1, 2 ]), Error)
+  t.throws(() => encodeParameters([ 'string' ], [ 111 ]), Error)
   t.throws(() => encodeParameters(
-    ['bytes', 'number'],
+    [ 'bytes', 'number' ],
     'parameters'
   ), TypeError)
 
   t.throws(() => encodeParameters(
-    ['bytes', 'number'],
+    [ 'bytes', 'number' ],
     123
   ), TypeError)
 
   t.throws(() => encodeParameters(
-    ['bytes', 'number'],
+    [ 'bytes', 'number' ],
     { }
   ), TypeError)
 })
 
 test('encodeParameters() valid encode', (t) => {
-  const encoded = encodeParameters(['bytes', 'string'], ['0xFF', 'Hello'])
+  const encoded = encodeParameters([ 'bytes', 'string' ], [ '0xFF', 'Hello' ])
   t.true(encoded && web3.utils.isHex(encoded))
 })

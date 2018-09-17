@@ -3,14 +3,14 @@ const rc = require('ara-runtime-configuration')
 const os = require('os')
 const { resolve } = require('path')
 
-const kAraDir = '.ara'
-const kSecretDir = 'keyrings'
+const ARA_DIR = '.ara'
+const SECRET_DIR = 'keyrings'
 
 const defaults = () => ({
   network: {
     identity: {
-      archiver: resolve(os.homedir(), kAraDir, kSecretDir, 'archiver.pub'),
-      resolver: resolve(os.homedir(), kAraDir, kSecretDir, 'resolver.pub')
+      archiver: resolve(os.homedir(), ARA_DIR, SECRET_DIR, 'archiver.pub'),
+      resolver: resolve(os.homedir(), ARA_DIR, SECRET_DIR, 'resolver.pub')
     }
   }
 })

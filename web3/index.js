@@ -18,8 +18,8 @@ function isAddress(address) {
 
 /**
  * ABI encodes and SHA3 hashes input.
- * @param  {Mixed} params 
- * @return {String}        
+ * @param  {Mixed} params
+ * @return {String}
  * @throws {Error}
  */
 function sha3(params) {
@@ -31,9 +31,9 @@ function sha3(params) {
 }
 
 /**
- * Prepend 0x to a hex string for 
+ * Prepend 0x to a hex string for
  * passing to Solidity contract functions.
- * @param  {String}  input 
+ * @param  {String}  input
  * @param  {Boolean} hexify
  * @return {String}
  */
@@ -51,7 +51,7 @@ function ethify(input, hexify = false) {
  * Convert a string, number, of buffer
  * to a valid hex string.
  * @param  {Mixed} input
- * @param  {String} encoding  
+ * @param  {String} encoding
  * @return {String}
  * @throws {TypeError}
  */
@@ -60,17 +60,16 @@ function toHex(input, encoding = 'hex') {
     throw new TypeError('Input must be number, string, or buffer')
   } else if (encoding && 'string' !== typeof encoding) {
     throw new TypeError('Encoding must be a valid string')
-  } 
+  }
 
   if (isBuffer(input)) {
     return input.toString(encoding)
   } else if ('number' === typeof input) {
-    return toHex(bufferFrom([input]))
+    return toHex(bufferFrom([ input ]))
   } else if ('string' === typeof input) {
     return toHex(bufferFrom(input))
-  } else {
-    return toHex(bufferFrom(input))
   }
+  return toHex(bufferFrom(input))
 }
 
 /**
@@ -92,9 +91,8 @@ function toBuffer(input, encoding = 'hex') {
     return bufferFrom(input, encoding)
   } else if (input) {
     return bufferFrom(input.toString(), encoding)
-  } else {
-    return null
   }
+  return null
 }
 
 module.exports = {
