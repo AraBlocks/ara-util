@@ -12,13 +12,11 @@ const getDDO = t => t.context.ddo
 test.before((t) => {
   t.context = Object.assign({}, constants, {
     sandbox: sinon.createSandbox(),
-    identity: rc.network.identity.whoami,
-    keyring: rc.network.identity.keyring,
   })
 
   t.context.sandbox.stub(fs, 'readFile').callsFake((_, __, cb) => cb(null, JSON.stringify(t.context.araKeystore)))
 
-  t.context.sandbox.stub(fs, 'lstat').callsFake(() => ({ ctime: 10 }))
+  t.context.sandbox.stub(fs, 'lstat').callsFake((_, cb) => cb(null, { ctime: 10 }))
 
   t.context.sandbox.stub(aid, 'resolve').callsFake(() => t.context.ddo)
 
