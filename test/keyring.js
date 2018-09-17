@@ -6,6 +6,7 @@ const aid = require('ara-identity')
 const fs = require('fs')
 const rc = require('../rc')()
 
+let keyring
 test.before((t) => {
   t.context = Object.assign({}, constants, {
     sandbox: sinon.createSandbox(),
@@ -13,11 +14,11 @@ test.before((t) => {
     keyring: resolve('./test/fixtures/keyrings/keyring'),
   })
 
-  t.context.sandbox.stub(fs, 'lstat').callsFake(() => ({ ctime: 10 }))
+  t.context.sandbox.stub(fs, 'lstat').callsFake((_, cb) => cb(null, { ctime: 10 }))
 
-  t.context.sandbox.stub(fs, 'readFile').callsFake(() => t.context.araKeystore)
+  t.context.sandbox.stub(fs, 'readFile').callsFake((_, __, cb) => cb(null, JSON.stringify(t.context.ownerAraKeystore)))
 
-  t.context.sandbox.stub(aid, 'resolve').callsFake(() => t.context.ddo)
+  t.context.sandbox.stub(aid, 'resolve').callsFake(() => t.context.ownerDDO)
 
   t.context.sandbox.stub(aid, 'create').callsFake((opts) => {
     const { mnemonic, identity: owner, password } = t.context
@@ -31,9 +32,14 @@ test.before((t) => {
     t.is(opts.owner, owner)
     t.is(opts.password, password)
   })
+
+  keyring = require('../keyring')
 })
 
-const keyring = require('../keyring')
+test.after((t) => {
+  t.context.sandbox.restore()
+})
+
 
 test('exists(opts)', async (t) => {
   t.true(await keyring.exists(t.context.keyring))
@@ -63,7 +69,6 @@ test('getSecret(opts) invalid opts', async (t) => {
 test('getSecret(opts)', async (t) => {
   const secretKey = await keyring.getSecret({
     did: t.context.identity,
-    secret: t.context.secret,
     keyring: t.context.keyring,
     password: t.context.password,
     network: t.context.archiverNetworkName

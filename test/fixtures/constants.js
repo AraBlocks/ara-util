@@ -1,67 +1,15 @@
+const { resolve } = require('path')
+
 module.exports = {
   aidPrefix: 'did:ara:',
-  secret: 'c',
+  secret: 'test',
   archiverNetworkName: 'archiver',
-  password: 'c',
+  password: 'test',
+  keyring: resolve('./keyrings/keyring'),
+  identity: 'did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2',
   mnemonic: 'what a mnemonic',
-  ddo: {
-    '@context': 'https://w3id.org/did/v1',
-    id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-    publicKey: [ {
-      id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#owner',
-      type: 'Ed25519VerificationKey2018',
-      owner: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-      publicKeyHex: 'd93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-      publicKeyBase58: 'Fcyrsvgzvwna5ba1CLTZccfAdrqwRS6unD5LYsfy2gnM',
-      publicKeyBase64: 'Nk7PK+ko686d0lZqzEBHkjJ6sUIceIqD9LsVlNEjCcq'
-    }, {
-      id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#eth',
-      type: 'Secp256k1VerificationKey2018',
-      owner: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-      publicKeyHex: '7872b4a4dbbdcbec2b89f1e8e9c1d98a6ebee30eb9cb714f4edfe5b05f08c64e6e69cf6e301dae1e82275b7074166bc755b6da3048a3cbd0d25c925a6a3abf8b',
-      publicKeyBase58: '3QfzY6FVrYpTXfXUiH83pEFaF53K1eP1FmY9V4yJ1mFkzJpnHpCKXNTpHxQ7TvKJYLKo8fRMaLsBznF8dLC2fyES',
-      publicKeyBase64: 'B4crSk273L7CuJ8ejpwdmKbr7jDrnLcU9O3+WwXwjGTm5pz24wHa4egidbcHQWa8dVttowSKPL0NJcklpqOr+L'
-    }, {
-      id: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#metadata',
-      type: 'Ed25519VerificationKey2018',
-      owner: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a',
-      publicKeyHex: '438b21df4533e5ad4e537c2a152315d384780384b93a451087d93d7fb6cb67c2',
-      publicKeyBase58: '5YfNB78G9xaKbFQYrJF7Rr3nRPaGAD9Z23MH4DbgBx2D',
-      publicKeyBase64: 'EOLId9FM+WtTlN8KhUjFdOEeAOEuTpFEIfZPX+2y2fC'
-    } ],
-    authentication: [ {
-      publicKey: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#owner',
-      type: 'Ed25519SignatureAuthentication2018'
-    }, {
-      publicKey: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#eth',
-      type: 'Secp256k1SignatureAuthentication2018'
-    }, {
-      publicKey: 'did:ara:5b039baf6fcdc87c8fcfa24f0795861d6f09804ec4fbcfce2979c654094e9b48#owner',
-      type: 'Ed25519VerificationKey2018'
-    } ],
-    service: [],
-    created: '2018-09-13T17:52:57.237Z',
-    updated: '2018-09-13T17:52:57.237Z',
-    proof: {
-      type: 'Ed25519VerificationKey2018',
-      nonce: '755c7d1606e524908091bd8971d8eed88c458893c794bb30b31a65944a98761b',
-      domain: 'ara',
-      created: '2018-09-13T17:52:57.239Z',
-      creator: 'did:ara:d93b3cafa4a3af3a774959ab31011e48c9eac50871e22a0fd2ec5653448c272a#owner',
-      signatureValue: '9d57555557302c104638a6f1748e9c03b45e67415a72d9382c2b9b6dc01ef534ff88f4444efd88a9cbefa3be91ae6e4a65b391cf52c91977c6fa8ebc19e02902'
-    }
-  },
-  araKeystore: {
-    id: 'fcc811bb-cffa-4939-9fc7-389e5dd412ba',
-    version: '0000000000000101',
-    crypto: {
-      cipherparams: {
-        iv: 'f5b67cccdc096fd605a8b22096cbb46b'
-      },
-      ciphertext: '22fdf3c2845b8efdbba0b82f4ac22c93b969dfee54a8fd58bfec08e592e0c369b099d69728ce212c79349737e82b163a9119790d6dc8a7ac4f38593d2cbba9f4',
-      cipher: 'aes-128-ctr',
-      digest: 'sha1',
-      mac: 'fc86a30a946d5d696363f8925f834e5ef73936fd'
-    }
-  }
+  ownerDDO: {"@context":"https://w3id.org/did/v1","id":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2","publicKey":[{"id":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#owner","type":"Ed25519VerificationKey2018","owner":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2","publicKeyHex":"bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2","publicKeyBase58":"DvF5PrbXCTvfw1KYRtnDLdSaVwx4XPPY3vB7hS7pQVZT","publicKeyBase64":"L/v8QbAJ0e3U9AVM+PCqRvRyTJqephWOBQy1qZshVbS"},{"id":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#eth","type":"Secp256k1VerificationKey2018","owner":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2","publicKeyHex":"bf68b858d0c6c60b6bf3f2e0bebf2fb42e208de1300d6a07b26700e685ff5694aecf89e2794667d098d8274dea1d414802c6ec24e9c650f004c58f2fe8ae201c","publicKeyBase58":"4pxdFxb13Kr1tmHvnAhkKPKRNH166iARNaAExUzoLg1RVQYMrBYhNukWkQACLYdQM3NrnTzSk463UwDawLKArc5H","publicKeyBase64":"C/aLhY0MbGC2vz8uC+vy+0LiCN4TANageyZwDmhf9WlK7PieJ5RmfQmNgnTeodQUgCxuwk6cZQ8ATFjy/oriAc"}],"authentication":[{"publicKey":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#owner","type":"Ed25519SignatureAuthentication2018"},{"publicKey":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#eth","type":"Secp256k1SignatureAuthentication2018"}],"service":[],"created":"2018-09-17T21:08:37.768Z","updated":"2018-09-17T21:08:37.768Z","proof":{"type":"Ed25519VerificationKey2018","nonce":"fbb96043a2cf17af4883daed97547866a60b88df4cf8db7cea33cf8c278cf6e6","domain":"ara","created":"2018-09-17T21:08:37.772Z","creator":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#owner","signatureValue":"132d56bb223390f7229e6f52b006f4dd437ad2ac95f55a5ecc032db70a04f2eeb10e00644285d591d51a9b51815d22911494c845e5be54ec678c788f94998306"}},
+  ownerAraKeystore: {"id":"64b93555-8e8f-4bd1-b5a8-89897f2d6942","version":"0000000000000101","crypto":{"cipherparams":{"iv":"e4766978fbfa9f238972116d76e71de7"},"ciphertext":"b395ccecf4ed6ae6a93ad3cc6511687fbb935953c1d9028ce09e801bff700cb8a701278459c380895d86e003ba0152ad18aaabb2c015ffac15e2acae0183a7de","cipher":"aes-128-ctr","digest":"sha1","mac":"672828152a27ef652742436dbacddf8986fa3210"}},
+  araKeystore: {"id":"2aae471e-7dcb-4146-9d2b-c436b5dece07","version":"0000000000000101","crypto":{"cipherparams":{"iv":"6ca13b38868743184b4c0bb51bc7ec60"},"ciphertext":"1a10be7520be698e63e80b86577253534b0845bb7dfc60950701bfda87a6207a9511a351864c57be847919478298b2e50a8b25bb03225407ef5749e1688fae04","cipher":"aes-128-ctr","digest":"sha1","mac":"63901f726e41b762d9bc12b02486b47bc778a0b3"}},
+  ddo: {"@context":"https://w3id.org/did/v1","id":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1","publicKey":[{"id":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#owner","type":"Ed25519VerificationKey2018","owner":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1","publicKeyHex":"37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1","publicKeyBase58":"4khivBVnndo6tNxZoA5kL7GNX9r8AMo585YQX62n3y4c","publicKeyBase64":"DfFFLR9vREi7G8cglvEzzoNn4Tz8n45zwd/pDG4wJWx"},{"id":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#eth","type":"Secp256k1VerificationKey2018","owner":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1","publicKeyHex":"79d73d6a53ede43d97631fa686f17deea1bcb2ff3039dcd505af288cd834326b1d8e901739f5ac47b3b97a548d6d1070088afb85c46f02705f59cce089b64792","publicKeyBase58":"3SHfPMTExfwvNoWv258dMAQUmfAENsZwQFuCuv7fgWa4zZWSrzoWLwhNaZgAe9vQHAprjvZoq42FgnmdkymPAspV","publicKeyBase64":"B51z1qU+3kPZdjH6aG8X3uobyy/zA53NUFryiM2DQyax2OkBc59axHs7l6VI1tEHAIivuFxG8CcF9ZzOCJtkeS"},{"id":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#metadata","type":"Ed25519VerificationKey2018","owner":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1","publicKeyHex":"d6d8be0e885249451a1059aa1b1686c8a543fdc6df085e641587d13049be4b6f","publicKeyBase58":"FTfwFi1jsq5x3dueSjrX7YPfGm2WfDSRQiNMoJJdHLmk","publicKeyBase64":"NbYvg6IUklFGhBZqhsWhsilQ/3G3wheZBWH0TBJvktv"}],"authentication":[{"publicKey":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#owner","type":"Ed25519SignatureAuthentication2018"},{"publicKey":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#eth","type":"Secp256k1SignatureAuthentication2018"},{"publicKey":"did:ara:bfeff106c02747b753d01533e3c2a91bd1c9326a7a9856381432d6a66c8556d2#owner","type":"Ed25519VerificationKey2018"}],"service":[],"created":"2018-09-17T21:19:36.637Z","updated":"2018-09-17T21:19:36.637Z","proof":{"type":"Ed25519VerificationKey2018","nonce":"87ca6e0e6f0578808c30910a109f92a9f8546a9b19f1e98918c9f6d59eafa3e5","domain":"ara","created":"2018-09-17T21:19:36.639Z","creator":"did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1#owner","signatureValue":"dd1b76d36f27b3319908229b7bc138ef68a56eec6aecf2bbb274f58d721d6566b7be5b8299889d4133503d5518d0c8beb5bc398cb21fbb842c816a20f95e8209"}}
 }
