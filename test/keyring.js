@@ -10,7 +10,6 @@ let keyring
 test.before((t) => {
   t.context = Object.assign({}, constants, {
     sandbox: sinon.createSandbox(),
-    identity: rc.network.identity.whoami,
     keyring: resolve('./test/fixtures/keyrings/keyring'),
   })
 
