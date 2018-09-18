@@ -10,8 +10,8 @@ const defaults = () => ({
   network: {
     identity: {
       root: `${os.homedir()}/.ara/identities`,
-      archiver: resolve(os.homedir(), ARA_DIR, SECRET_DIR, 'archiver.pub'),
-      resolver: resolve(os.homedir(), ARA_DIR, SECRET_DIR, 'resolver.pub')
+      archiver: 'archiver',
+      resolver: 'resolver'
     }
   }
 })
