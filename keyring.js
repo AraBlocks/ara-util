@@ -13,8 +13,9 @@ const ss = require('ara-secret-storage')
 /**
  * Checks if a keyring exists on local system
  *
- * @param  {String} keyring Path to the keyring
- * @return {Boolean} Whether the keyring exists
+ * @param  {String} opts.keyring   Path to the keyring
+ * 
+ * @return {Boolean}               Whether the keyring exists
  */
 async function exists(keyring) {
   keyring = keyring || rc.network.identity.keyring
@@ -41,11 +42,11 @@ async function exists(keyring) {
 /**
  * Retrieve secret keys of a specific key
  *
- * @param  {String} did Identity of keyring owner
- * @param  {String} key Name of key to be retrieved
- * @param  {Object} opts.secret Secret for decrypting keyring
- * @param  {String} opts.password Password of the identity
- * @param  {String} [opts.keyring] Path to keyring
+ * @param  {String} opts.did        Identity of keyring owner
+ * @param  {String} opts.network    Network name to be retrieved
+ * @param  {String} opts.password   Password of the identity
+ * @param  {String} [opts.keyring]  Path to keyring
+ * 
  * @return {Object} Unpacked keyring
  */
 async function getSecret(opts) {
@@ -99,10 +100,11 @@ async function getSecret(opts) {
 /**
  * Retrieve public keys of a specific key
  *
- * @param  {String} key Key to be retrieved from keyring
- * @param  {String} opts.secret Secret for decrypting keyring
- * @param  {String} [opts.keyring] Path to keyring
- * @return {Object} Unpacked keyring
+ * @param  {String} opts.network     Network name to be retrieved from keyring
+ * @param  {String} opts.secret      Secret for decrypting keyring
+ * @param  {String} [opts.keyring]   Path to keyring
+ * 
+ * @return {Object}                  Unpacked keyring
  */
 async function getPublic(opts) {
   if (!opts) {
