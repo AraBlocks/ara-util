@@ -19,7 +19,7 @@ const ss = require('ara-secret-storage')
 async function exists(keyring) {
   keyring = keyring || rc.network.identity.keyring
   if (!keyring) {
-    throw new Error('Missing `keyring` and default keyring for checking existance of keyring')
+    throw new Error('Missing `keyring` and default keyring for checking existence of keyring')
   }
 
   try {
@@ -34,7 +34,7 @@ async function exists(keyring) {
 
     return Boolean(result)
   } catch (e) {
-    throw new Error(`Error occurred while checking keyring ${keyring} existance`, e)
+    throw new Error(`Error occurred while checking keyring ${keyring} existence`, e)
   }
 }
 
