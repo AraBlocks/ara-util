@@ -110,7 +110,7 @@ async function getAddressFromDID(did) {
   try {
     const ddo = await resolveDDO(did)
 
-    let { publicKeyHex } = ddo.publicKey.find((element) => {
+    const { publicKeyHex } = ddo.publicKey.find((element) => {
       const { type } = element
       return type === kSecp256k1VerificationKey2018
     })
@@ -137,6 +137,7 @@ function getDocumentOwner(ddo) {
     throw new RangeError('Identity doesn\'t list an owner in authentication.')
   }
 
+  // eslint-disable-next-line arrow-body-style
   const { publicKey } = doc.authentication.find(({ type }) => {
     return type === kEd25519VerificationKey2018
   })

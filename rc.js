@@ -1,10 +1,6 @@
 const extend = require('extend')
 const rc = require('ara-runtime-configuration')
 const os = require('os')
-const { resolve } = require('path')
-
-const ARA_DIR = '.ara'
-const SECRET_DIR = 'keyrings'
 
 const defaults = () => ({
   network: {
