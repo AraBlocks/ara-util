@@ -36,7 +36,6 @@ correctness. If given incorrect input, a function will throw a
 * [async util.isCorrectPassword(opts)](#isCorrectPassword)
 * [async util.resolveDDO(did, \[opts\])](#resolveDDO)
 * [async util.validate(opts)](#validate)
-* [util.getDID(ddo)](#getDID)
 * [util.getDocumentKeyHex(ddo)](#getDocumentKeyHex)
 * [util.getDocumentOwner(ddo)](#getDocumentOwner)
 * [util.hash(str, \[encoding\])](#hash)
@@ -134,18 +133,6 @@ Either `did` or `owner` should be provided, but not both.
 const password = 'myPass'
 const did = 'did:ara:41dd7aabfa3763306d8ec69559508c0635bbc2bb591fb217905f8e9a9676a7ec'
 const result = await util.validate({ did, password })
-```
-
-### `util.getDID(ddo)` <a name="getDID"></a>
-
-> **Stability: 2** Stable
-
-Returns the `DID` within a `DDO`.
-
-- `ddo` - document to retrieve the `DID` from
-
-```js
-const did = util.getDID(ddo)
 ```
 
 ### `util.getDocumentKeyHex(ddo)` <a name="getDocumentKeyHex"></a>

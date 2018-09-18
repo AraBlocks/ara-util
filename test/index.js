@@ -141,7 +141,7 @@ test('resolveDDO(did) invalid did', async (t) => {
 
 test('resolveDDO(did) resolution', async (t) => {
   const ddo = getDDO(t)
-  const did = util.getDID(ddo)
+  const did = ddo.id
   const resolvedDDO = await util.resolveDDO(did, { secret: t.context.secret })
 
   t.is(ddo.publicKey[0].owner, resolvedDDO.publicKey[0].owner)
@@ -176,7 +176,7 @@ test('validate(opts) invalid opts', async (t) => {
 
 test('validate(opts)', async (t) => {
   const ddo = getDDO(t)
-  const did = util.getDID(ddo)
+  const did = ddo.id
   const result = await util.validate({
     did,
     password: t.context.password,

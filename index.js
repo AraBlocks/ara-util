@@ -300,7 +300,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    const ddo = await resolveDDO(did, opts)
+    ddo = await resolveDDO(did, opts)
   }
 
   if (!ddo) {
@@ -320,20 +320,6 @@ async function validate(opts) {
   }
 }
 
-/**
- * Extracts the DID from a DDO
- * @param  {Object} ddo
- * @return {String}
- * @throws {TypeError}
- */
-function getDID({ id }) {
-  if (!id) {
-    throw new TypeError('Cannot find DID on DDO.')
-  }
-
-  return id
-}
-
 function _getDocument(ddo) {
   return ddo.didDocument ? ddo.didDocument : ddo
 }
@@ -349,7 +335,6 @@ module.exports = {
   normalize,
   validate,
   hashDID,
-  getDID,
   hash,
   web3
 }
