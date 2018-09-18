@@ -28,7 +28,6 @@ async function deploy(opts) {
   const args = opts.arguments || []
 
   let contract
-  let result
   try {
     const instance = new web3.eth.Contract(abi)
     contract = await instance
