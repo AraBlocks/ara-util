@@ -279,7 +279,7 @@ async function validate(opts) {
     throw new Error('Expecting key of first parameter, `opts.secret`, to be defined')
   }
 
-  let { did } = opts
+  let { did, ddo } = opts
   const { owner, password } = opts
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
@@ -299,7 +299,10 @@ async function validate(opts) {
     throw err
   }
 
-  const ddo = await resolveDDO(did, opts)
+  if (!ddo) {
+    const ddo = await resolveDDO(did, opts)
+  }
+
   if (!ddo) {
     throw new TypeError('Unable to resolve DID.')
   }
