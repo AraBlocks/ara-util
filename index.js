@@ -210,13 +210,13 @@ async function resolveDDO(did, opts) {
   }
 
   if (!opts.secret) {
-    throw new Error('Expecting key of second parameter, `opts.secret`, to be defined')
+    throw new MissingOptionError({ expectedKey: 'opts.secret', actualValue: opts })
   }
 
   opts = Object.assign({}, {
-    name: rc.network.identity.resolver,
+    name: opts.network || rc.network.identity.resolver,
     secret: opts.secret,
-    keyring: rc.network.identity.keyring
+    keyring: opts.keyring || rc.network.identity.keyring
   }, opts)
 
   return aid.resolve(did, opts)
@@ -242,8 +242,6 @@ async function getAFSOwnerIdentity(opts) {
     err = new TypeError('Expecting mnemonic to be valid string.')
   } else if (!opts.password || 'string' !== typeof opts.password) {
     err = new TypeError('Expecting password to be valid string.')
-  } else if (!opts.secret) {
-    err = new Error('Expecting `secret` to be defined')
   }
 
   if (err) {

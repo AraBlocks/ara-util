@@ -56,28 +56,36 @@ async function exists(keyring) {
  */
 async function getSecret(opts) {
   if (!opts) {
-    throw new Error('Missing `opts` for getting secret key')
-  }
-
-  if ('object' !== typeof opts) {
+    throw new MissingOptionError({
+      expectedKey: 'opts',
+      actualValue: null
+    })
+  } else if ('object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
-  }
-
-  if (!opts.network) {
-    throw new Error('Missing `network` for getting secret key')
+  } else if (!opts.network) {
+    throw new MissingOptionError({
+      expectedKey: 'opts.network',
+      actualValue: opts,
+    })
   }
 
   opts.keyring = opts.keyring || rc.network.identity.keyring
   if (!opts.keyring) {
-    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${opts.network}`)
-  }
-
-  if (!opts.password) {
-    throw new Error(`Missing \`password\` for getting secret key of ${opts.network}`)
-  }
-
-  if (!opts.did) {
-    throw new Error(`Missing \`did\` for getting secret key of ${opts.network}`)
+    throw new MissingOptionError({
+      expectedKey: 'opts.keyring',
+      actualValue: opts,
+      suggestion: 'setting `rc.network.identity.keyring`'
+    })
+  } else if (!opts.password) {
+    throw new MissingOptionError({
+      expectedKey: 'opts.password',
+      actualValue: opts
+    })
+  } else if (!opts.did) {
+    throw new MissingOptionError({
+      expectedKey: 'opts.did',
+      actualValue: opts
+    })
   }
 
   try {
@@ -113,24 +121,31 @@ async function getSecret(opts) {
  */
 async function getPublic(opts) {
   if (!opts) {
-    throw new Error('Missing `opts` for getting public key')
-  }
-
-  if (opts && 'object' !== typeof opts) {
+    throw new MissingOptionError({
+      expectedKey: 'opts',
+      actualValue: null
+    })
+  } else if ('object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
-  }
-
-  if (!opts.network) {
-    throw new Error('Missing `network` for getting public key')
+  } else if (!opts.network) {
+    throw new MissingOptionError({
+      expectedKey: 'opts.network',
+      actualValue: opts,
+    })
   }
 
   opts.keyring = opts.keyring || rc.network.identity.keyring
   if (!opts.keyring) {
-    throw new Error(`Missing \`keyring\` opt and default keyring for getting secret key of ${opts.network}`)
-  }
-
-  if (!opts.secret) {
-    throw new Error(`Missing \`secret\` for getting public key of ${opts.network}`)
+    throw new MissingOptionError({
+      expectedKey: 'opts.keyring',
+      actualValue: opts,
+      suggestion: 'setting `rc.network.identity.keyring`'
+    })
+  } else if (!opts.secret) {
+    throw new MissingOptionError({
+      expectedKey: 'opts.secret',
+      actualValue: opts
+    })
   }
 
   try {
