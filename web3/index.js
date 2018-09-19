@@ -11,14 +11,9 @@ const tx = require('./tx')
  * Returns whether a hex address is a valid Ethereum address.
  * @param  {String}  address 
  * @return {Boolean}         
- * @throws {TypeError}
  */
 function isAddress(address) {
-  if (!address || 'string' !== typeof address) {
-    throw new TypeError('Address must be a string')
-  }
-
-  return web3.utils.isAddress(address)
+  return address && 'string' === typeof address && web3.utils.isAddress(address)
 }
 
 /**
