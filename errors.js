@@ -22,4 +22,4 @@ class MissingOptionError extends Error {
   }
 }
 
-module.exports = MissingOptionError
+module.exports = { MissingOptionError }
