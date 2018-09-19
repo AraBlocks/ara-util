@@ -1,3 +1,4 @@
+const { MissingOptionError } = require('./error')
 const { readFile } = require('fs')
 const { resolve } = require('path')
 const { unpack, keyRing } = require('ara-network/keys')
@@ -20,7 +21,11 @@ const ss = require('ara-secret-storage')
 async function exists(keyring) {
   keyring = keyring || rc.network.identity.keyring
   if (!keyring) {
-    throw new Error('Missing `keyring` and default keyring for checking existence of keyring')
+    throw new MissingOptionError({
+      expectedKey: 'keyring',
+      actualValue: keyring,
+      suggestion: 'setting `rc.network.identity.keyring`'
+    })
   }
 
   try {
