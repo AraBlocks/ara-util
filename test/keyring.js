@@ -1,3 +1,4 @@
+const { MissingOptionError } = require('../errors')
 const { resolve } = require('path')
 const constants = require('./fixtures/constants')
 const sinon = require('sinon')
@@ -49,20 +50,21 @@ test('getSecret(opts) invalid opts', async (t) => {
     password, keyring: keyringPath, identity: did
   } = t.context
 
-  await t.throwsAsync(keyring.getSecret(), Error)
-  await t.throwsAsync(keyring.getSecret({}), Error)
+  await t.throwsAsync(keyring.getSecret(), MissingOptionError)
+  await t.throwsAsync(keyring.getSecret(123), TypeError)
+  await t.throwsAsync(keyring.getSecret({}), MissingOptionError)
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath
-  }), Error)
+  }), MissingOptionError)
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath,
     password
-  }), Error)
+  }), MissingOptionError)
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath,
     password,
     did
-  }), Error)
+  }), MissingOptionError)
 })
 
 test('getSecret(opts)', async (t) => {
@@ -79,15 +81,16 @@ test('getSecret(opts)', async (t) => {
 test('getPublic(opts) invalid opts', async (t) => {
   const { keyring: keyringPath, secret } = t.context
 
-  await t.throwsAsync(keyring.getPublic(), Error)
-  await t.throwsAsync(keyring.getPublic({}), Error)
+  await t.throwsAsync(keyring.getPublic(), MissingOptionError)
+  await t.throwsAsync(keyring.getPublic(123), TypeError)
+  await t.throwsAsync(keyring.getPublic({}), MissingOptionError)
   await t.throwsAsync(keyring.getPublic({
     keyring: keyringPath
-  }), Error)
+  }), MissingOptionError)
   await t.throwsAsync(keyring.getPublic({
     keyring: keyringPath,
     secret
-  }), Error)
+  }), MissingOptionError)
 })
 
 test('getPublic(opts)', async (t) => {

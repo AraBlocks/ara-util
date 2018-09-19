@@ -1,4 +1,4 @@
-const { MissingOptionError } = require('./error')
+const { MissingOptionError } = require('./errors')
 const { readFile } = require('fs')
 const { resolve } = require('path')
 const { unpack, keyRing } = require('ara-network/keys')
