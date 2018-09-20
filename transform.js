@@ -2,10 +2,13 @@ const bufferFrom = require('buffer-from')
 const isBuffer = require('is-buffer')
 
 /**
- * Prepend 0x to a hex string for 
- * passing to Solidity contract functions.
+ * Prepend 0x to a hex string
+ *
+ * Useful for passing to Solidity contract functions.
+ * 
  * @param  {String}  input 
  * @param  {Boolean} hexify
+ * 
  * @return {String}
  */
 function toHexString(input, hexify = false) {
@@ -19,11 +22,14 @@ function toHexString(input, hexify = false) {
 }
 
 /**
- * Convert a string, number, of buffer
+ * Convert a String, Number or Buffer
  * to a valid hex string.
- * @param  {Mixed} input
- * @param  {String} encoding  
+ * 
+ * @param {String|Buffer|Number} input
+ * @param {String} encoding
+ * 
  * @return {String}
+ * 
  * @throws {TypeError}
  */
 function toHexBuffer(input, encoding = 'hex') {
@@ -46,9 +52,12 @@ function toHexBuffer(input, encoding = 'hex') {
 
 /**
  * Converts a string to a buffer.
+ * 
  * @param  {String} input
  * @param  {String} encoding
+ * 
  * @return {Buffer}
+ * 
  * @throws {TypeError}
  */
 function toBuffer(input, encoding = 'hex') {
