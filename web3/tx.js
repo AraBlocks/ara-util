@@ -1,4 +1,4 @@
-const { toBuffer } = require('ara-identity/util')
+const { toBuffer } = require('../transform')
 const { encodeFunctionCall } = require('./abi')
 const EthereumTx = require('ethereumjs-tx')
 const { web3 } = require('ara-context')()
