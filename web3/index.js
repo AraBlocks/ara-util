@@ -1,3 +1,4 @@
+const { toHexString: ethify, toHexBuffer: toHex, toBuffer } = require('../transform')
 const { web3 } = require('ara-context')()
 const contract = require('./contract')
 const account = require('./account')
@@ -28,10 +29,15 @@ function sha3(params) {
   return web3.utils.soliditySha3(params)
 }
 
+
+
 module.exports = {
   isAddress,
+  toBuffer,
   contract,
   account,
+  ethify,
+  toHex,
   call,
   sha3,
   abi,
