@@ -7,9 +7,12 @@ const context = require('ara-context')()
 const rc = require('./rc')()
 const aid = require('ara-identity')
 const { resolve } = require('path')
+const errors = require('./errors')
 const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
+
+const { MissingOptionError } = errors
 
 const kAraKeystore = 'keystore/ara'
 
@@ -195,29 +198,27 @@ function hash(str, encoding = 'hex') {
 async function resolveDDO(did, opts) {
   if (!did) {
     throw new Error('Expecting first parameter, `did`, to be defined')
-  }
-
-  if ('string' !== typeof did) {
+  } else if ('string' !== typeof did) {
     throw new TypeError('Expecting first parameter, `did`, to be String')
-  }
-
-  if (!opts) {
+  } else if (!opts) {
     throw new Error('Expecting second parameter, `opts`, to be defined')
-  }
-
-  if ('object' !== typeof opts) {
+  } else if ('object' !== typeof opts) {
     throw new TypeError('Expecting second parameter, `opts`, to be Object')
+  } else if (!opts.keyringOpts) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
+  } else if (!opts.keyringOpts.secret) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
+  } else if (!opts.keyringOpts.network && !rc.network.resolver) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
+  } else if (!opts.keyringOpts.keyring && !rc.network.identity.keyring) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
   }
 
-  if (!opts.secret) {
-    throw new MissingOptionError({ expectedKey: 'opts.secret', actualValue: opts })
-  }
-
-  opts = Object.assign({}, {
-    name: opts.network || rc.network.identity.resolver,
+  opts.keyringOpts = {
+    name: opts.keyringOpts.network || rc.network.resolver,
     secret: opts.secret,
     keyring: opts.keyring || rc.network.identity.keyring
-  }, opts)
+  }
 
   return aid.resolve(did, opts)
 }
@@ -269,16 +270,28 @@ async function getAFSOwnerIdentity(opts) {
  * @throws {Error,TypeError}
  */
 async function validate(opts) {
+  console.log("OPTS:", opts)
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
-  }
-
-  if (!opts.secret) {
-    throw new Error('Expecting key of first parameter, `opts.secret`, to be defined')
+  } else if (!opts.keyringOpts) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
+  } else if (!opts.keyringOpts.secret) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
+  } else if (!opts.keyringOpts.network && !rc.network.resolver) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
+  } else if (!opts.keyringOpts.keyring && !rc.network.identity.keyring) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
   }
 
   let { did, ddo } = opts
   const { owner, password } = opts
+
+  opts.keyringOpts = {
+    network: opts.keyringOpts.network || rc.network.resolver,
+    secret: opts.keyringOpts.secret,
+    keyring: opts.keyringOpts.keyring || rc.network.identity.keyring
+  }
+
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
   }
@@ -333,6 +346,7 @@ module.exports = {
   normalize,
   validate,
   hashDID,
+  errors,
   hash,
   web3
 }
