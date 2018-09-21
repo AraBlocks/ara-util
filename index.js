@@ -270,7 +270,6 @@ async function getAFSOwnerIdentity(opts) {
  * @throws {Error,TypeError}
  */
 async function validate(opts) {
-  console.log("OPTS:", opts)
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.keyringOpts) {
