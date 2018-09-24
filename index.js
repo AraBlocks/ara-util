@@ -315,7 +315,7 @@ function _getDocument(ddo) {
 
 module.exports = {
   getAFSOwnerIdentity,
-  checkAFSExistance,
+  checkAFSExistence,
   isCorrectPassword,
   getAddressFromDID,
   getDocumentKeyHex,
