@@ -183,5 +183,3 @@ test('checkAFSExistence(opts)', (t) => {
   t.false(util.checkAFSExistence({ did: '123' }))
   t.true(util.checkAFSExistence({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
 })
-
-// TODO(cckelly) getDID tests
