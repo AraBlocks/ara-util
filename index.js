@@ -230,7 +230,14 @@ async function getAFSOwnerIdentity(opts) {
   })
 }
 
-function checkAFSExistance(opts) {
+/**
+ * Checks if an AFS exists in local files
+ * 
+ * @param  {String} opts.did    DID of AFS to check for
+ * 
+ * @return {Boolean}      Whether AFS exists locally
+ */
+function checkAFSExistence(opts) {
   if (!opts) {
     throw new Error('Expecting \`opts\` to be defined, got null')
   } else if ('object' !== typeof opts) {
@@ -239,11 +246,11 @@ function checkAFSExistance(opts) {
     throw new Error(`Expecting \`opts.did\` to be defined, got ${JSON.stringify(opts)}`)
   }
 
-  const { did, path = `${os.homedir()}/.ara/afs/nodes` } = opts
+  const { did } = opts
 
   try {
     // If the file exists, an error will be thrown
-    fs.accessSync(resolve(path, did)) 
+    fs.accessSync(resolve(`${os.homedir()}/.ara/afs/nodes`, did)) 
     return true
   } catch (e) {
     return false
