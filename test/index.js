@@ -179,7 +179,7 @@ test('checkAFSExistence(opts) invalid opts', async (t) => {
 })
 
 test('checkAFSExistence(opts)', (t) => {
-  // TODO(@maddie): Fix this to use mocking once that branch gets merged
+  // TODO(@maddie): Fix this to use mocking once that branch (https://github.com/AraBlocks/ara-util/pull/26) gets merged
 
   t.false(util.checkAFSExistence({ did: '123' }))
   t.true(util.checkAFSExistence({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
