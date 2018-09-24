@@ -10,6 +10,7 @@ const errors = require('./errors')
 const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
+const os = require('os')
 
 const kAraKeystore = 'keystore/ara'
 
@@ -229,6 +230,26 @@ async function getAFSOwnerIdentity(opts) {
   })
 }
 
+function checkAFSExistance(opts) {
+  if (!opts) {
+    throw new Error('Expecting \`opts\` to be defined, got null')
+  } else if ('object' !== typeof opts) {
+    throw new TypeError('Expecting \`opts\` to be an Object')
+  } else if (!opts.did) {
+    throw new Error(`Expecting \`opts.did\` to be defined, got ${JSON.stringify(opts)}`)
+  }
+
+  const { did, path = `${os.homedir()}/.ara/afs/nodes` } = opts
+
+  try {
+    // If the file exists, an error will be thrown
+    fs.accessSync(resolve(path, did)) 
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 /**
  * Resolves a DID, validates ownership by comparing
  * passwords and returns the DDO.
@@ -294,6 +315,7 @@ function _getDocument(ddo) {
 
 module.exports = {
   getAFSOwnerIdentity,
+  checkAFSExistance,
   isCorrectPassword,
   getAddressFromDID,
   getDocumentKeyHex,
