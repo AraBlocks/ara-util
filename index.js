@@ -250,8 +250,6 @@ function checkAFSExistence(opts) {
   const { did } = opts
   const hash = hashDID(did).toString('hex')
 
-  console.log("HASH:", hash)
-
   try {
     // If the file exists, an error will be thrown
     fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hash)) 
