@@ -171,17 +171,17 @@ test('validate(opts)', async (t) => {
   t.is(result.did, did.slice(kAidPrefix.length))
 })
 
-test('checkAFSExistance(opts) invalid opts', async (t) => {
-  t.throws(() => util.checkAFSExistance(), Error)
-  t.throws(() => util.checkAFSExistance(123), TypeError)
-  t.throws(() => util.checkAFSExistance({}), Error)
+test('checkAFSExistence(opts) invalid opts', async (t) => {
+  t.throws(() => util.checkAFSExistence(), Error)
+  t.throws(() => util.checkAFSExistence(123), TypeError)
+  t.throws(() => util.checkAFSExistence({}), Error)
 })
 
-test('checkAFSExistance(opts)', (t) => {
+test('checkAFSExistence(opts)', (t) => {
   // TODO(@maddie): Fix this to use mocking once that branch gets merged
 
-  t.false(util.checkAFSExistance({ did: '123' }))
-  t.true(util.checkAFSExistance({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
+  t.false(util.checkAFSExistence({ did: '123' }))
+  t.true(util.checkAFSExistence({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
 })
 
 // TODO(cckelly) getDID tests
