@@ -232,7 +232,8 @@ async function getAFSOwnerIdentity(opts) {
 
 /**
  * Checks if an AFS exists in local files
- * 
+ *
+ * @param  {Object} opts
  * @param  {String} opts.did    DID of AFS to check for
  * 
  * @return {Boolean}      Whether AFS exists locally
@@ -248,6 +249,8 @@ function checkAFSExistence(opts) {
 
   const { did } = opts
   const hash = hashDID(did).toString('hex')
+
+  console.log("HASH:", hash)
 
   try {
     // If the file exists, an error will be thrown
