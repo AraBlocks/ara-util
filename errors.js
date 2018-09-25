@@ -13,7 +13,13 @@ class MissingOptionError extends Error {
    * @return {MissingOptionError}
    */
   constructor({ expectedKey, actualValue, suggestion }) {
-    super(`Missing \`${expectedKey}\`, got ${JSON.stringify(actualValue)}, ${suggestion ? `.\n Try ${suggestion}` : ''}`)
+    if (Array.isArray(expectedKey)) {
+      expectedKey = expectedKey.map(k => `\`${k}\``).join('or')
+    } else {
+      expectedKey = `\`${expectedKey}\``
+    }
+
+    super(`Missing ${expectedKey}, got ${JSON.stringify(actualValue)}, ${suggestion ? `.\n Try ${suggestion}` : ''}`)
 
     this.name = 'MissingOptionError'
     this.expectedKey = expectedKey
