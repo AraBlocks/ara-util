@@ -200,7 +200,7 @@ async function resolveDDO(did, opts) {
   }
 
   opts = opts || {
-    name: kResolverName,
+    network: kResolverName,
     secret: kResolverSecret,
     keyring: secret.resolver
   }
