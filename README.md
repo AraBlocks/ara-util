@@ -50,8 +50,8 @@ correctness. If given incorrect input, a function will throw a
 * [async util.web3.contract.deploy(opts)](#deploy)
 * [async util.web3.contract.estimateGas(tx, opts)](#estimateGas)
 * [async util.web3.tx.create(opts, \[signTx\])](#create)
-* [async util.web3.tx.sendSignedTransaction(tx)](#sendSignedTransaction)
-* [async util.web3.tx.sendTransaction(tx)](#sendTransaction)
+* [util.web3.tx.sendSignedTransaction(tx)](#sendSignedTransaction)
+* [util.web3.tx.sendTransaction(tx)](#sendTransaction)
 * [util.web3.abi.encodeFunctionCall(abi, functionName, values)](#encodeFunctionCall)
 * [util.web3.abi.encodeParameter(type, parameter)](#encodeParameter)
 * [util.web3.abi.encodeParameters(typesArray, parameters)](#encodeParameters)
@@ -312,32 +312,36 @@ const anotherTx = await util.web3.tx.create({
 })
 ```
 
-### `async util.web3.tx.sendSignedTransaction(tx)` <a name="sendSignedTransaction"></a>
+### `util.web3.tx.sendSignedTransaction(tx)` <a name="sendSignedTransaction"></a>
 
 > **Stability: 2** - Stable
 
-Sends a signed transaction to the current network.
+Sends a signed transaction to the current network. This returns a `PromiEvent`, see [here](https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html#promievent) for more information.
 
 - `tx` - The signed `EthereumTx` object to publish to the network
 
 ```js
 const account = await util.web3.account.load({ did, password })
 const signedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
-const receipt = await util.web3.tx.sendSignedTransaction(signedTx)
+const result = util.web3.tx.sendSignedTransaction(signedTx)
+result.once('transactionHash', (hash) => console.log)
+result.on('receipt', (receipt) => console.log)
 ```
 
-### `async util.web3.tx.sendTransaction(tx)` <a name="sendTransaction"></a>
+### `util.web3.tx.sendTransaction(tx)` <a name="sendTransaction"></a>
 
 > **Stability: 2** - Stable
 
-Sends an unsigned transaction to the current network.
+Sends an unsigned transaction to the current network. This returns a `PromiEvent`, see [here](https://web3js.readthedocs.io/en/1.0/callbacks-promises-events.html#promievent) for more information.
 
 - `tx` - The unsigned `EthereumTx` object to publish to the network
 
 ```js
 const account = await util.web3.account.load({ did, password })
 const unsignedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
-const receipt = await util.web3.tx.sendTransaction(unsignedTx)
+const result = util.web3.tx.sendSignedTransaction(unsignedTx)
+result.once('transactionHash', (hash) => console.log)
+result.on('receipt', (receipt) => console.log)
 ```
 
 ### `util.web3.abi.encodeFunctionCall(abi, functionName, values)` <a name="encodeFunctionCall"></a>
