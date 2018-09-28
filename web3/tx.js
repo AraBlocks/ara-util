@@ -93,7 +93,7 @@ function sign(tx, privateKey) {
  * Send an unsigned transaction
  * @param  {Object} tx
  */
-async function sendTransaction(tx) {
+function sendTransaction(tx) {
   if (!tx || 'object' !== typeof tx || !(tx instanceof EthereumTx)) {
     throw new TypeError('Tx object is not valid')
   }
@@ -105,7 +105,7 @@ async function sendTransaction(tx) {
  * Send a signed transaction
  * @param  {Object} tx
  */
-async function sendSignedTransaction(tx) {
+function sendSignedTransaction(tx) {
   if (!tx || 'object' !== typeof tx || !(tx instanceof EthereumTx)) {
     throw new TypeError('Tx object is not valid')
   }
@@ -137,7 +137,7 @@ function estimateCost(tx, denomination = 'ether') {
  * @param  {Boolean} signed
  * @throws {Error}
  */
-async function _send(tx, signed) {
+function _send(tx, signed) {
   if (signed && !tx.verifySignature()) {
     throw new Error('Trying to send a signed transaction, but tx object is unsigned.')
   } else if (!signed && tx.verifySignature()) {
@@ -151,9 +151,9 @@ async function _send(tx, signed) {
   let result
   try {
     if (signed) {
-      result = await web3.eth.sendSignedTransaction(tx)
+      result = web3.eth.sendSignedTransaction(tx)
     } else {
-      result = await web3.eth.sendTransaction(tx)
+      result = web3.eth.sendTransaction(tx)
     }
   } catch (err) {
     throw new Error(err)
