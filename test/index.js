@@ -1,11 +1,9 @@
 const constants = require('./fixtures/constants')
-const { parse } = require('did-uri')
 const context = require('ara-context')()
 const sinon = require('sinon')
 const test = require('ava')
 const aid = require('ara-identity')
 const fs = require('fs')
-const rc = require('../rc')()
 
 const getDDO = t => t.context.ddo
 
@@ -102,7 +100,7 @@ test('getDocumentOwner(ddo) valid ddo', (t) => {
   const docOwner = util.getDocumentOwner(ddo)
 
   t.truthy(docOwner)
-  t.true('string' == typeof docOwner)
+  t.true('string' === typeof docOwner)
 })
 
 test('getDocumentKeyHex(ddo) invalid ddo', (t) => {
