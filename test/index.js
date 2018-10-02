@@ -142,7 +142,7 @@ test('resolveDDO(did) invalid did', async (t) => {
 test('resolveDDO(did) resolution', async (t) => {
   const ddo = getDDO(t)
   const did = ddo.id
-  const resolvedDDO = await util.resolveDDO(did, { secret: t.context.secret })
+  const resolvedDDO = await util.resolveDDO(did, { keyringOpts: { secret: t.context.secret } })
 
   t.is(ddo.publicKey[0].owner, resolvedDDO.publicKey[0].owner)
 })
@@ -158,7 +158,9 @@ test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
     did: t.context.identity,
     mnemonic: t.context.mnemonic,
     password: t.context.password,
-    secret: t.context.secret
+    keyringOpts: {
+      secret: t.context.secret
+    }
   }))
 })
 
@@ -180,7 +182,9 @@ test('validate(opts)', async (t) => {
   const result = await util.validate({
     did,
     password: t.context.password,
-    secret: t.context.secret
+    keyringOpts: {
+      secret: t.context.secret
+    }
   })
   t.true(result && 'object' === typeof result)
   t.is(result.did, did.slice(t.context.aidPrefix.length))
