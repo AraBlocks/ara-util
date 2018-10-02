@@ -5,7 +5,6 @@ const sinon = require('sinon')
 const test = require('ava')
 const aid = require('ara-identity')
 const fs = require('fs')
-const rc = require('../rc')()
 
 let keyring
 test.before((t) => {
@@ -39,7 +38,6 @@ test.before((t) => {
 test.after((t) => {
   t.context.sandbox.restore()
 })
-
 
 test('exists(opts)', async (t) => {
   t.true(await keyring.exists(t.context.keyring))

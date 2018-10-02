@@ -15,7 +15,7 @@ const ss = require('ara-secret-storage')
  * Checks if a keyring exists on local system
  *
  * @param  {String} opts.keyring   Path to the keyring
- * 
+ *
  * @return {Boolean}               Whether the keyring exists
  */
 async function exists(keyring) {
@@ -51,7 +51,7 @@ async function exists(keyring) {
  * @param  {String} opts.network    Network name to be retrieved
  * @param  {String} opts.password   Password of the identity
  * @param  {String} [opts.keyring]  Path to keyring
- * 
+ *
  * @return {Object} Unpacked keyring
  */
 async function getSecret(opts) {
@@ -116,7 +116,7 @@ async function getSecret(opts) {
  * @param  {String} opts.network     Network name to be retrieved from keyring
  * @param  {String} opts.secret      Secret for decrypting keyring
  * @param  {String} [opts.keyring]   Path to keyring
- * 
+ *
  * @return {Object}                  Unpacked keyring
  */
 async function getPublic(opts) {
