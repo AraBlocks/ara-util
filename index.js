@@ -208,14 +208,14 @@ async function resolveDDO(did, opts) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
   } else if (!opts.keyringOpts.secret) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
-  } else if (!opts.keyringOpts.network && !rc.network.resolver) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
-  } else if (!opts.keyringOpts.keyring && !rc.network.identity.keyring) {
+  } else if (!opts.keyringOpts.network && (!rc.network || !rc.network.identity || !rc.network.identity.resolver)) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.identity.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
+  } else if (!opts.keyringOpts.keyring && (!rc.network || !rc.network.identity || !rc.network.identity.keyring)) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
   }
 
   opts.keyringOpts = {
-    name: opts.keyringOpts.network || rc.network.resolver,
+    name: opts.keyringOpts.network || rc.network.identity.resolver,
     secret: opts.secret,
     keyring: opts.keyring || rc.network.identity.keyring
   }
@@ -276,9 +276,9 @@ async function validate(opts) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
   } else if (!opts.keyringOpts.secret) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
-  } else if (!opts.keyringOpts.network && !rc.network.resolver) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
-  } else if (!opts.keyringOpts.keyring && !rc.network.identity.keyring) {
+  } else if (!opts.keyringOpts.network && (!rc.network || !rc.network.identity || !rc.network.identity.resolver)) {
+    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.identity.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
+  } else if (!opts.keyringOpts.keyring && (!rc.network || !rc.network.identity || !rc.network.identity.keyring)) {
     throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
   }
 
@@ -286,7 +286,7 @@ async function validate(opts) {
   const { owner, password } = opts
 
   opts.keyringOpts = {
-    network: opts.keyringOpts.network || rc.network.resolver,
+    network: opts.keyringOpts.network || rc.network.identity.resolver,
     secret: opts.keyringOpts.secret,
     keyring: opts.keyringOpts.keyring || rc.network.identity.keyring
   }
