@@ -215,12 +215,12 @@ async function resolveDDO(did, opts) {
   }
 
   opts.keyringOpts = {
-    name: opts.keyringOpts.network || rc.network.identity.resolver,
+    network: opts.keyringOpts.network || rc.network.identity.resolver,
     secret: opts.keyringOpts.secret,
     keyring: opts.keyringOpts.keyring || rc.network.identity.keyring
   }
 
-  return aid.resolve(did, opts)
+  return aid.resolve(did, opts.keyringOpts)
 }
 
 /**
