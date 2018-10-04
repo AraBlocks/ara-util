@@ -4,15 +4,12 @@ const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
 const context = require('ara-context')()
-const rc = require('./rc')()
 const aid = require('ara-identity')
 const { resolve } = require('path')
 const errors = require('./errors')
 const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
-
-const { MissingOptionError } = errors
 
 const kAraKeystore = 'keystore/ara'
 
@@ -106,12 +103,12 @@ async function isCorrectPassword(opts) {
   return publicKeyHex === publicKey
 }
 
-async function getAddressFromDID(did) {
+async function getAddressFromDID(did, opts) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError(`Expected DID to be a non-empty string. Got ${did}. Ensure identity exists.`)
   }
   try {
-    const ddo = await resolveDDO(did)
+    const ddo = await aid.resolve(did, opts)
 
     const { publicKeyHex } = ddo.publicKey.find((element) => {
       const { type } = element
@@ -190,40 +187,6 @@ function hash(str, encoding = 'hex') {
 }
 
 /**
- * Resolves an identity
- * @param  {String} did
- * @return {Object}
- * @throws {TypeError}
- */
-async function resolveDDO(did, opts) {
-  if (!did) {
-    throw new Error('Expecting first parameter, `did`, to be defined')
-  } else if ('string' !== typeof did) {
-    throw new TypeError('Expecting first parameter, `did`, to be String')
-  } else if (!opts) {
-    throw new Error('Expecting second parameter, `opts`, to be defined')
-  } else if ('object' !== typeof opts) {
-    throw new TypeError('Expecting second parameter, `opts`, to be Object')
-  } else if (!opts.keyringOpts) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
-  } else if (!opts.keyringOpts.secret) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
-  } else if (!opts.keyringOpts.network && (!rc.network || !rc.network.identity || !rc.network.identity.resolver)) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.identity.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
-  } else if (!opts.keyringOpts.keyring && (!rc.network || !rc.network.identity || !rc.network.identity.keyring)) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
-  }
-
-  opts.keyringOpts = {
-    network: opts.keyringOpts.network || rc.network.identity.resolver,
-    secret: opts.keyringOpts.secret,
-    keyring: opts.keyringOpts.keyring || rc.network.identity.keyring
-  }
-
-  return aid.resolve(did, opts.keyringOpts)
-}
-
-/**
  * Recreates an owning identity
  * @param  {Object} opts
  * @param  {String} opts.did
@@ -250,7 +213,7 @@ async function getAFSOwnerIdentity(opts) {
   }
 
   const { did, mnemonic, password } = opts
-  const ddo = await resolveDDO(did, opts)
+  const ddo = await aid.resolve(did, opts.keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
@@ -272,24 +235,10 @@ async function getAFSOwnerIdentity(opts) {
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
-  } else if (!opts.keyringOpts) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts', actualValue: opts })
-  } else if (!opts.keyringOpts.secret) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.secret', actualValue: opts.keyringOpts })
-  } else if (!opts.keyringOpts.network && (!rc.network || !rc.network.identity || !rc.network.identity.resolver)) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.network or rc.network.identity.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
-  } else if (!opts.keyringOpts.keyring && (!rc.network || !rc.network.identity || !rc.network.identity.keyring)) {
-    throw new MissingOptionError({ expectedKey: 'opts.keyringOpts.keyring or rc.network.resolver', actualValue: { keyringOpts: opts.keyringOpts, rc } })
   }
 
   let { did, ddo } = opts
   const { owner, password } = opts
-
-  opts.keyringOpts = {
-    network: opts.keyringOpts.network || rc.network.identity.resolver,
-    secret: opts.keyringOpts.secret,
-    keyring: opts.keyringOpts.keyring || rc.network.identity.keyring
-  }
 
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
@@ -310,7 +259,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    ddo = await resolveDDO(did, opts)
+    ddo = await aid.resolve(did, opts.keyringOpts)
   }
 
   if (!ddo) {
@@ -341,7 +290,6 @@ module.exports = {
   getDocumentKeyHex,
   getDocumentOwner,
   hasDIDMethod,
-  resolveDDO,
   normalize,
   validate,
   hashDID,

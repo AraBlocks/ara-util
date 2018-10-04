@@ -129,22 +129,6 @@ test('hash(str, encoding) valid hash', (t) => {
   t.true(web3.utils.isHex(hashed))
 })
 
-test('resolveDDO(did) invalid did', async (t) => {
-  await t.throwsAsync(util.resolveDDO(), Error)
-  await t.throwsAsync(util.resolveDDO(123), TypeError)
-  await t.throwsAsync(util.resolveDDO('123'), Error)
-  await t.throwsAsync(util.resolveDDO('123', 123), TypeError)
-  await t.throwsAsync(util.resolveDDO('123', {}), Error)
-})
-
-test('resolveDDO(did) resolution', async (t) => {
-  const ddo = getDDO(t)
-  const did = ddo.id
-  const resolvedDDO = await util.resolveDDO(did, { keyringOpts: { secret: t.context.secret } })
-
-  t.is(ddo.publicKey[0].owner, resolvedDDO.publicKey[0].owner)
-})
-
 test('getAFSOwnerIdentity(opts) invalid opts', async (t) => {
   await t.throwsAsync(util.getAFSOwnerIdentity(), TypeError)
   await t.throwsAsync(util.getAFSOwnerIdentity({}), TypeError)
