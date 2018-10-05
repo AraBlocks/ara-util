@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# run local truffle node
+ganache-cli &
+GANACHE=$!
+sleep 5
+
+truffle migrate --network local
+
+ava test --verbose
+
+# cleanup
+kill $GANACHE
