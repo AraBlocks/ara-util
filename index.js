@@ -103,7 +103,7 @@ async function isCorrectPassword(opts) {
   return publicKeyHex === publicKey
 }
 
-async function getAddressFromDID(did, opts) {
+async function getAddressFromDID(did, opts = {}) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError(`Expected DID to be a non-empty string. Got ${did}. Ensure identity exists.`)
   }
@@ -238,7 +238,7 @@ async function validate(opts) {
   }
 
   let { did, ddo } = opts
-  const { owner, password } = opts
+  const { owner, password, keyringOpts = {} } = opts
 
   if (did && owner) {
     throw new Error('Expecting an AFS DID or an owner DID, but not both.')
@@ -259,7 +259,7 @@ async function validate(opts) {
   }
 
   if (!ddo) {
-    ddo = await aid.resolve(did, opts.keyringOpts)
+    ddo = await aid.resolve(did, keyringOpts)
   }
 
   if (!ddo) {
