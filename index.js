@@ -103,12 +103,12 @@ async function isCorrectPassword(opts) {
   return publicKeyHex === publicKey
 }
 
-async function getAddressFromDID(did, opts = {}) {
+async function getAddressFromDID(did, keyringOpts = {}) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError(`Expected DID to be a non-empty string. Got ${did}. Ensure identity exists.`)
   }
   try {
-    const ddo = await aid.resolve(did, opts)
+    const ddo = await aid.resolve(did, keyringOpts)
 
     const { publicKeyHex } = ddo.publicKey.find((element) => {
       const { type } = element
