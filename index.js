@@ -212,8 +212,8 @@ async function getAFSOwnerIdentity(opts) {
     throw err
   }
 
-  const { did, mnemonic, password } = opts
-  const ddo = await aid.resolve(did, opts.keyringOpts)
+  const { did, mnemonic, password, keyringOpts = {} } = opts
+  const ddo = await aid.resolve(did, keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
     context, mnemonic, owner, password
