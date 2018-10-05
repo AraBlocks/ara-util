@@ -4,7 +4,7 @@
   "description": "Utility functions for common Ara tasks",
   "main": "index.js",
   "scripts": {
-    "test": "ava test/index.js test/keyring.js --verbose",
+    "test": "bash ./scripts/test",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "start": "node ."

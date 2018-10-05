@@ -13,7 +13,7 @@ const tx = require('./tx')
  * @return {Boolean}
  */
 function isAddress(address) {
-  return address && 'string' === typeof address && web3.utils.isAddress(address)
+  return Boolean(address && 'string' === typeof address && web3.utils.isAddress(address))
 }
 
 /**
