@@ -1,5 +1,5 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
-const { toHex, toHexBuffer, toHexString } = require('./transform')
+const { toHexBuffer: toHex } = require('./transform')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
@@ -330,9 +330,7 @@ module.exports = {
   getDocumentKeyHex,
   getDocumentOwner,
   hasDIDMethod,
-  resolveDDO,
   normalize,
-  toBuffer,
   validate,
   hashDID,
   errors,
