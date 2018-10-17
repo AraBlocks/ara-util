@@ -8,7 +8,6 @@ const crypto = require('ara-crypto')
 const http = require('http')
 const pify = require('pify')
 const url = require('url')
-const rc = require('./rc')()
 const ss = require('ara-secret-storage')
 
 /**
@@ -19,7 +18,6 @@ const ss = require('ara-secret-storage')
  * @return {Boolean}               Whether the keyring exists
  */
 async function exists(keyring) {
-  keyring = keyring || rc.network.identity.keyring
   if (!keyring) {
     throw new MissingOptionError({
       expectedKey: 'keyring',
@@ -69,7 +67,6 @@ async function getSecret(opts) {
     })
   }
 
-  opts.keyring = opts.keyring || rc.network.identity.keyring
   if (!opts.keyring) {
     throw new MissingOptionError({
       expectedKey: 'opts.keyring',
@@ -143,7 +140,6 @@ async function getPublic(opts) {
     })
   }
 
-  opts.keyring = opts.keyring || rc.network.identity.keyring
   if (!opts.keyring) {
     throw new MissingOptionError({
       expectedKey: 'opts.keyring',
