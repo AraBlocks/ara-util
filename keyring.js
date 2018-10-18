@@ -9,6 +9,7 @@ const http = require('http')
 const pify = require('pify')
 const url = require('url')
 const ss = require('ara-secret-storage')
+const rc = require('ara-runtime-configuration')()
 
 /**
  * Checks if a keyring exists on local system
@@ -45,7 +46,7 @@ async function exists(keyring) {
 /**
  * Retrieve secret keys of a specific key
  *
- * @param  {String} opts.did        Identity of keyring owner
+ * @param  {String} opts.identity   Identity of keyring owner
  * @param  {String} opts.network    Network name to be retrieved
  * @param  {String} opts.password   Password of the identity
  * @param  {String} [opts.keyring]  Path to keyring
@@ -78,15 +79,15 @@ async function getSecret(opts) {
       expected: 'opts.password',
       actual: opts
     })
-  } else if (!opts.did) {
+  } else if (!opts.identity) {
     throw new MissingParamError({
-      expected: 'opts.did',
+      expected: 'opts.identity',
       actual: opts
     })
   }
 
   try {
-    const parsedDID = new DID(opts.did)
+    const parsedDID = new DID(opts.identity)
     const publicKey = Buffer.from(parsedDID.identifier, 'hex')
 
     opts.password = crypto.blake2b(Buffer.from(opts.password))
@@ -103,14 +104,15 @@ async function getSecret(opts) {
 
     const keyring = keyRing(opts.keyring, { secret: secretKey })
 
-    if (!await keyring.has(opts.network)) {
-      throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
-    }
+    // if (!await keyring.has(opts.network)) {
+    //   throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
+    // }
 
     const buffer = await keyring.get(opts.network)
+
     const unpacked = unpack({ buffer })
 
-    return unpacked
+    return Object.assign(unpacked, { publicKey, secretKey })
   } catch (e) {
     throw new Error(`Error occurred while getting secret key of ${opts.network} (${e})`)
   }
@@ -151,10 +153,29 @@ async function getPublic(opts) {
       expected: 'opts.secret',
       actual: opts
     })
+  } else if (!opts.identity) {
+    throw new MissingParamError({
+      expected: 'opts.identity',
+      actual: opts
+    })
+  } else if (!opts.password) {
+    throw new MissingParamError({
+      expected: 'opts.password',
+      actual: opts
+    })
   }
 
   try {
-    const secret = Buffer.from(opts.secret)
+    const parsedDID = new DID(opts.identity)
+    const publicKey = Buffer.from(parsedDID.identifier, 'hex')
+
+    opts.password = crypto.blake2b(Buffer.from(opts.password))
+
+    const hash = crypto.blake2b(publicKey).toString('hex')
+    const path = resolve(rc.network.identity.root, hash, 'keystore/ara')
+    const idFile = await pify(readFile)(path, 'utf8')
+    const keystore = JSON.parse(idFile)
+    const secretKey = ss.decrypt(keystore, { key: opts.password.slice(0, 16) })
 
     if (!await exists(opts.keyring)) {
       throw new Error(`Could not find ${opts.keyring}`)
@@ -169,7 +190,7 @@ async function getPublic(opts) {
     const buffer = await keyring.get(opts.network)
     const unpacked = unpack({ buffer })
 
-    return unpacked
+    return Object.assign({ publicKey, secretKey }, unpacked)
   } catch (e) {
     throw new Error(`Error occurred while getting public key of ${opts.network}`)
   }
