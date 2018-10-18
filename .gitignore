@@ -65,3 +65,5 @@ package-lock.json
 
 # truffle build folder
 build/
+
+.DS_Store
