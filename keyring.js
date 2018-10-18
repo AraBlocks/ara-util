@@ -1,4 +1,4 @@
-const { MissingOptionError } = require('./errors')
+const { MissingParamError } = require('./errors')
 const { readFile } = require('fs')
 const { resolve } = require('path')
 const { unpack, keyRing } = require('ara-network/keys')
@@ -19,9 +19,9 @@ const ss = require('ara-secret-storage')
  */
 async function exists(keyring) {
   if (!keyring) {
-    throw new MissingOptionError({
-      expectedKey: 'keyring',
-      actualValue: keyring,
+    throw new MissingParamError({
+      expected: 'keyring',
+      actual: keyring,
       suggestion: 'setting `rc.network.identity.keyring`'
     })
   }
@@ -54,34 +54,34 @@ async function exists(keyring) {
  */
 async function getSecret(opts) {
   if (!opts) {
-    throw new MissingOptionError({
-      expectedKey: 'opts',
-      actualValue: null
+    throw new MissingParamError({
+      expected: 'opts',
+      actual: null
     })
   } else if ('object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
   } else if (!opts.network) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.network',
-      actualValue: opts,
+    throw new MissingParamError({
+      expected: 'opts.network',
+      actual: opts,
     })
   }
 
   if (!opts.keyring) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.keyring',
-      actualValue: opts,
+    throw new MissingParamError({
+      expected: 'opts.keyring',
+      actual: opts,
       suggestion: 'setting `rc.network.identity.keyring`'
     })
   } else if (!opts.password) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.password',
-      actualValue: opts
+    throw new MissingParamError({
+      expected: 'opts.password',
+      actual: opts
     })
   } else if (!opts.did) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.did',
-      actualValue: opts
+    throw new MissingParamError({
+      expected: 'opts.did',
+      actual: opts
     })
   }
 
@@ -127,29 +127,29 @@ async function getSecret(opts) {
  */
 async function getPublic(opts) {
   if (!opts) {
-    throw new MissingOptionError({
-      expectedKey: 'opts',
-      actualValue: null
+    throw new MissingParamError({
+      expected: 'opts',
+      actual: null
     })
   } else if ('object' !== typeof opts) {
     throw new TypeError('Passed `opts` are not object')
   } else if (!opts.network) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.network',
-      actualValue: opts,
+    throw new MissingParamError({
+      expected: 'opts.network',
+      actual: opts,
     })
   }
 
   if (!opts.keyring) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.keyring',
-      actualValue: opts,
+    throw new MissingParamError({
+      expected: 'opts.keyring',
+      actual: opts,
       suggestion: 'setting `rc.network.identity.keyring`'
     })
   } else if (!opts.secret) {
-    throw new MissingOptionError({
-      expectedKey: 'opts.secret',
-      actualValue: opts
+    throw new MissingParamError({
+      expected: 'opts.secret',
+      actual: opts
     })
   }
 
