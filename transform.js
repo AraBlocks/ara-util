@@ -17,7 +17,7 @@ function toHexString(input, hexify = false) {
   }
 
   return hexify
-    ? `0x${toHex(input)}`
+    ? `0x${toHexBuffer(input)}`
     : `0x${input}`
 }
 
@@ -42,11 +42,11 @@ function toHexBuffer(input, encoding = 'hex') {
   if (isBuffer(input)) {
     return input.toString(encoding)
   } else if ('number' === typeof input) {
-    return toHex(bufferFrom([ input ]))
+    return toHexBuffer(bufferFrom([ input ]))
   } else if ('string' === typeof input) {
-    return toHex(bufferFrom(input))
+    return toHexBuffer(bufferFrom(input))
   } else {
-    return toHex(bufferFrom(input))
+    return toHexBuffer(bufferFrom(input))
   }
 }
 
