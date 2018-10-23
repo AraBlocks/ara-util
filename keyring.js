@@ -104,15 +104,16 @@ async function getSecret(opts) {
 
     const keyring = keyRing(opts.keyring, { secret: secretKey })
 
-    // if (!await keyring.has(opts.network)) {
-    //   throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
-    // }
+    if (!await keyring.has(opts.network)) {
+      throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
+    }
 
     const buffer = await keyring.get(opts.network)
 
     const unpacked = unpack({ buffer })
 
-    return Object.assign(unpacked, { publicKey, secretKey })
+    const kp = derive({ secretKey, name: opts.network })
+    return Object.assign({ identity: { publicKey: kp.publicKey, secretKey: kp.secretKey } }, unpacked)
   } catch (e) {
     throw new Error(`Error occurred while getting secret key of ${opts.network} (${e})`)
   }
@@ -190,7 +191,7 @@ async function getPublic(opts) {
     const buffer = await keyring.get(opts.network)
     const unpacked = unpack({ buffer })
 
-    return Object.assign({ publicKey, secretKey }, unpacked)
+    return Object.assign({ identity: { publicKey, secretKey } }, unpacked)
   } catch (e) {
     throw new Error(`Error occurred while getting public key of ${opts.network}`)
   }
