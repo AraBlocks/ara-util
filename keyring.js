@@ -1,7 +1,7 @@
 const { MissingParamError } = require('./errors')
 const { readFile } = require('fs')
 const { resolve } = require('path')
-const { unpack, keyRing } = require('ara-network/keys')
+const { unpack, keyRing, derive } = require('ara-network/keys')
 const { lstat } = require('fs')
 const { DID } = require('did-uri')
 const crypto = require('ara-crypto')
@@ -182,7 +182,7 @@ async function getPublic(opts) {
       throw new Error(`Could not find ${opts.keyring}`)
     }
 
-    const keyring = keyRing(opts.keyring, { secret })
+    const keyring = keyRing(opts.keyring, { secret: opts.secret })
 
     if (!await keyring.has(opts.network)) {
       throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
@@ -193,7 +193,8 @@ async function getPublic(opts) {
 
     return Object.assign({ identity: { publicKey, secretKey } }, unpacked)
   } catch (e) {
-    throw new Error(`Error occurred while getting public key of ${opts.network}`)
+    console.error(e)
+    throw new Error(`Error occurred while getting public key of ${opts.network}:` + e)
   }
 }
 
