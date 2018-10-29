@@ -1,13 +1,14 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { toHexBuffer: toHex } = require('./transform')
-const { deprecate } = require('util')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
 const context = require('ara-context')()
+const { deprecate } = require('util')
 const aid = require('ara-identity')
 const { resolve } = require('path')
 const errors = require('./errors')
+const diduri = require('did-uri')
 const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
@@ -47,27 +48,13 @@ function hashDID(did, encoding = 'hex') {
 }
 
 /**
- * Normalizes a DID URI into just the identifier
+ * Gets the identifier from the DID URI
  * @param  {String} did
  * @return {String}
  * @throws {TypeError}
  */
 function getIdentifier(did) {
-  if (!did || 'string' !== typeof did) {
-    throw new TypeError('DID URI to normalize must be non-empty string.')
-  }
-
-  if (hasDIDMethod(did)) {
-    if (0 !== did.indexOf(kAidPrefix)) {
-      throw new TypeError('Expecting a DID URI with an "ara" method.')
-    } else {
-      did = did.substring(kAidPrefix.length)
-      if (kIdentifierLength !== did.length) {
-        throw new Error(`ara-util.normalize: DID is not ${kIdentifierLength} characters`)
-      }
-    }
-  }
-  return did
+  return diduri.parse(did).identifier
 }
 
 /**
@@ -249,9 +236,10 @@ function checkAFSExistence(opts) {
   }
 
   const { did } = opts
-  const hash = hashDID(did).toString('hex')
 
   try {
+    const hash = hashDID(did).toString('hex')
+
     // If the file exists, an error will be thrown
     fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hash)) 
     return true
