@@ -76,4 +76,6 @@ test('toBuffer(input) valid input', (t) => {
   t.deepEqual(result, Buffer.from('123', 'hex'))
   result = web3.toBuffer(kAddress)
   t.deepEqual(result, Buffer.from(kAddress, 'hex'))
+  result = web3.toBuffer('hi')
+  t.deepEqual(result, Buffer.from('hi', 'hex'))
 })

@@ -6,17 +6,23 @@ const { deprecate } = require('util')
  * Convert a String, Number or Buffer
  * to a valid hex string. Optionally
  * prepends '0x', which is useful for
- * passing to Solidity contract functions. 
- * 
+ * passing to Solidity contract functions.
+ *
  * @param {String|Buffer|Number} input
- * @param {String} encoding
- * 
+ * @param {String} opts.encoding
+ * @param {Bool} opts.ethify
+ *
  * @return {String}
- * 
+ *
  * @throws {TypeError}
  */
-function toHexString(input, encoding = 'hex', ethify = false){
-  if('number' !== typeof input && 'string' !== typeof input && !isBuffer(input)) {
+function toHexString(input, opts = {}) {
+  const {
+    encoding = 'hex',
+    ethify = false
+  } = opts
+
+  if ('number' !== typeof input && 'string' !== typeof input && !isBuffer(input)) {
     throw new TypeError('Input must be Number, String, or Buffer')
   } else if (encoding && 'string' !== typeof encoding) {
     throw new TypeError('Encoding must be a valid String')
@@ -25,22 +31,21 @@ function toHexString(input, encoding = 'hex', ethify = false){
   if (isBuffer(input)) {
     return (ethify) ? `0x${input.toString('hex')}` : input.toString('hex')
   } else if ('number' === typeof input) {
-    return toHexString(bufferFrom([ input ], encoding), encoding, ethify)
+    return toHexString(bufferFrom([ input ], encoding), opts)
   } else if ('string' === typeof input) {
-    return toHexString(bufferFrom(input, encoding), encoding, ethify)
-  } else {
-    return toHexString(bufferFrom(input, encoding), encoding, ethify)
+    return toHexString(bufferFrom(input, encoding), opts)
   }
+  return toHexString(bufferFrom(input, encoding), opts)
 }
 
 /**
  * Converts a string to a buffer.
- * 
+ *
  * @param  {String} input
  * @param  {String} encoding
- * 
+ *
  * @return {Buffer}
- * 
+ *
  * @throws {TypeError}
  */
 function toBuffer(input, encoding = 'hex') {
@@ -55,9 +60,8 @@ function toBuffer(input, encoding = 'hex') {
     return bufferFrom(input, encoding)
   } else if (input) {
     return bufferFrom(input.toString(), encoding)
-  } else {
-    return null
   }
+  return null
 }
 
 module.exports = {
