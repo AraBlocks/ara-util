@@ -1,5 +1,6 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { toHexBuffer: toHex } = require('./transform')
+const { deprecate } = require('util')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
@@ -40,7 +41,7 @@ function hashDID(did, encoding = 'hex') {
     throw new TypeError('Encoding must be of type string.')
   }
 
-  did = normalize(did)
+  did = getIdentifier(did)
 
   return hash(did, encoding)
 }
@@ -51,7 +52,7 @@ function hashDID(did, encoding = 'hex') {
  * @return {String}
  * @throws {TypeError}
  */
-function normalize(did) {
+function getIdentifier(did) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError('DID URI to normalize must be non-empty string.')
   }
@@ -151,7 +152,7 @@ function getDocumentOwner(ddo) {
   })
 
   const id = publicKey.slice(0, publicKey.indexOf('#'))
-  return normalize(id)
+  return getIdentifier(id)
 }
 
 /**
@@ -292,7 +293,7 @@ async function validate(opts) {
   }
 
   try {
-    did = normalize(did)
+    did = getIdentifier(did)
   } catch (err) {
     throw err
   }
@@ -330,7 +331,8 @@ module.exports = {
   getDocumentKeyHex,
   getDocumentOwner,
   hasDIDMethod,
-  normalize,
+  normalize: deprecate(getIdentifier, '`normalize` is deprecated, use `getIdentifier`'),
+  getIdentifier,
   validate,
   hashDID,
   errors,
