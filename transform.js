@@ -1,29 +1,12 @@
 const bufferFrom = require('buffer-from')
 const isBuffer = require('is-buffer')
-
-/**
- * Prepend 0x to a hex string
- *
- * Useful for passing to Solidity contract functions.
- * 
- * @param  {String}  input 
- * @param  {Boolean} hexify
- * 
- * @return {String}
- */
-function toHexString(input, hexify = false) {
-  if ('string' !== typeof input && !isBuffer(input)) {
-    throw new TypeError('Input must be String or Buffer')
-  }
-
-  return hexify
-    ? `0x${toHexBuffer(input)}`
-    : `0x${input}`
-}
+const { deprecate } = require('util')
 
 /**
  * Convert a String, Number or Buffer
- * to a valid hex string.
+ * to a valid hex string. Optionally
+ * prepends '0x', which is useful for
+ * passing to Solidity contract functions. 
  * 
  * @param {String|Buffer|Number} input
  * @param {String} encoding
@@ -32,21 +15,21 @@ function toHexString(input, hexify = false) {
  * 
  * @throws {TypeError}
  */
-function toHexBuffer(input, encoding = 'hex') {
-  if ('number' !== typeof input && 'string' !== typeof input && !isBuffer(input)) {
+function toHexString(input, encoding = 'hex', ethify = false){
+  if('number' !== typeof input && 'string' !== typeof input && !isBuffer(input)) {
     throw new TypeError('Input must be Number, String, or Buffer')
   } else if (encoding && 'string' !== typeof encoding) {
     throw new TypeError('Encoding must be a valid String')
-  } 
+  }
 
   if (isBuffer(input)) {
-    return input.toString(encoding)
+    return (ethify) ? `0x${input.toString('hex')}` : input.toString('hex')
   } else if ('number' === typeof input) {
-    return toHexBuffer(bufferFrom([ input ]))
+    return toHexString(bufferFrom([ input ], encoding), encoding, ethify)
   } else if ('string' === typeof input) {
-    return toHexBuffer(bufferFrom(input))
+    return toHexString(bufferFrom(input, encoding), encoding, ethify)
   } else {
-    return toHexBuffer(bufferFrom(input))
+    return toHexString(bufferFrom(input, encoding), encoding, ethify)
   }
 }
 
@@ -79,6 +62,6 @@ function toBuffer(input, encoding = 'hex') {
 
 module.exports = {
   toBuffer,
-  toHexBuffer,
-  toHexString
+  toHexString,
+  toHexBuffer: deprecate((i, e) => toHexString(i, e, false), '`transform.toHexBuffer` is deprecated, use `transform.toHexString`')
 }
