@@ -4,10 +4,10 @@ const { web3 } = require('../../')
 const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
 test('isAddress(address) invalid input', (t) => {
-  t.throws(() => web3.isAddress(), TypeError)
-  t.throws(() => web3.isAddress({ }), TypeError)
-  t.throws(() => web3.isAddress(123), TypeError)
-  t.throws(() => web3.isAddress([]), TypeError)
+  t.false(web3.isAddress())
+  t.false(web3.isAddress({ }))
+  t.false(web3.isAddress(123))
+  t.false(web3.isAddress([]))
 })
 
 test('isAddress(address) valid input', (t) => {
@@ -31,7 +31,6 @@ test('sha3(params) valid input', (t) => {
 
 test('ethify(input) invalid input', (t) => {
   t.throws(() => web3.ethify(), TypeError)
-  t.throws(() => web3.ethify(123), TypeError)
   t.throws(() => web3.ethify({ }), TypeError)
   t.throws(() => web3.ethify([]), TypeError)
 })
@@ -40,7 +39,7 @@ test('ethify(input) valid conversion', (t) => {
   let result = web3.ethify(kAddress)
   t.is(result, `0x${kAddress}`)
 
-  const buffer = Buffer.from(kAddress)
+  const buffer = Buffer.from(kAddress, 'hex')
   result = web3.ethify(buffer)
   t.is(result, `0x${kAddress}`)
 })
@@ -57,9 +56,9 @@ test('toHex(input) invalid input', (t) => {
 test('toHex(input)', (t) => {
   let result = web3.toHex(10)
   t.is(result, '0a')
-  result = web3.toHex('hi')
+  result = web3.toHex('hi', 'utf8')
   t.is(result, '6869')
-  result = web3.toHex(Buffer.from('hi'))
+  result = web3.toHex(Buffer.from('hi'), 'utf8')
   t.is(result, '6869')
 })
 

@@ -1,4 +1,4 @@
-const { toHexString, toHexBuffer, toBuffer } = require('../transform')
+const { toHexString, toBuffer } = require('../transform')
 const { deprecate } = require('util')
 const { web3 } = require('ara-context')()
 const contract = require('./contract')
@@ -31,9 +31,12 @@ function sha3(params) {
 }
 
 module.exports = {
-  ethify: deprecate(toHexString, '`web3.ethify` is deprecated, use `toHexString` in `ara-util/transform`'),
+  ethify: deprecate((i, h) => {
+    if (h) return toHexString(i, 'utf8', true)
+    else return toHexString(i, 'hex', true)
+  }, '`web3.ethify` is deprecated, use `toHexString` in `ara-util/transform`'),
   toBuffer: deprecate(toBuffer, '`web3.toBuffer` is deprecated, use `toBuffer` in `ara-util/transform`'),
-  toHex: deprecate(toHexBuffer, '`web3.toHex` is deprecated, use `toHexBuffer` in `ara-util/transform`'),
+  toHex: deprecate((i, e) => toHexString(i, e, false), '`web3.toHex` is deprecated, use `toHexString` in `ara-util/transform`'),
   isAddress,
   contract,
   account,
