@@ -1,7 +1,7 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
-const { toHexBuffer: toHex } = require('./transform')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
+const transform = require('./transform')
 const ss = require('ara-secret-storage')
 const context = require('ara-context')()
 const { deprecate } = require('util')
@@ -177,7 +177,7 @@ function hash(str, encoding = 'hex') {
 
   const result = blake2b(Buffer.from(str, encoding))
   if ('hex' === encoding) {
-    return toHex(result)
+    return transform.toHexString(result)
   }
   return result.toString(encoding)
 }
@@ -223,7 +223,7 @@ async function getAFSOwnerIdentity(opts) {
  *
  * @param  {Object} opts
  * @param  {String} opts.did    DID of AFS to check for
- * 
+ *
  * @return {Boolean}      Whether AFS exists locally
  */
 function checkAFSExistence(opts) {
@@ -241,7 +241,7 @@ function checkAFSExistence(opts) {
     const hash = hashDID(did).toString('hex')
 
     // If the file exists, an error will be thrown
-    fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hash)) 
+    fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hash))
     return true
   } catch (e) {
     return false
@@ -321,6 +321,7 @@ module.exports = {
   hasDIDMethod,
   normalize: deprecate(getIdentifier, '`normalize` is deprecated, use `getIdentifier`'),
   getIdentifier,
+  transform,
   validate,
   hashDID,
   errors,

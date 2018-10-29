@@ -31,12 +31,12 @@ function sha3(params) {
 }
 
 module.exports = {
-  ethify: deprecate((i, h) => {
-    if (h) return toHexString(i, 'utf8', true)
-    else return toHexString(i, 'hex', true)
-  }, '`web3.ethify` is deprecated, use `toHexString` in `ara-util/transform`'),
-  toBuffer: deprecate(toBuffer, '`web3.toBuffer` is deprecated, use `toBuffer` in `ara-util/transform`'),
-  toHex: deprecate((i, e) => toHexString(i, e, false), '`web3.toHex` is deprecated, use `toHexString` in `ara-util/transform`'),
+  ethify: deprecate((input, hexify) => {
+    if (hexify) return toHexString(input, { encoding: 'utf8', ethify: true })
+    return toHexString(input, { encoding: 'hex', ethify: true })
+  }, '`web3.ethify` is deprecated, use `transform.toHexString`'),
+  toBuffer: deprecate(toBuffer, '`web3.toBuffer` is deprecated, use `transform.toBuffer`'),
+  toHex: deprecate((input, encoding) => toHexString(input, { encoding, ethify: false }), '`web3.toHex` is deprecated, use `transform.toHexString`'),
   isAddress,
   contract,
   account,

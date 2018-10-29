@@ -42,6 +42,11 @@ correctness. If given incorrect input, a function will throw a
 * [util.hashDID(did, \[encoding\])](#hashDID)
 * [util.getIdentifier(did)](#getidentifier)
 
+### Transform
+
+* [util.transform.toBuffer(input, [encoding])](#toBuffer)
+* [util.transform.toHexString(input, [opts])](#toHexString)
+
 ### Web3
 
 * [async util.web3.account.load(opts)](#load)
@@ -55,11 +60,8 @@ correctness. If given incorrect input, a function will throw a
 * [util.web3.abi.encodeParameter(type, parameter)](#encodeParameter)
 * [util.web3.abi.encodeParameters(typesArray, parameters)](#encodeParameters)
 * [util.web3.contract.get(abi, address)](#get)
-* [util.web3.ethify(input, [hexify])](#ethify)
 * [util.web3.isAddress(address)](#isAddress)
 * [util.web3.sha3(params)](#sha3)
-* [util.web3.toBuffer(input, [encoding])](#toBuffer)
-* [util.web3.toHex(input, [encoding])](#toHex)
 * [util.web3.tx.estimateCost(tx, \[denomination\])](#estimateCost)
 * [util.web3.tx.sign(tx, privateKey)](#sign)
 
@@ -195,6 +197,35 @@ Returns the identifier of a `DID`.
 
 ```js
 const identifier = util.getIdentifier('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e') // 14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e
+```
+
+### `util.transform.toHexString(input, [opts])` <a name="toHexString"></a>
+
+> **Stability: 2** - Stable
+
+Prepend `0x` to a hex string for passing to Solidity contract functions.
+
+- `input` - `String`, `Number`, or `Buffer` to be converted
+- `opts.ethify` - should the result be prepended by a `0x`
+- `opts.encoding` - the type of encoding of the input
+
+```js
+const str = util.transform.toHexString('ef61059258414a65bf2d94a4fd3b503b5fee8b48', { encoding: 'hex', ethify: true })
+// 0xef61059258414a65bf2d94a4fd3b503b5fee8b48
+```
+
+### `util.transform.toBuffer(input, [encoding])` <a name="toBuffer"></a>
+
+> **Stability: 2** - Stable
+
+Converts a `string` to a `buffer`.
+
+- `input` - `string` to convert
+- `encoding` - encoding of string for conversion
+
+```js
+const buf = util.web3.toBuffer('hi')
+// <Buffer 68 69>
 ```
 
 ### `async util.web3.account.load(opts)` <a name="load"></a>
@@ -382,20 +413,6 @@ const address = '0xef61059258414a65bf2d94a4fd3b503b5fee8b48'
 const contract = util.web3.contract.get(abi, address)
 ```
 
-### `util.web3.ethify(input, [hexify])` <a name="ethify"></a>
-
-> **Stability: 2** - Stable
-
-Prepend `0x` to a hex string for passing to Solidity contract functions.
-
-- `input` - `String` or `Buffer` to be converted
-- `hexify` - should the `String` be converted to hex prior to prepending
-
-```js
-const str = util.web3.ethify('ef61059258414a65bf2d94a4fd3b503b5fee8b48', true)
-// 0xef61059258414a65bf2d94a4fd3b503b5fee8b48
-```
-
 ### `util.web3.isAddress(address)` <a name="isAddress"></a>
 
 > **Stability: 2** - Stable
@@ -419,33 +436,6 @@ isAddress = util.web3.isAddress('Hello') // false
 
 ```js
 const result = util.web3.sha3({ param1: 1, param2: 2 })
-```
-
-### `util.web3.toBuffer(input, [encoding])` <a name="toBuffer"></a>
-
-> **Stability: 2** - Stable
-
-Converts a `string` to a `buffer`.
-
-- `input` - `string` to convert
-- `encoding` - encoding of string for conversion
-
-```js
-const buf = util.web3.toBuffer('hi')
-// <Buffer 68 69>
-```
-
-### `util.web3.toHex(input, [encoding])` <a name="toHex"></a>
-
-> **Stability: 2** - Stable
-
-Convert a string, number, of buffer to a valid hex string.
-
-- `input` - input to conver
-- `encoding` - encoding to use when converting to `String`
-
-```js
-const hex = util.web3.toHex(Buffer.from('hello')) // '6869'
 ```
 
 ### `util.web3.tx.estimateCost(tx, [denomination])` <a name="estimateCost"></a>
