@@ -17,6 +17,10 @@ const { deprecate } = require('util')
  * @throws {TypeError}
  */
 function toHexString(input, opts = {}) {
+  if ('object' !== typeof opts){
+    throw new TypeError('`opts` must be an Object')
+  }
+
   const {
     encoding = 'hex',
     ethify = false
@@ -67,5 +71,5 @@ function toBuffer(input, encoding = 'hex') {
 module.exports = {
   toBuffer,
   toHexString,
-  toHexBuffer: deprecate((i, e) => toHexString(i, e, false), '`transform.toHexBuffer` is deprecated, use `transform.toHexString`')
+  toHexBuffer: deprecate((input, encoding) => toHexString(input, { encoding, ethify: false }), '`transform.toHexBuffer` is deprecated, use `transform.toHexString`')
 }
