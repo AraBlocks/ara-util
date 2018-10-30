@@ -4,10 +4,10 @@ const { web3 } = require('../../')
 const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
 test('isAddress(address) invalid input', (t) => {
-  t.throws(() => web3.isAddress(), TypeError)
-  t.throws(() => web3.isAddress({ }), TypeError)
-  t.throws(() => web3.isAddress(123), TypeError)
-  t.throws(() => web3.isAddress([]), TypeError)
+  t.is(web3.isAddress(), false)
+  t.is(web3.isAddress({ }), false)
+  t.is(web3.isAddress(123), false)
+  t.is(web3.isAddress([]), false)
 })
 
 test('isAddress(address) valid input', (t) => {
