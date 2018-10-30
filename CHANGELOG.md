@@ -1,3 +1,8 @@
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/arablocks/ara-util/compare/0.5.0...0.5.1) (2018-10-30)
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/arablocks/ara-util/compare/0.4.0...0.5.0) (2018-10-29)
 
