@@ -40,7 +40,7 @@ correctness. If given incorrect input, a function will throw a
 * [util.getDocumentOwner(ddo)](#getDocumentOwner)
 * [util.hash(str, \[encoding\])](#hash)
 * [util.hashDID(did, \[encoding\])](#hashDID)
-* [util.normalize(did)](#normalize)
+* [util.getIdentifier(did)](#getidentifier)
 
 ### Web3
 
@@ -151,7 +151,7 @@ const publicKeyHex = util.getDocumentKeyHex(ddo) // 41dd7aabfa3763306d8ec6955950
 
 > **Stability: 2** Stable
 
-Returns the normalized `DID` of a document owner, or first entry in the `authentication` array of a `DDO`. The difference between this function and `util.getAFSOwnerIdentity` is that this function does not do any resolving.
+Returns the `DID` identifier of a document owner, or first entry in the `authentication` array of a `DDO`. The difference between this function and `util.getAFSOwnerIdentity` is that this function does not do any resolving.
 
 - `ddo` - document to retrieve owner from
 
@@ -185,16 +185,16 @@ const result = util.hash('Hello')
 const hash = util.hashDID('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e')
 ```
 
-### `util.normalize(did)` <a name="normalize"></a>
+### `util.getIdentifier(did)` <a name="getidentifier"></a>
 
 > **Stability: 2** - Stable
 
-Normalizes a `DID` by removing the method.
+Returns the identifier of a `DID`.
 
-- `did` - `DID` to normalize
+- `did` - `DID` to parse
 
 ```js
-const normalized = util.normalize('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e') // 14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e
+const identifier = util.getIdentifier('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e') // 14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e
 ```
 
 ### `async util.web3.account.load(opts)` <a name="load"></a>
