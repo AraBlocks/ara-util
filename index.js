@@ -54,7 +54,8 @@ function hashDID(did, encoding = 'hex') {
  * @throws {TypeError}
  */
 function getIdentifier(did) {
-  return diduri.parse(did).identifier
+  const uri = diduri.parse(aid.did.normalize(did))
+  return uri.identifier
 }
 
 /**
