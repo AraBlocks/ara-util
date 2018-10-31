@@ -1,3 +1,13 @@
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/arablocks/ara-util/compare/0.5.1...0.5.2) (2018-10-31)
+
+
+### Bug Fixes
+
+* **index:** normalize did before extract identifier ([0d64882](https://github.com/arablocks/ara-util/commit/0d64882))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/arablocks/ara-util/compare/0.5.0...0.5.1) (2018-10-30)
 
