@@ -264,7 +264,7 @@ async function validate(opts) {
     throw new TypeError('Unable to resolve DID.')
   }
 
-  const writable = Boolean(password) || Boolean(owner)
+  const writable = Boolean(password)
   if (writable) {
     if (!(await isCorrectPassword({ ddo, password }))) {
       throw new Error('Incorrect password.')
