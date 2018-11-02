@@ -11,11 +11,7 @@ This project is in active development.
 
 ## Stability
 
-> [Stability][stability-index]: 1 - Experimental. This feature is still under
-> active development and subject to non-backwards compatible changes, or even
-> removal, in any future version. Use of the feature is not recommended
-> in production environments. Experimental features are not subject to
-> the Node.js Semantic Versioning model.
+> [Stability][stability-index]: 2 - Stable. Compatibility with the npm ecosystem is a high priority.
 
 ## Installation
 
@@ -67,7 +63,7 @@ correctness. If given incorrect input, a function will throw a
 
 ### `async util.getAFSOwnerIdentity(opts)` <a name="getAFSOwnerIdentity"></a>
 
-> **Stability: 1** Experimental
+> **Stability: 2** Stable
 
 Returns the owning identity of `DID`, used for resolving the document of the identity that created an `AFS`.
 
@@ -101,7 +97,7 @@ const isCorrect = await util.isCorrectPassword({ ddo, password })
 
 ### `async util.resolveDDO(did, [opts])` <a name="resolveDDO"></a>
 
-> **Stability: 1** Experimental
+> **Stability: 2** Stable
 
 Resolves an identity document based on a `DID`. Both normalized and non-normalized `DID`s are accepted. 
 
@@ -120,15 +116,13 @@ const ddo = await util.resolveDDO(myDID)
 
 ### `async util.validate(opts)` <a name="validate"></a>
 
-> **Stability: 1** Experimental
+> **Stability: 2** Stable
 
 Validates that a resolved document based on a `DID` can be decrypted with the `password`, proving ownership. This used `util.isCorrectPassword` internally after resolving the document.
 
 - `opts`
   - `did` - `DID` of identity to validate against
   - `password` - password of the identity
-
-Either `did` or `owner` should be provided, but not both.
 
 ```js
 const password = 'myPass'
