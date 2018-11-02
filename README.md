@@ -124,7 +124,6 @@ Validates that a resolved document based on a `DID` can be decrypted with the `p
 
 - `opts`
   - `did` - `DID` of identity to validate against
-  - `owner` - owner `DID` of identity to validate against
   - `password` - password of the identity
 
 Either `did` or `owner` should be provided, but not both.
