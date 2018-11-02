@@ -254,8 +254,7 @@ function checkAFSExistence(opts) {
  * passwords and returns the DDO.
  * @param  {Object} opts
  * @param  {String} opts.password
- * @param  {String} [opts.did]
- * @param  {String} [opts.owner]
+ * @param  {String} opts.did
  * @param  {Object} [opts.ddo]
  * @param  {Object} [opts.keyringOpts]
  * @return {Object}
@@ -264,22 +263,12 @@ function checkAFSExistence(opts) {
 async function validate(opts) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
+  } else if (!opts.did || 'string' !== typeof opts.did) {
+    throw new TypeError('DID URI must be valid string.')
   }
 
   let { did, ddo } = opts
-  const { owner, password, keyringOpts = {} } = opts
-
-  if (did && owner) {
-    throw new Error('Expecting an AFS DID or an owner DID, but not both.')
-  }
-
-  if (owner) {
-    did = owner
-  }
-
-  if (!did || 'string' !== typeof did) {
-    throw new TypeError('DID URI must be valid string.')
-  }
+  const { password, keyringOpts = {} } = opts
 
   try {
     did = getIdentifier(did)
