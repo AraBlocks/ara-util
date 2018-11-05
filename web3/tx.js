@@ -11,21 +11,20 @@ const kGasLimit = 100000
  * Creates an EthereumTx object
  * @param  {Object}  opts
  * @param  {Object}  opts.account
- * @param  {Object} opts.to
+ * @param  {Object}  opts.to
  * @param  {Boolean} signTx
+ * @param  {String|Number} [opts.gasPrice]
  * @return {Object}
  */
 async function create(opts, signTx = true) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object')
-  }
-
-  if (!opts.account || 'object' !== typeof opts.account) {
+  } else if (!opts.account || 'object' !== typeof opts.account) {
     throw new TypeError('Expecting account to be valid Ethereum account object')
-  }
-
-  if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
+  } else if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
     throw new TypeError('Expecting \'to\' to be valid Ethereum address')
+  } else if (opts.gasPrice && ('string' !== typeof opts.gasPrice && 'number' !== typeof opts.gasPrice)) {
+    throw new TypeError('Expecting gas price must be a string or number')
   }
 
   const { address, privateKey } = opts.account
@@ -34,7 +33,12 @@ async function create(opts, signTx = true) {
   }
 
   const nonce = await web3.eth.getTransactionCount(address)
-  const gasPrice = await web3.eth.getGasPrice()
+
+  if (opts.gasPrice && 'number' === typeof opts.gasPrice) {
+    opts.gasPrice = opts.gasPrice.toString()
+  }
+
+  const gasPrice = opts.gasPrice || await web3.eth.getGasPrice()
   const gasLimit = opts.gasLimit || kGasLimit
   const to = opts.to || undefined
 
