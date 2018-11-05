@@ -193,8 +193,7 @@ async function getPublic(opts) {
 
     return Object.assign({ identity: { publicKey, secretKey } }, unpacked)
   } catch (e) {
-    console.error(e)
-    throw new Error(`Error occurred while getting public key of ${opts.network}:` + e)
+    throw new Error(`Error occurred while getting public key of ${opts.network}: ${e}`)
   }
 }
 

@@ -17,7 +17,7 @@ const { deprecate } = require('util')
  * @throws {TypeError}
  */
 function toHexString(input, opts = {}) {
-  if ('object' !== typeof opts){
+  if ('object' !== typeof opts) {
     throw new TypeError('`opts` must be an Object')
   }
 
