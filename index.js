@@ -17,11 +17,6 @@ const os = require('os')
 const kAraKeystore = 'keystore/ara'
 
 const {
-  kIdentifierLength,
-  kAidPrefix
-} = require('./constants')
-
-const {
   kEd25519VerificationKey2018,
   kSecp256k1VerificationKey2018
 } = require('ld-cryptosuite-registry')
@@ -229,20 +224,20 @@ async function getAFSOwnerIdentity(opts) {
  */
 function checkAFSExistence(opts) {
   if (!opts) {
-    throw new Error('Expecting \`opts\` to be defined, got null')
+    throw new Error('Expecting opts to be defined, got null')
   } else if ('object' !== typeof opts) {
-    throw new TypeError('Expecting \`opts\` to be an Object')
+    throw new TypeError('Expecting opts to be an Object')
   } else if (!opts.did) {
-    throw new Error(`Expecting \`opts.did\` to be defined, got ${JSON.stringify(opts)}`)
+    throw new Error(`Expecting opts.did to be defined, got ${JSON.stringify(opts)}`)
   }
 
   const { did } = opts
 
   try {
-    const hash = hashDID(did).toString('hex')
+    const hashedDid = hashDID(did).toString('hex')
 
     // If the file exists, an error will be thrown
-    fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hash))
+    fs.accessSync(resolve(`${os.homedir()}/.ara/afs`, hashedDid))
     return true
   } catch (e) {
     return false

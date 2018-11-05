@@ -3,7 +3,6 @@ const { transform } = require('../')
 
 const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
-
 test('toHexString(input) invalid input', (t) => {
   t.throws(() => transform.toHexString(), TypeError)
   t.throws(() => transform.toHexString({ }), TypeError)
@@ -23,7 +22,6 @@ test('toHexString(input) valid input', (t) => {
   const buffer = Buffer.from(kAddress, 'hex')
   result = transform.toHexString(buffer, { encoding: 'hex', ethify: true })
   t.is(result, `0x${kAddress}`)
-
 })
 
 test('toBuffer(input) invalid input', (t) => {
