@@ -1,9 +1,14 @@
-# [0.6.0](https://github.com/arablocks/ara-util/compare/0.5.2...0.6.0) (2018-11-02)
+## [0.6.1](https://github.com/arablocks/ara-util/compare/0.5.2...0.6.1) (2018-11-05)
 
 
 ### Bug Fixes
 
 * remove unncessary owner in validate ([be907f5](https://github.com/arablocks/ara-util/commit/be907f5))
+
+
+### Features
+
+* **web3/tx.js:** custom gasPrice in tx.create ([90e2c9f](https://github.com/arablocks/ara-util/commit/90e2c9f))
 
 
 
