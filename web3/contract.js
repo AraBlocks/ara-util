@@ -1,6 +1,6 @@
 const tx = require('./tx')
 const createContext = require('ara-context')
-
+console.log('in contract')
 /**
  * Deploys a new contract to the provided network.
  * @param  {Object} opts
@@ -39,6 +39,14 @@ async function deploy(opts) {
 
   let contract
   try {
+    const ctx = createContext()
+    await new Promise((resolve, reject) => {
+        ctx.once('ready', async () => {
+        console.log('ready!')
+        resolve()
+      })
+    })
+    const { web3 } = ctx
     const instance = new web3.eth.Contract(abi)
     contract = await instance
       .deploy({

@@ -156,7 +156,7 @@ async function _send(tx, signed) {
   }
   const ctx = createContext()
   await new Promise((resolve, reject) => {
-      ctx.once('ready', () => {
+    ctx.once('ready', () => {
       resolve()
     })
   })
