@@ -1,4 +1,4 @@
-const context = require('ara-context')()
+const createContext = require('ara-context')
 const ethereum = require('ara-identity/ethereum')
 const { parse } = require('did-uri')
 
@@ -34,7 +34,14 @@ async function load(opts) {
   // need DID without method
   const { identifier: publicKey } = spec
   const { password } = opts
-  const { web3 } = context
+  const ctx = createContext()
+  await new Promise((resolve, reject) => {
+        ctx.once('ready', async () => {
+        console.log('ready!')
+        resolve()
+      })
+    })
+  const { web3 } = ctx
 
   let account
   try {
@@ -43,6 +50,7 @@ async function load(opts) {
       publicKey,
       password
     })
+    ctx.close()
   } catch (err) {
     throw new Error(err)
   }
