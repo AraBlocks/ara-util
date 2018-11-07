@@ -1,7 +1,7 @@
 const { toBuffer } = require('../transform')
 const { encodeFunctionCall } = require('./abi')
 const EthereumTx = require('ethereumjs-tx')
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 const isBuffer = require('is-buffer')
 
 // 100,000
@@ -9,36 +9,32 @@ const kGasLimit = 100000
 
 /**
  * Creates an EthereumTx object
- * @param  {Object}        opts
- * @param  {Object}        opts.account
- * @param  {Object}        opts.to
- * @param  {String|Number} [opts.gasPrice]
- * @param  {Boolean}       signTx
+ * @param  {Object}  opts
+ * @param  {Object}  opts.account
+ * @param  {Object} opts.to
+ * @param  {Boolean} signTx
  * @return {Object}
  */
 async function create(opts, signTx = true) {
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object')
-  } else if (!opts.account || 'object' !== typeof opts.account) {
+  }
+
+  if (!opts.account || 'object' !== typeof opts.account) {
     throw new TypeError('Expecting account to be valid Ethereum account object')
-  } else if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
+  }
+
+  if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
     throw new TypeError('Expecting \'to\' to be valid Ethereum address')
-  } else if (opts.gasPrice && ('string' !== typeof opts.gasPrice && 'number' !== typeof opts.gasPrice)) {
-    throw new TypeError('Expecting gas price must be a string or number')
   }
 
   const { address, privateKey } = opts.account
   if (!address || (!privateKey && signTx)) {
     throw new TypeError('Account object expecting address and privateKey')
   }
-
+  const { web3 } = createContext({ loadProvider: false })
   const nonce = await web3.eth.getTransactionCount(address)
-
-  if (opts.gasPrice && 'number' === typeof opts.gasPrice) {
-    opts.gasPrice = opts.gasPrice.toString()
-  }
-
-  const gasPrice = opts.gasPrice || await web3.eth.getGasPrice()
+  const gasPrice = await web3.eth.getGasPrice()
   const gasLimit = opts.gasLimit || kGasLimit
   const to = opts.to || undefined
 
@@ -132,6 +128,7 @@ function estimateCost(tx, denomination = 'ether') {
   }
 
   const cost = tx.getUpfrontCost().toString()
+  const { web3 } = createContext({ loadProvider: false })
   return web3.utils.fromWei(cost, denomination)
 }
 
@@ -147,7 +144,14 @@ async function _send(tx, signed) {
   } else if (!signed && tx.verifySignature()) {
     throw new Error('Trying to send an unsigned transaction, but tx object is signed.')
   }
-
+  const ctx = createContext()
+  await new Promise((resolve, reject) => {
+      ctx.once('ready', async () => {
+      console.log('ready!')
+      resolve()
+    })
+  })
+  const { web3 } = ctx
   if (!_isSerialized(tx) && signed) {
     tx = web3.utils.bytesToHex(tx.serialize())
   }
@@ -162,6 +166,7 @@ async function _send(tx, signed) {
   } catch (err) {
     throw new Error(err)
   }
+  ctx.close()
   return result
 }
 
@@ -171,6 +176,7 @@ async function _send(tx, signed) {
  * @return {Boolean}
  */
 function _isSerialized(tx) {
+  const { web3 } = createContext({ loadProvider: false })
   return 'string' === typeof tx && web3.utils.isHex(tx)
 }
 

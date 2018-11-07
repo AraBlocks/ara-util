@@ -1,5 +1,6 @@
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 const { get } = require('./contract')
+console.log('in call')
 
 /**
  * Calls an Ethereum contract function.
@@ -35,7 +36,15 @@ async function call(opts) {
 
   let result
   try {
+    const ctx = createContext()
+    await new Promise((resolve, reject) => {
+        ctx.once('ready', async () => {
+        console.log('ready!')
+        resolve()
+      })
+    })
     result = await deployed.methods[functionName](...args).call()
+    ctx.close()
   } catch (err) {
     throw err
   }
