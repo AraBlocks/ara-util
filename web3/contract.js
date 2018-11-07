@@ -1,5 +1,5 @@
-const { web3 } = require('ara-context')()
-
+const createContext = require('ara-context')
+console.log('in contract')
 /**
  * Deploys a new contract to the provided network.
  * @param  {Object} opts
@@ -29,6 +29,14 @@ async function deploy(opts) {
 
   let contract
   try {
+    const ctx = createContext()
+    await new Promise((resolve, reject) => {
+        ctx.once('ready', async () => {
+        console.log('ready!')
+        resolve()
+      })
+    })
+    const { web3 } = ctx
     const instance = new web3.eth.Contract(abi)
     contract = await instance
       .deploy({
@@ -36,11 +44,13 @@ async function deploy(opts) {
         arguments: args
       })
     const gasLimit = await contract.estimateGas()
-    return {
-      contract: await contract.send({
+    const sentContract = await contract.send({
         from: address,
         gas: gasLimit
-      }),
+      })
+    ctx.close()
+    return {
+      contract: sentContract,
       gasLimit
     }
   } catch (err) {
@@ -61,8 +71,9 @@ function get(abi, address) {
   } else if (!address || !web3.utils.isAddress(address)) {
     throw new TypeError('Expecting valid Ethereum address.')
   }
-
-  return new web3.eth.Contract(abi, address)
+  const { web3 } = createContext({ loadProvider: false })
+  const contract = new web3.eth.Contract(abi, address)
+  return contract
 }
 
 /**
