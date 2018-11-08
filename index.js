@@ -13,7 +13,6 @@ const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
 const os = require('os')
-console.log('in index')
 
 const kAraKeystore = 'keystore/ara'
 

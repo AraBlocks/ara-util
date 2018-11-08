@@ -23,7 +23,15 @@ async function create(opts, signTx = true) {
   if (!opts.account || 'object' !== typeof opts.account) {
     throw new TypeError('Expecting account to be valid Ethereum account object')
   }
-
+  
+  const ctx = createContext()
+  await new Promise((resolve, reject) => {
+      ctx.once('ready', () => {
+      resolve()
+    })
+  })
+  const { web3 } = ctx
+  // console.log(web3)
   if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
     throw new TypeError('Expecting \'to\' to be valid Ethereum address')
   }
@@ -32,12 +40,11 @@ async function create(opts, signTx = true) {
   if (!address || (!privateKey && signTx)) {
     throw new TypeError('Account object expecting address and privateKey')
   }
-  const { web3 } = createContext({ loadProvider: false })
   const nonce = await web3.eth.getTransactionCount(address)
   const gasPrice = await web3.eth.getGasPrice()
   const gasLimit = opts.gasLimit || kGasLimit
   const to = opts.to || undefined
-
+  console.log('before tx params')
   const txParams = {
     nonce,
     from: address,
@@ -52,16 +59,19 @@ async function create(opts, signTx = true) {
       txParams.data = opts.data
     } else {
       const { abi, functionName, values } = opts.data
-      txParams.data = encodeFunctionCall(abi, functionName, values)
+      txParams.data = await encodeFunctionCall(abi, functionName, values)
     }
   }
-
+  console.log('before make tx')
   let tx = new EthereumTx(txParams)
   if (signTx) {
     tx = sign(tx, privateKey)
   }
 
-  return tx
+  return {
+    tx,
+    ctx
+  }
 }
 
 /**
@@ -146,8 +156,7 @@ async function _send(tx, signed) {
   }
   const ctx = createContext()
   await new Promise((resolve, reject) => {
-      ctx.once('ready', async () => {
-      console.log('ready!')
+      ctx.once('ready', () => {
       resolve()
     })
   })
