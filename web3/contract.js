@@ -1,5 +1,5 @@
 const createContext = require('ara-context')
-console.log('in contract')
+
 /**
  * Deploys a new contract to the provided network.
  * @param  {Object} opts
@@ -11,6 +11,15 @@ console.log('in contract')
  * @throws {Error,TypeError}
  */
 async function deploy(opts) {
+  const ctx = createContext()
+  await new Promise((resolve, reject) => {
+      ctx.once('ready', () => {
+        console.log('deploy ctx ready')
+      resolve()
+    })
+  })
+  const { web3 } = ctx
+
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.account || 'object' !== typeof opts.account) {
@@ -29,14 +38,6 @@ async function deploy(opts) {
 
   let contract
   try {
-    const ctx = createContext()
-    await new Promise((resolve, reject) => {
-        ctx.once('ready', async () => {
-        console.log('ready!')
-        resolve()
-      })
-    })
-    const { web3 } = ctx
     const instance = new web3.eth.Contract(abi)
     contract = await instance
       .deploy({
@@ -48,6 +49,7 @@ async function deploy(opts) {
         from: address,
         gas: gasLimit
       })
+    console.log('deploy ctx close')
     ctx.close()
     return {
       contract: sentContract,
@@ -65,15 +67,28 @@ async function deploy(opts) {
  * @return {Object}
  * @throws {TypeError}
  */
-function get(abi, address) {
+async function get(abi, address) {
+  const ctx = createContext()
+  await new Promise((resolve, reject) => {
+      ctx.once('ready', () => {
+        console.log('get ctx ready')
+      resolve()
+    })
+  })
+  const { web3 } = ctx
+  // let { web3 } = createContext({ loadProvider: false })
+
   if (!abi || !Array.isArray(abi)) {
     throw new TypeError('Contract ABI must be valid object array.')
   } else if (!address || !web3.utils.isAddress(address)) {
     throw new TypeError('Expecting valid Ethereum address.')
   }
-  const { web3 } = createContext({ loadProvider: false })
   const contract = new web3.eth.Contract(abi, address)
-  return contract
+  // ctx.close()
+  return { 
+    contract,
+    ctx
+  }
 }
 
 /**
