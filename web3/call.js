@@ -1,6 +1,5 @@
 const createContext = require('ara-context')
 const { get } = require('./contract')
-console.log('in call')
 
 /**
  * Calls an Ethereum contract function.

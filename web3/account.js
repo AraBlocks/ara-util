@@ -50,7 +50,6 @@ async function load(opts) {
       publicKey,
       password
     })
-    ctx.close()
   } catch (err) {
     throw new Error(err)
   }
