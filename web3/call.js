@@ -1,6 +1,5 @@
 const createContext = require('ara-context')
 const { get } = require('./contract')
-console.log('in call')
 
 /**
  * Calls an Ethereum contract function.
@@ -13,6 +12,7 @@ console.log('in call')
  * @throws {Error,TypeError}
  */
 async function call(opts) {
+  let { web3 } = createContext({ loadProvider: false })
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.abi || !Array.isArray(opts.abi)) {
@@ -26,8 +26,9 @@ async function call(opts) {
   }
 
   const { abi, address, functionName } = opts
-  const deployed = get(abi, address)
-
+  console.log('before get')
+  const { contract: deployed, ctx } = await get(abi, address)
+  console.log('after get')
   if (!Object.prototype.hasOwnProperty.call(deployed.methods, functionName)) {
     throw new Error('Methods does not contain', functionName)
   }
@@ -36,19 +37,22 @@ async function call(opts) {
 
   let result
   try {
-    const ctx = createContext()
-    await new Promise((resolve, reject) => {
-        ctx.once('ready', async () => {
-        console.log('ready!')
-        resolve()
-      })
-    })
+    // const ctx = createContext()
+    // await new Promise((resolve, reject) => {
+    //     ctx.once('ready', () => {
+    //       console.log('call ctx ready')
+    //     resolve()
+    //   })
+    // })
+    console.log('before call')
+    // console.log(ctx)
     result = await deployed.methods[functionName](...args).call()
+    console.log('after call')
+    // context.close()
     ctx.close()
   } catch (err) {
     throw err
   }
-
   return result
 }
 

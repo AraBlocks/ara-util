@@ -36,11 +36,11 @@ async function load(opts) {
   const { password } = opts
   const ctx = createContext()
   await new Promise((resolve, reject) => {
-        ctx.once('ready', async () => {
-        console.log('ready!')
-        resolve()
-      })
+    ctx.once('ready', () => {
+      console.log('account ctx ready')
+      resolve()
     })
+  })
   const { web3 } = ctx
 
   let account
@@ -50,11 +50,11 @@ async function load(opts) {
       publicKey,
       password
     })
-    ctx.close()
   } catch (err) {
     throw new Error(err)
   }
-
+  console.log('close account load')
+  ctx.close()
   return account
 }
 
