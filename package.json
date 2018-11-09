@@ -1,6 +1,6 @@
 {
   "name": "ara-util",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Utility functions for common Ara tasks",
   "main": "index.js",
   "scripts": {
