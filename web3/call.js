@@ -37,18 +37,9 @@ async function call(opts) {
 
   let result
   try {
-    // const ctx = createContext()
-    // await new Promise((resolve, reject) => {
-    //     ctx.once('ready', () => {
-    //       console.log('call ctx ready')
-    //     resolve()
-    //   })
-    // })
     console.log('before call')
-    // console.log(ctx)
     result = await deployed.methods[functionName](...args).call()
     console.log('after call')
-    // context.close()
     ctx.close()
   } catch (err) {
     throw err
