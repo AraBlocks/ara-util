@@ -47,7 +47,7 @@ async function deploy(opts) {
     const { contractAddress } = await tx.sendSignedTransaction(deployTx)
 
     return {
-      contractAddress
+      contractAddress,
       gasLimit
     }
   } catch (err) {
