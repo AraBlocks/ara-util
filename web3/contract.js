@@ -1,3 +1,4 @@
+const tx = require('./tx')
 const { web3 } = require('ara-context')()
 
 /**
@@ -36,11 +37,17 @@ async function deploy(opts) {
         arguments: args
       })
     const gasLimit = await contract.estimateGas()
+
+    const deployTx = await tx.create({
+      account,
+      gasLimit,
+      data: contract.encodeABI()
+    })
+
+    const { contractAddress } = await tx.sendSignedTransaction(deployTx)
+
     return {
-      contract: await contract.send({
-        from: address,
-        gas: gasLimit
-      }),
+      contractAddress
       gasLimit
     }
   } catch (err) {
