@@ -1,3 +1,16 @@
+# [0.7.0](https://github.com/arablocks/ara-util/compare/0.6.3...0.7.0) (2018-11-09)
+
+
+
+## [0.6.3](https://github.com/arablocks/ara-util/compare/0.6.2...0.6.3) (2018-11-09)
+
+
+### Bug Fixes
+
+* **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
+
+
+
 ## [0.6.2](https://github.com/arablocks/ara-util/compare/0.5.2...0.6.2) (2018-11-08)
 
 
