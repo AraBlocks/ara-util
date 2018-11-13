@@ -12,13 +12,13 @@ const createContext = require('ara-context')
  * @throws {Error,TypeError}
  */
 async function deploy(opts) {
-  const ctx = createContext()
+  const ctx1 = createContext()
   await new Promise((resolve) => {
-    ctx.once('ready', () => {
+    ctx1.once('ready', () => {
       resolve()
     })
   })
-  const { web3 } = ctx
+  const { web3 } = ctx1
 
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
@@ -33,7 +33,6 @@ async function deploy(opts) {
   }
 
   const { account, abi, bytecode } = opts
-  const { address } = account
   const args = opts.arguments || []
 
   let contract
@@ -44,16 +43,17 @@ async function deploy(opts) {
         data: bytecode,
         arguments: args
       })
+    ctx1.close()
     const gasLimit = await contract.estimateGas()
 
-    const { tx: deployTx, ctx } = await tx.create({
+    const { tx: deployTx, ctx: ctx2 } = await tx.create({
       account,
       gasLimit,
       data: contract.encodeABI()
     })
 
     const { contractAddress } = await tx.sendSignedTransaction(deployTx)
-    ctx.close()
+    ctx2.close()
     return {
       contractAddress,
       gasLimit
@@ -93,21 +93,21 @@ async function get(abi, address) {
 
 /**
  * Estimates the gas cost on an unsent transaction.
+ * @param  {Object} transaction
  * @param  {Object} opts
- * @param  {Object} opts.tx
  * @return {Number}
  * @throws {TypeError}
  */
-async function estimateGas(tx, opts) {
-  if (!tx || 'object' !== typeof tx) {
-    throw new TypeError('Expecting tx object')
-  } else if ('function' !== typeof tx.estimateGas) {
-    throw new TypeError('Expecting estimateGas function on tx object')
+async function estimateGas(transaction, opts) {
+  if (!transaction || 'object' !== typeof transaction) {
+    throw new TypeError('Expecting transaction object')
+  } else if ('function' !== typeof transaction.estimateGas) {
+    throw new TypeError('Expecting estimateGas function on transaction object')
   } else if (opts && 'object' !== typeof opts) {
     throw new TypeError('Expecting opts to be of type object')
   }
 
-  return tx.estimateGas(opts)
+  return transaction.estimateGas(opts)
 }
 
 module.exports = {
