@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 const tx = require('./tx')
-=======
->>>>>>> 9e5d70dfb772849d5b86c1e0d8e7aa8800ff55e5
 const createContext = require('ara-context')
 
 /**
