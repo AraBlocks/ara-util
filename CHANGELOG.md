@@ -1,4 +1,4 @@
-## [0.7.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.7.1) (2018-11-09)
+## [0.7.2](https://github.com/arablocks/ara-util/compare/0.6.2...0.7.2) (2018-11-13)
 
 
 ### Bug Fixes
