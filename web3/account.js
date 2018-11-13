@@ -35,7 +35,7 @@ async function load(opts) {
   const { identifier: publicKey } = spec
   const { password } = opts
   const ctx = createContext()
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     ctx.once('ready', () => {
       resolve()
     })

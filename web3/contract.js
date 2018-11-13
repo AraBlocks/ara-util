@@ -13,7 +13,7 @@ const createContext = require('ara-context')
  */
 async function deploy(opts) {
   const ctx = createContext()
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     ctx.once('ready', () => {
       resolve()
     })
@@ -73,7 +73,7 @@ async function deploy(opts) {
  */
 async function get(abi, address) {
   const ctx = createContext()
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     ctx.once('ready', () => {
       resolve()
     })
@@ -86,7 +86,7 @@ async function get(abi, address) {
     throw new TypeError('Expecting valid Ethereum address.')
   }
   const contract = new web3.eth.Contract(abi, address)
-  return { 
+  return {
     contract,
     ctx
   }
