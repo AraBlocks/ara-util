@@ -25,7 +25,7 @@ function encodeFunctionCall(abi, functionName, values) {
   if (values && values.length !== inputs.length) {
     throw new Error('Provided args count does not match ABI count')
   }
-  let { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ loadProvider: false })
   const encodedFunctionCall = web3.eth.abi.encodeFunctionCall(jsonInterface, values)
   return encodedFunctionCall
 }
@@ -43,7 +43,7 @@ function encodeParameter(type, parameter) {
   } else if (!parameter) {
     throw new TypeError('Parameter cannot be null')
   }
-  let { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ loadProvider: false })
   const encodedParameter = web3.eth.abi.encodeParameter(type, parameter)
   return encodedParameter
 }
@@ -61,7 +61,7 @@ function encodeParameters(typesArray, parameters) {
   } else if (!parameters || !Array.isArray(parameters)) {
     throw new TypeError('Parameters must be valid array')
   }
-  let { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ loadProvider: false })
   const encodedParameters = web3.eth.abi.encodeParameters(typesArray, parameters)
   return encodedParameters
 }
