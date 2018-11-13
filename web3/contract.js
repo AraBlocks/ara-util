@@ -14,8 +14,7 @@ const createContext = require('ara-context')
 async function deploy(opts) {
   const ctx = createContext()
   await new Promise((resolve, reject) => {
-      ctx.once('ready', () => {
-        console.log('deploy ctx ready')
+    ctx.once('ready', () => {
       resolve()
     })
   })
@@ -75,13 +74,11 @@ async function deploy(opts) {
 async function get(abi, address) {
   const ctx = createContext()
   await new Promise((resolve, reject) => {
-      ctx.once('ready', () => {
-        console.log('get ctx ready')
+    ctx.once('ready', () => {
       resolve()
     })
   })
   const { web3 } = ctx
-  // let { web3 } = createContext({ loadProvider: false })
 
   if (!abi || !Array.isArray(abi)) {
     throw new TypeError('Contract ABI must be valid object array.')
@@ -89,7 +86,6 @@ async function get(abi, address) {
     throw new TypeError('Expecting valid Ethereum address.')
   }
   const contract = new web3.eth.Contract(abi, address)
-  // ctx.close()
   return { 
     contract,
     ctx

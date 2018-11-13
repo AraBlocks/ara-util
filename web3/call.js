@@ -26,9 +26,7 @@ async function call(opts) {
   }
 
   const { abi, address, functionName } = opts
-  console.log('before get')
   const { contract: deployed, ctx } = await get(abi, address)
-  console.log('after get')
   if (!Object.prototype.hasOwnProperty.call(deployed.methods, functionName)) {
     throw new Error('Methods does not contain', functionName)
   }
@@ -37,9 +35,7 @@ async function call(opts) {
 
   let result
   try {
-    console.log('before call')
     result = await deployed.methods[functionName](...args).call()
-    console.log('after call')
     ctx.close()
   } catch (err) {
     throw err
