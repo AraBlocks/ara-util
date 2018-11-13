@@ -106,7 +106,7 @@ async function getAddressFromDID(did, keyringOpts = {}) {
       const { type } = element
       return type === kSecp256k1VerificationKey2018
     })
-    const { web3 } = createContext({ loadProvider: false })
+
     const hashpk = web3.sha3(`0x${publicKeyHex}`)
     return web3.ethify(hashpk.slice(-ETH_ADDRESS_LENGTH))
   } catch (err) {
