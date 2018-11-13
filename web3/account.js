@@ -37,7 +37,6 @@ async function load(opts) {
   const ctx = createContext()
   await new Promise((resolve, reject) => {
     ctx.once('ready', () => {
-      console.log('account ctx ready')
       resolve()
     })
   })
@@ -53,7 +52,6 @@ async function load(opts) {
   } catch (err) {
     throw new Error(err)
   }
-  console.log('close account load')
   ctx.close()
   return account
 }
