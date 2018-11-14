@@ -26,11 +26,7 @@ async function create(opts, signTx = true) {
   }
 
   const ctx = createContext()
-  await new Promise((resolve) => {
-    ctx.once('ready', () => {
-      resolve()
-    })
-  })
+  await ctx.ready()
   const { web3 } = ctx
   if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
     throw new TypeError('Expecting \'to\' to be valid Ethereum address')
@@ -143,7 +139,7 @@ function estimateCost(tx, denomination = 'ether') {
   }
 
   const cost = tx.getUpfrontCost().toString()
-  const { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ provider: false })
   return web3.utils.fromWei(cost, denomination)
 }
 
@@ -160,11 +156,7 @@ async function _send(tx, signed) {
     throw new Error('Trying to send an unsigned transaction, but tx object is signed.')
   }
   const ctx = createContext()
-  await new Promise((resolve) => {
-    ctx.once('ready', () => {
-      resolve()
-    })
-  })
+  await ctx.ready()
   const { web3 } = ctx
   if (!_isSerialized(tx) && signed) {
     tx = web3.utils.bytesToHex(tx.serialize())
@@ -190,7 +182,7 @@ async function _send(tx, signed) {
  * @return {Boolean}
  */
 function _isSerialized(tx) {
-  const { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ provider: false })
   return 'string' === typeof tx && web3.utils.isHex(tx)
 }
 

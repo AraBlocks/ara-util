@@ -13,12 +13,8 @@ const createContext = require('ara-context')
  */
 async function deploy(opts) {
   const ctx1 = createContext()
-  await new Promise((resolve) => {
-    ctx1.once('ready', () => {
-      resolve()
-    })
-  })
-  const { web3 } = ctx1
+  await ctx1.ready()
+  let { web3 } = ctx1
 
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
@@ -43,8 +39,8 @@ async function deploy(opts) {
         data: bytecode,
         arguments: args
       })
-    ctx1.close()
     const gasLimit = await contract.estimateGas()
+    ctx1.close()
 
     const { tx: deployTx, ctx: ctx2 } = await tx.create({
       account,
@@ -72,11 +68,7 @@ async function deploy(opts) {
  */
 async function get(abi, address) {
   const ctx = createContext()
-  await new Promise((resolve) => {
-    ctx.once('ready', () => {
-      resolve()
-    })
-  })
+  await ctx.ready()
   const { web3 } = ctx
 
   if (!abi || !Array.isArray(abi)) {

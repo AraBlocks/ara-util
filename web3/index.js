@@ -12,7 +12,7 @@ const tx = require('./tx')
  * @return {Boolean}
  */
 function isAddress(address) {
-  const { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ provider: false })
   return Boolean(address && 'string' === typeof address && web3.utils.isAddress(address))
 }
 
@@ -26,7 +26,7 @@ function sha3(params) {
   if (!params || 0 === arguments.length) {
     throw new Error('Must provide arguments or object')
   }
-  const { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ provider: false })
 
   return web3.utils.soliditySha3(params)
 }

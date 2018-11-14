@@ -12,7 +12,7 @@ const { get } = require('./contract')
  * @throws {Error,TypeError}
  */
 async function call(opts) {
-  const { web3 } = createContext({ loadProvider: false })
+  const { web3 } = createContext({ provider: false })
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.abi || !Array.isArray(opts.abi)) {
