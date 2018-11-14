@@ -14,7 +14,7 @@ const createContext = require('ara-context')
 async function deploy(opts) {
   const ctx1 = createContext()
   await ctx1.ready()
-  let { web3 } = ctx1
+  const { web3 } = ctx1
 
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
