@@ -1,10 +1,22 @@
-## [0.7.2](https://github.com/arablocks/ara-util/compare/0.6.2...0.7.2) (2018-11-13)
+# [0.8.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.8.0) (2018-11-15)
 
 
 ### Bug Fixes
 
+* lint ([becae01](https://github.com/arablocks/ara-util/commit/becae01))
+* lint ([6512385](https://github.com/arablocks/ara-util/commit/6512385))
+* lint ([9e5d70d](https://github.com/arablocks/ara-util/commit/9e5d70d))
+* lint ([59db89b](https://github.com/arablocks/ara-util/commit/59db89b))
+* open and close context on demand ([d99a2ed](https://github.com/arablocks/ara-util/commit/d99a2ed))
+* open and close context on demand ([283cc59](https://github.com/arablocks/ara-util/commit/283cc59))
+* open and close context on demand ([e9f05ff](https://github.com/arablocks/ara-util/commit/e9f05ff))
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
+* seems to be working ([c490348](https://github.com/arablocks/ara-util/commit/c490348))
+* seems to be working ([88a4633](https://github.com/arablocks/ara-util/commit/88a4633))
+* seems to be working ([2790f81](https://github.com/arablocks/ara-util/commit/2790f81))
+* unnecessary ara-context usage ([5d14a2c](https://github.com/arablocks/ara-util/commit/5d14a2c))
+* unnecessary ara-context usage ([1fc9e28](https://github.com/arablocks/ara-util/commit/1fc9e28))
 
 
 
@@ -13,7 +25,9 @@
 
 ### Bug Fixes
 
+* open and close context on demand ([03ae593](https://github.com/arablocks/ara-util/commit/03ae593))
 * remove unncessary owner in validate ([be907f5](https://github.com/arablocks/ara-util/commit/be907f5))
+* seems to be working ([4288939](https://github.com/arablocks/ara-util/commit/4288939))
 
 
 ### Features

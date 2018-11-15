@@ -1,5 +1,5 @@
 const tx = require('./tx')
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 
 /**
  * Deploys a new contract to the provided network.
@@ -12,6 +12,10 @@ const { web3 } = require('ara-context')()
  * @throws {Error,TypeError}
  */
 async function deploy(opts) {
+  const ctx1 = createContext()
+  await ctx1.ready()
+  const { web3 } = ctx1
+
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.account || 'object' !== typeof opts.account) {
@@ -25,7 +29,6 @@ async function deploy(opts) {
   }
 
   const { account, abi, bytecode } = opts
-  const { address } = account
   const args = opts.arguments || []
 
   let contract
@@ -37,15 +40,16 @@ async function deploy(opts) {
         arguments: args
       })
     const gasLimit = await contract.estimateGas()
+    ctx1.close()
 
-    const deployTx = await tx.create({
+    const { tx: deployTx, ctx: ctx2 } = await tx.create({
       account,
       gasLimit,
       data: contract.encodeABI()
     })
 
     const { contractAddress } = await tx.sendSignedTransaction(deployTx)
-
+    ctx2.close()
     return {
       contractAddress,
       gasLimit
@@ -62,33 +66,40 @@ async function deploy(opts) {
  * @return {Object}
  * @throws {TypeError}
  */
-function get(abi, address) {
+async function get(abi, address) {
+  const ctx = createContext()
+  await ctx.ready()
+  const { web3 } = ctx
+
   if (!abi || !Array.isArray(abi)) {
     throw new TypeError('Contract ABI must be valid object array.')
   } else if (!address || !web3.utils.isAddress(address)) {
     throw new TypeError('Expecting valid Ethereum address.')
   }
-
-  return new web3.eth.Contract(abi, address)
+  const contract = new web3.eth.Contract(abi, address)
+  return {
+    contract,
+    ctx
+  }
 }
 
 /**
  * Estimates the gas cost on an unsent transaction.
+ * @param  {Object} transaction
  * @param  {Object} opts
- * @param  {Object} opts.tx
  * @return {Number}
  * @throws {TypeError}
  */
-async function estimateGas(tx, opts) {
-  if (!tx || 'object' !== typeof tx) {
-    throw new TypeError('Expecting tx object')
-  } else if ('function' !== typeof tx.estimateGas) {
-    throw new TypeError('Expecting estimateGas function on tx object')
+async function estimateGas(transaction, opts) {
+  if (!transaction || 'object' !== typeof transaction) {
+    throw new TypeError('Expecting transaction object')
+  } else if ('function' !== typeof transaction.estimateGas) {
+    throw new TypeError('Expecting estimateGas function on transaction object')
   } else if (opts && 'object' !== typeof opts) {
     throw new TypeError('Expecting opts to be of type object')
   }
 
-  return tx.estimateGas(opts)
+  return transaction.estimateGas(opts)
 }
 
 module.exports = {

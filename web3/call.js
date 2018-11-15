@@ -1,4 +1,4 @@
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 const { get } = require('./contract')
 
 /**
@@ -12,6 +12,7 @@ const { get } = require('./contract')
  * @throws {Error,TypeError}
  */
 async function call(opts) {
+  const { web3 } = createContext({ provider: false })
   if (!opts || 'object' !== typeof opts) {
     throw new TypeError('Expecting opts object.')
   } else if (!opts.abi || !Array.isArray(opts.abi)) {
@@ -25,8 +26,7 @@ async function call(opts) {
   }
 
   const { abi, address, functionName } = opts
-  const deployed = get(abi, address)
-
+  const { contract: deployed, ctx } = await get(abi, address)
   if (!Object.prototype.hasOwnProperty.call(deployed.methods, functionName)) {
     throw new Error('Methods does not contain', functionName)
   }
@@ -36,10 +36,10 @@ async function call(opts) {
   let result
   try {
     result = await deployed.methods[functionName](...args).call()
+    ctx.close()
   } catch (err) {
     throw err
   }
-
   return result
 }
 

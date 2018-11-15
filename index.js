@@ -3,7 +3,6 @@ const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const transform = require('./transform')
 const ss = require('ara-secret-storage')
-const context = require('ara-context')()
 const { deprecate } = require('util')
 const aid = require('ara-identity')
 const { resolve } = require('path')
@@ -106,6 +105,7 @@ async function getAddressFromDID(did, keyringOpts = {}) {
       const { type } = element
       return type === kSecp256k1VerificationKey2018
     })
+
     const hashpk = web3.sha3(`0x${publicKeyHex}`)
     return web3.ethify(hashpk.slice(-ETH_ADDRESS_LENGTH))
   } catch (err) {
@@ -210,7 +210,7 @@ async function getAFSOwnerIdentity(opts) {
   const ddo = await aid.resolve(did, keyringOpts)
   const owner = getDocumentOwner(ddo)
   return aid.create({
-    context, mnemonic, owner, password
+    mnemonic, owner, password
   })
 }
 

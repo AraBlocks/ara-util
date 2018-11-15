@@ -1,4 +1,4 @@
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 
 /**
  * Encodes a deployed contract's function into an ABI signature
@@ -25,8 +25,9 @@ function encodeFunctionCall(abi, functionName, values) {
   if (values && values.length !== inputs.length) {
     throw new Error('Provided args count does not match ABI count')
   }
-
-  return web3.eth.abi.encodeFunctionCall(jsonInterface, values)
+  const { web3 } = createContext({ provider: false })
+  const encodedFunctionCall = web3.eth.abi.encodeFunctionCall(jsonInterface, values)
+  return encodedFunctionCall
 }
 
 /**
@@ -42,8 +43,9 @@ function encodeParameter(type, parameter) {
   } else if (!parameter) {
     throw new TypeError('Parameter cannot be null')
   }
-
-  return web3.eth.abi.encodeParameter(type, parameter)
+  const { web3 } = createContext({ provider: false })
+  const encodedParameter = web3.eth.abi.encodeParameter(type, parameter)
+  return encodedParameter
 }
 
 /**
@@ -59,8 +61,9 @@ function encodeParameters(typesArray, parameters) {
   } else if (!parameters || !Array.isArray(parameters)) {
     throw new TypeError('Parameters must be valid array')
   }
-
-  return web3.eth.abi.encodeParameters(typesArray, parameters)
+  const { web3 } = createContext({ provider: false })
+  const encodedParameters = web3.eth.abi.encodeParameters(typesArray, parameters)
+  return encodedParameters
 }
 
 module.exports = {

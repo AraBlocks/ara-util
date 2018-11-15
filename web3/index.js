@@ -1,18 +1,18 @@
 const { toHexString, toBuffer } = require('../transform')
 const { deprecate } = require('util')
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 const contract = require('./contract')
 const account = require('./account')
 const { call } = require('./call')
 const abi = require('./abi')
 const tx = require('./tx')
-
 /**
  * Returns whether a hex address is a valid Ethereum address.
  * @param  {String}  address
  * @return {Boolean}
  */
 function isAddress(address) {
+  const { web3 } = createContext({ provider: false })
   return Boolean(address && 'string' === typeof address && web3.utils.isAddress(address))
 }
 
@@ -26,6 +26,7 @@ function sha3(params) {
   if (!params || 0 === arguments.length) {
     throw new Error('Must provide arguments or object')
   }
+  const { web3 } = createContext({ provider: false })
 
   return web3.utils.soliditySha3(params)
 }
