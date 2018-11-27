@@ -31,7 +31,16 @@ function sha3(params) {
   return web3.utils.soliditySha3(params)
 }
 
+/**
+ * Returns a context object containing a web3 instance
+ * @param {Boolean} provider - Whether a web3 provider should be created
+ */
+function getContext(provider = true) {
+  return createContext({ provider })
+}
+
 module.exports = {
+  getContext,
   ethify: deprecate((input, hexify) => {
     if (hexify) return toHexString(input, { encoding: 'utf8', ethify: true })
     return toHexString(input, { encoding: 'hex', ethify: true })
