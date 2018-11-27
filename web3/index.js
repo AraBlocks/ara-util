@@ -32,8 +32,9 @@ function sha3(params) {
 }
 
 /**
- * Returns a context object containing a web3 instance
- * @param {Boolean} provider - Whether a web3 provider should be created
+ * Returns an Ara context object containing a Web3 instance
+ * @param  {Boolean} provider - Whether a Web3 provider should be created
+ * @return {Object}
  */
 function getContext(provider = true) {
   return createContext({ provider })
