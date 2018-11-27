@@ -11,8 +11,13 @@ const kGasLimit = 100000
  * Creates an EthereumTx object
  * @param  {Object}        opts
  * @param  {Object}        opts.account
- * @param  {Object}        opts.to
+ * @param  {String}        opts.to
+ * @param  {Object}        opts.data
+ * @param  {Object}        opts.data.abi
+ * @param  {String}        opts.data.functionName
+ * @param  {Array}         opts.data.values
  * @param  {String|Number} [opts.gasPrice]
+ * @param  {String|Number} [opts.gasLimit]
  * @param  {Boolean}       signTx
  * @return {Object}
  */
