@@ -42,23 +42,23 @@ test('deploy(opts) invalid opts', async (t) => {
   const account = getAccount(t)
 
   // validate opts
-  await t.throws(deploy(), TypeError, 'Expecting opts object.')
+  await t.throwsAsync(deploy(), TypeError, 'Expecting opts object.')
 
   // validate account
-  await t.throws(deploy({ account: { } }), TypeError, 'Expecting valid Ethereum account object.')
-  await t.throws(deploy({ account: 'myAccount' }), TypeError, 'Expecting valid Ethereum account object.')
+  await t.throwsAsync(deploy({ account: { } }), TypeError, 'Expecting valid Ethereum account object.')
+  await t.throwsAsync(deploy({ account: 'myAccount' }), TypeError, 'Expecting valid Ethereum account object.')
 
   // validate abi
-  await t.throws(deploy({ account, abi: { } }), TypeError, 'Contract ABI must be valid objects array.')
-  await t.throws(deploy({ account, abi: 'myAbi' }), TypeError, 'Contract ABI must be valid objects array.')
+  await t.throwsAsync(deploy({ account, abi: { } }), TypeError, 'Contract ABI must be valid objects array.')
+  await t.throwsAsync(deploy({ account, abi: 'myAbi' }), TypeError, 'Contract ABI must be valid objects array.')
 
   // validate bytecode
   const { abi, bytecode } = testWithoutArg
   const nonHexBytecode = Number(bytecode)
-  await t.throws(deploy({ account, abi, bytecode: nonHexBytecode }))
+  await t.throwsAsync(deploy({ account, abi, bytecode: nonHexBytecode }))
 
   // validate args
-  await t.throws(
+  await t.throwsAsync(
     deploy({
       account, abi, bytecode, arguments: 'myArguments'
     }),
@@ -126,17 +126,17 @@ test('estimateGas(opts) invalid opts', async (t) => {
   const { options } = await deploy({ account, abi, bytecode })
 
   // validate tx
-  await t.throws(estimateGas(), TypeError, 'Expecting tx object')
-  await t.throws(estimateGas('tx'), TypeError, 'Expecting tx to be of type object')
+  await t.throwsAsync(estimateGas(), TypeError, 'Expecting tx object')
+  await t.throwsAsync(estimateGas('tx'), TypeError, 'Expecting tx to be of type object')
 
   // // validate estimateGas function
   const contract = get(abi, options.address)
   const tx = contract.methods.setNumber(40)
   delete tx.estimateGas
-  await t.throws(estimateGas(tx), TypeError, 'Expecting estimateGas function on tx object')
+  await t.throwsAsync(estimateGas(tx), TypeError, 'Expecting estimateGas function on tx object')
 
   // validate opts
-  await t.throws(estimateGas(tx, 'opts'), TypeError, 'Expecting opts to be of type object')
+  await t.throwsAsync(estimateGas(tx, 'opts'), TypeError, 'Expecting opts to be of type object')
 })
 
 test('estimateGas(opts) valid opts', async (t) => {

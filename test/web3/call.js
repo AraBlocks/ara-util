@@ -38,22 +38,22 @@ test('call(opts) invalid opts', async (t) => {
   const functionName = 'getNumber'
 
   // validate opts
-  await t.throws(call(), TypeError, 'Expecting opts object.')
+  await t.throwsAsync(call(), TypeError, 'Expecting opts object.')
 
   // validate abi
-  await t.throws(call({ }, TypeError, 'Contract ABI must be valid object array.'))
-  await t.throws(call({ abi: 'myAbi' }), TypeError, 'Contract ABI must be valid object array.')
+  await t.throwsAsync(call({ }, TypeError, 'Contract ABI must be valid object array.'))
+  await t.throwsAsync(call({ abi: 'myAbi' }), TypeError, 'Contract ABI must be valid object array.')
 
   // validate address
-  await t.throws(call({ abi }), TypeError, 'Address must be valid Ethereum address.')
-  await t.throws(call({ abi, address: 1234 }), TypeError, 'Address must be valid Ethereum address.')
+  await t.throwsAsync(call({ abi }), TypeError, 'Address must be valid Ethereum address.')
+  await t.throwsAsync(call({ abi, address: 1234 }), TypeError, 'Address must be valid Ethereum address.')
 
   // validate functionName
-  await t.throws(call({ abi, address, functionName: 1234 }), TypeError, 'Function name must be non-empty string.')
-  await t.throws(call({ abi, address, functionName: 'doesntExist' }), Error, 'Method doesn\'t exist on ABI.')
+  await t.throwsAsync(call({ abi, address, functionName: 1234 }), TypeError, 'Function name must be non-empty string.')
+  await t.throwsAsync(call({ abi, address, functionName: 'doesntExist' }), Error, 'Method doesn\'t exist on ABI.')
 
   // validate arguments
-  await t.throws(call({
+  await t.throwsAsync(call({
     abi, address, functionName, arguments: 'myArg'
   }), TypeError, 'Arguments is not a valid array.')
 })
