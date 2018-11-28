@@ -1,5 +1,7 @@
 const constants = require('./fixtures/constants')
+const hasDIDMethod = require('has-did-method')
 const context = require('ara-context')()
+const { parse } = require('path')
 const sinon = require('sinon')
 const test = require('ava')
 const aid = require('ara-identity')
@@ -17,6 +19,14 @@ test.before((t) => {
   t.context.sandbox.stub(fs, 'lstat').callsFake((_, cb) => cb(null, { ctime: 10 }))
 
   t.context.sandbox.stub(aid, 'resolve').callsFake(() => t.context.ddo)
+
+  t.context.sandbox.stub(fs, 'accessSync').callsFake((path, __) => {
+    if ('b4dd4eedb83933b6e013971585befe56e26e4f0a875aea0938f406563e53eadb' === parse(path).base) {
+      throw new Error()
+    } else if ('971ffa1bd45e6ada6543d19830272ec61253adac8043b16fd99f9d5c744b44b4' === parse(path).base) {
+      return true
+    }
+  })
 
   t.context.sandbox.stub(aid, 'create').callsFake((opts) => {
     const { mnemonic, identity: owner, password } = t.context
@@ -41,7 +51,7 @@ const util = require('../')
 
 test('hashIdentity(did, encoding) invalid params', (t) => {
   t.throws(() => util.hashDID(), TypeError)
-  t.throws(() => util.hashDID(1234), TypeError)
+  t.throws(() => util.hashDID(1234), Error)
   t.throws(() => util.hashDID(t.context.identity, 1234), TypeError)
   t.throws(() => util.hashDID(t.context.identity, 'wrongEncoding'), TypeError)
 })
@@ -153,8 +163,7 @@ test('validate(opts) invalid opts', async (t) => {
   await t.throwsAsync(util.validate({
     did: '123',
     owner: 'test',
-    password: t.context.password,
-    secret: '10',
+    password: t.context.password
   }), Error)
 })
 
@@ -179,8 +188,6 @@ test('checkAFSExistence(opts) invalid opts', async (t) => {
 })
 
 test('checkAFSExistence(opts)', (t) => {
-  // TODO(@maddie): Fix this to use mocking once that branch (https://github.com/AraBlocks/ara-util/pull/26) gets merged
-
   t.false(util.checkAFSExistence({ did: '123' }))
   t.true(util.checkAFSExistence({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
 })
