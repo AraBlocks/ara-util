@@ -1,4 +1,4 @@
-## [0.9.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.1) (2018-11-28)
+## [0.9.2](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.2) (2018-11-28)
 
 
 ### Bug Fixes
@@ -6,6 +6,8 @@
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
+* make arg optional ([37fa779](https://github.com/arablocks/ara-util/commit/37fa779))
+* make arg optional ([5dd97eb](https://github.com/arablocks/ara-util/commit/5dd97eb))
 
 
 ### Features
