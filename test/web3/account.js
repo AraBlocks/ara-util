@@ -1,5 +1,4 @@
 const test = require('ava')
-const context = require('ara-context')()
 const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
 const account = require('../../web3/account')
@@ -12,7 +11,7 @@ const {
 } = require('./_util')
 
 test.before(async (t) => {
-  const identity = await create({ context, password: kPassword })
+  const identity = await create({ password: kPassword })
   await writeIdentity(identity)
   t.context = {
     account: identity.account,

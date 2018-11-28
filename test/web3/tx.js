@@ -1,6 +1,6 @@
 const test = require('ava')
 const tx = require('../../web3/tx')
-const context = require('ara-context')()
+const createContext = require('ara-context')
 const { deploy } = require('../../web3/contract')
 const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
@@ -14,22 +14,25 @@ const {
 } = require('./_util')
 
 test.before(async (t) => {
-  const identity = await create({ context, password: kPassword })
+  const identity = await create({ password: kPassword })
   await writeIdentity(identity)
   const { account } = identity
 
   // give account some ETH to be able to deploy
-  const { web3 } = context
+  const ctx = createContext()
+  await ctx.ready()
+  const { web3 } = ctx
   const defaultAccounts = await web3.eth.getAccounts()
   const { address } = account
   const oneEthInWei = web3.utils.toWei('1', 'ether')
+  ctx.close()
   await supplyAccount(address, defaultAccounts, oneEthInWei)
 
   // deploy
-  const { options } = await deploy({ account, abi, bytecode })
+  const options = await deploy({ account, abi, bytecode })
   t.context = {
-    address: options.address,
-    abi: options.jsonInterface,
+    address: options.contractAddress,
+    abi,
     account
   }
 })
