@@ -1,4 +1,4 @@
-const { web3 } = require('ara-context')()
+const createContext = require('ara-context')
 
 module.exports = {
 
@@ -17,6 +17,10 @@ module.exports = {
   },
 
   async supplyAccount(address, accounts, transferAmount) {
+    const ctx = createContext()
+    await ctx.ready()
+    const { web3 } = ctx
+
     let balance = 0
     let i = 0
     while (balance < 1) {
@@ -32,6 +36,7 @@ module.exports = {
     if (accounts[i]) {
       await web3.eth.sendTransaction({ from: accounts[i], to: address, value: transferAmount })
     }
+    ctx.close()
   }
 
 }

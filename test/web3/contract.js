@@ -1,7 +1,7 @@
 const test = require('ava')
 const { call } = require('../../web3/call')
 const { deploy, get, estimateGas } = require('../../web3/contract')
-const context = require('ara-context')()
+const createContext = require('ara-context')
 const { create } = require('ara-identity')
 const { writeIdentity } = require('ara-identity/util')
 const testWithArg = require('../../build/contracts/Test1.json')
@@ -14,25 +14,27 @@ const {
 } = require('./_util')
 
 test.before(async (t) => {
-  const identity = await create({ context, password: kPassword })
+  const identity = await create({ password: kPassword })
   await writeIdentity(identity)
   t.context = { account: identity.account }
 
   // give account some ETH to be able to deploy
-  const { web3 } = context
+  const ctx = createContext()
+  await ctx.ready()
+  const { web3 } = ctx
   const defaultAccounts = await web3.eth.getAccounts()
   const { address } = t.context.account
   const oneEthInWei = web3.utils.toWei('1', 'ether')
-
+  ctx.close()
   await supplyAccount(address, defaultAccounts, oneEthInWei)
 
   // deploy test contract
   const { abi, bytecode } = testWithoutArg
-  const { options } = await deploy({ account: identity.account, abi, bytecode })
+  const options = await deploy({ account: identity.account, abi, bytecode })
   t.context = {
     account: identity.account,
-    abi: options.jsonInterface,
-    address: options.address
+    abi,
+    address: options.contractAddress
   }
 })
 
@@ -70,7 +72,7 @@ test.serial('deploy(opts) valid opts without constructor', async (t) => {
   const result = await deploy({ account, abi, bytecode })
   t.true('object' === typeof result)
 
-  const { web3 } = context
+  const { web3 } = createContext({ provider: false })
   const { address, jsonInterface } = result.options
   t.true(null !== address && web3.utils.isAddress(address))
   t.true(null !== jsonInterface && Array.isArray(jsonInterface))
