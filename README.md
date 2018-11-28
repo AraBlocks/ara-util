@@ -31,7 +31,6 @@ correctness. If given incorrect input, a function will throw a
 * [async util.getAFSOwnerIdentity(opts)](#getAFSOwnerIdentity)
 * [async util.getAddressFromDID(did, keyringOpts)](#getaddress)
 * [async util.isCorrectPassword(opts)](#isCorrectPassword)
-* [async util.resolveDDO(did, \[opts\])](#resolveDDO)
 * [async util.validate(opts)](#validate)
 * [util.checkAFSExistence(opts)](#checkafs)
 * [util.getDocumentKeyHex(ddo)](#getDocumentKeyHex)
@@ -209,6 +208,19 @@ Returns the identifier portion of a `DID`.
 const identifier = util.getIdentifier('did:ara:14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e') // 14078363f2d9aa0d269827261544e598d8bf11c66f88e49d05e85bd3d181ec8e
 ```
 
+<a name="toBuffer"></a>
+### `util.transform.toBuffer(input, [encoding])`
+
+Converts a `string` to a `buffer`.
+
+- `input` - `string` to convert
+- `encoding` - Encoding of string for conversion
+
+```js
+const buf = util.web3.toBuffer('hi')
+// <Buffer 68 69>
+```
+
 <a name="toHexString"></a>
 ### `util.transform.toHexString(input, [opts])`
 
@@ -222,19 +234,6 @@ Prepend `0x` to a hex string for passing to Solidity contract functions.
 ```js
 const str = util.transform.toHexString('ef61059258414a65bf2d94a4fd3b503b5fee8b48', { encoding: 'hex', ethify: true })
 // 0xef61059258414a65bf2d94a4fd3b503b5fee8b48
-```
-
-<a name="toBuffer"></a>
-### `util.transform.toBuffer(input, [encoding])`
-
-Converts a `string` to a `buffer`.
-
-- `input` - `string` to convert
-- `encoding` - Encoding of string for conversion
-
-```js
-const buf = util.web3.toBuffer('hi')
-// <Buffer 68 69>
 ```
 
 <a name="load"></a>
@@ -268,6 +267,29 @@ Returns the result of the `call`.
 const { abi } = require('./build/contracts/MyContract.json')
 const contractAddress = '0xef61059258414a65bf2d94a4fd3b503b5fee8b48'
 const result = await call({ abi, address: contractAddress, functionName: 'myContractFunction' })
+```
+
+<a name="isAddress"></a>
+### `util.web3.isAddress(address)`
+
+Validates whether a hex string is a valid Ethereum address.
+
+- `address` - string to validate
+
+```js
+let isAddress = util.web3.isAddress('0xef61059258414a65bf2d94a4fd3b503b5fee8b48') // true
+isAddress = util.web3.isAddress('Hello') // false
+```
+
+<a name="sha3"></a>
+### `util.web3.sha3(params)`
+
+`ABI` encodes and `SHA3` hashes given parameters.
+
+- `params` - Parameters of any type or object containing parameters
+
+```js
+const result = util.web3.sha3({ param1: 1, param2: 2 })
 ```
 
 <a name="deploy"></a>
@@ -463,29 +485,6 @@ Returns the encoded parameters as a `String`.
 
 ```js
 const encoded = util.web3.abi.encodeParameter(['bytes', 'string'], ['0xFF', 'Hello'])
-```
-
-<a name="isAddress"></a>
-### `util.web3.isAddress(address)`
-
-Validates whether a hex string is a valid Ethereum address.
-
-- `address` - string to validate
-
-```js
-let isAddress = util.web3.isAddress('0xef61059258414a65bf2d94a4fd3b503b5fee8b48') // true
-isAddress = util.web3.isAddress('Hello') // false
-```
-
-<a name="sha3"></a>
-### `util.web3.sha3(params)`
-
-`ABI` encodes and `SHA3` hashes given parameters.
-
-- `params` - Parameters of any type or object containing parameters
-
-```js
-const result = util.web3.sha3({ param1: 1, param2: 2 })
 ```
 
 ## Contributing
