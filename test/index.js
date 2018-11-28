@@ -1,10 +1,9 @@
 const constants = require('./fixtures/constants')
-const hasDIDMethod = require('has-did-method')
-const context = require('ara-context')()
+const createContext = require('ara-context')
+const aid = require('ara-identity')
 const { parse } = require('path')
 const sinon = require('sinon')
 const test = require('ava')
-const aid = require('ara-identity')
 const fs = require('fs')
 
 const getDDO = t => t.context.ddo
@@ -57,7 +56,7 @@ test('hashIdentity(did, encoding) invalid params', (t) => {
 })
 
 test('hashIdentity(did, encoding) valid identity', (t) => {
-  const { web3 } = context
+  const { web3 } = createContext({ provider: false })
   let result = util.hashDID(t.context.identity)
   t.true('string' === typeof result)
   t.true(web3.utils.isHex(result))
@@ -67,13 +66,13 @@ test('hashIdentity(did, encoding) valid identity', (t) => {
   t.true(web3.utils.isHex(result))
 })
 
-test('normalize(did) invalid did', (t) => {
-  t.throws(() => util.normalize(), TypeError)
-  t.throws(() => util.normalize(1234), TypeError)
+test('getIdentifier(did) invalid did', (t) => {
+  t.throws(() => util.getIdentifier(), TypeError)
+  t.throws(() => util.getIdentifier(1234), TypeError)
 })
 
-test('normalize(did) valid normalize', (t) => {
-  const normalized = util.normalize(t.context.identity)
+test('getIdentifier(did) valid identifier', (t) => {
+  const normalized = util.getIdentifier(t.context.identity)
 
   t.true(!normalized.includes(t.context.aidPrefix))
 })
@@ -120,7 +119,7 @@ test('getDocumentKeyHex(ddo) invalid ddo', (t) => {
 
 test('getDocumentKeyHex(ddo) valid ddo', (t) => {
   const ddo = getDDO(t)
-  const { web3 } = context
+  const { web3 } = createContext({ provider: false })
   const publicKeyHex = util.getDocumentKeyHex(ddo)
   t.true(publicKeyHex && 'string' === typeof publicKeyHex)
   t.true(web3.utils.isHex(publicKeyHex))
@@ -133,8 +132,8 @@ test('hash(str, encoding) invalid', (t) => {
 })
 
 test('hash(str, encoding) valid hash', (t) => {
-  const { web3 } = context
-  const hashed = util.hash(util.normalize(t.context.identity))
+  const { web3 } = createContext({ provider: false })
+  const hashed = util.hash(util.getIdentifier(t.context.identity))
   t.true(hashed && 'string' === typeof hashed)
   t.true(web3.utils.isHex(hashed))
 })
