@@ -1,4 +1,4 @@
-const { MissingOptionError } = require('../errors')
+const { MissingParamError } = require('../errors')
 const { resolve } = require('path')
 const constants = require('./fixtures/constants')
 const sinon = require('sinon')
@@ -48,26 +48,26 @@ test('getSecret(opts) invalid opts', async (t) => {
     password, keyring: keyringPath, identity: did
   } = t.context
 
-  await t.throwsAsync(keyring.getSecret(), MissingOptionError)
+  await t.throwsAsync(keyring.getSecret(), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getSecret(123), TypeError)
-  await t.throwsAsync(keyring.getSecret({}), MissingOptionError)
+  await t.throwsAsync(keyring.getSecret({}), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath
-  }), MissingOptionError)
+  }), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath,
     password
-  }), MissingOptionError)
+  }), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getSecret({
     keyring: keyringPath,
     password,
     did
-  }), MissingOptionError)
+  }), { instanceOf: MissingParamError })
 })
 
 test('getSecret(opts)', async (t) => {
   const secretKey = await keyring.getSecret({
-    did: t.context.identity,
+    identity: t.context.identity,
     keyring: t.context.keyring,
     password: t.context.password,
     network: t.context.archiverNetworkName
@@ -79,20 +79,22 @@ test('getSecret(opts)', async (t) => {
 test('getPublic(opts) invalid opts', async (t) => {
   const { keyring: keyringPath, secret } = t.context
 
-  await t.throwsAsync(keyring.getPublic(), MissingOptionError)
+  await t.throwsAsync(keyring.getPublic(), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getPublic(123), TypeError)
-  await t.throwsAsync(keyring.getPublic({}), MissingOptionError)
+  await t.throwsAsync(keyring.getPublic({}), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getPublic({
     keyring: keyringPath
-  }), MissingOptionError)
+  }), { instanceOf: MissingParamError })
   await t.throwsAsync(keyring.getPublic({
     keyring: keyringPath,
     secret
-  }), MissingOptionError)
+  }), { instanceOf: MissingParamError })
 })
 
 test('getPublic(opts)', async (t) => {
   const publicKey = await keyring.getPublic({
+    identity: t.context.identity,
+    password: t.context.password,
     secret: t.context.secret,
     keyring: `${t.context.keyring}.pub`,
     network: t.context.archiverNetworkName

@@ -182,7 +182,7 @@ async function getPublic(opts) {
       throw new Error(`Could not find ${opts.keyring}`)
     }
 
-    const keyring = keyRing(opts.keyring, { secret: opts.secret })
+    const keyring = keyRing(opts.keyring, { secret: Buffer.from(opts.secret) })
 
     if (!await keyring.has(opts.network)) {
       throw new Error(`Could not find '${opts.network}' in ${opts.keyring}`)
