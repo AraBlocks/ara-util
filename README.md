@@ -74,7 +74,7 @@ correctness. If given incorrect input, a function will throw a
 <a name="getAFSOwnerIdentity"></a>
 ### `async util.getAFSOwnerIdentity(opts)`
 
-Returns the owning identity of `DID`, used for resolving the document of the identity that created an `AFS`.
+Returns the owner `DID` of a given AFS `DID`, used for resolving the document of the identity that created an `AFS`.
 
 - `opts`
   - `did` - `DID` of the document to resolve the owner for
@@ -83,7 +83,7 @@ Returns the owning identity of `DID`, used for resolving the document of the ide
   - `keyringOpts` - optional Keyring options
 
 ```js
-const identity = await aid.create({ context, password })
+const identity = await aid.create({ password })
 const { mnemonic, did } = identity
 const { did: owner } = did
 const { afs } = await createAFS({ owner, password })
@@ -122,7 +122,7 @@ const isCorrect = await util.isCorrectPassword({ ddo, password })
 Validates that a resolved document based on a `DID` can be decrypted with the `password`, proving ownership. This uses `util.isCorrectPassword` internally after resolving the document and `throws` if the password is incorrect.
 
 - `opts`
-  - `did` - `DID` of identity to validate against
+  - `did` - `DID` of identity to validate
   - `password` - password of the identity
   - `ddo` - optional `DDO` to use for validation (instead of resolving)
   - `keyringOpts` - optional Keyring options
@@ -188,7 +188,7 @@ const result = util.hash('Hello')
 <a name="hashDID"></a>
 ### `util.hashDID(did, \[encoding\])`
 
-`blake2b` hashes a `DID` with an optional `encoding`, which defaults to `hex`. The difference between this and `hash` is that this function takes care of normalizing the `DID` prior to hashing.
+`blake2b` hashes a `DID` with an optional `encoding`, which defaults to `hex`. The difference between this and `hash` is that this function takes care of extracting the identifer portion of the `DID` prior to hashing.
 
 - `did` - `DID` to hash
 - `encoding` - optional `encoding` of the `DID`
@@ -224,7 +224,7 @@ const buf = util.web3.toBuffer('hi')
 <a name="toHexString"></a>
 ### `util.transform.toHexString(input, [opts])`
 
-Prepend `0x` to a hex string for passing to Solidity contract functions.
+Converts the input to a hex string. Can optionally prepend `0x` for compatability with EVM.
 
 - `input` - `String`, `Number`, or `Buffer` to be converted
 - `opts`
@@ -326,7 +326,7 @@ const transaction = await util.web3.tx.create({
     values: [1, 2, 3]
   }
 })
-const estimate = util.web3.contract.estimateGas(tx, opts)
+const estimate = util.web3.contract.estimateGas(transaction, opts)
 ```
 
 <a name="get"></a>
@@ -363,17 +363,20 @@ Creates an `EthereumTx` object that can be published to the current network. Sig
   - `gasLimit` - optional Gas limit to use for this transaction
 - `signTx` - should this transaction be signed
 
-Returns `object`
+Returns `object`:
   - `tx` - The transaction `object` created
   - `ctx` - The Ara context `object`
 
 ```js
 const account = await util.web3.account.load({ did, password })
-const signedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
-const unsignedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
+const { tx: signedTx, ctx: ctx1 } = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
+ctx1.close()
+
+const { tx: unsignedTx, ctx: ctx2 } = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
+ctx2.close()
 
 const contractAddress = '0xef61059258414a65bf2d94a4fd3b503b5fee8b48'
-const { tx: anotherTx, ctx } = await util.web3.tx.create({
+const { tx: anotherTx, ctx3 } = await util.web3.tx.create({
   account,
   to: contractAddress,
   data: {
@@ -383,7 +386,7 @@ const { tx: anotherTx, ctx } = await util.web3.tx.create({
   },
   gasLimit: 100000
 })
-ctx.close()
+ctx3.close()
 ```
 
 <a name="sendSignedTransaction"></a>
@@ -397,8 +400,9 @@ Returns the transaction `receipt` `object`.
 
 ```js
 const account = await util.web3.account.load({ did, password })
-const signedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
+const { tx: signedTx, ctx } = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
 const receipt = await util.web3.tx.sendSignedTransaction(signedTx)
+ctx.close()
 ```
 
 <a name="sendTransaction"></a>
@@ -438,9 +442,10 @@ Signs a transaction object with an account's `privateKey`.
 - `privateKey` - The Ethereum account's `privateKey` signing the transaction
 
 ```js
-const unsignedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
+const { tx: unsignedTx, ctx } = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
 const { privateKey } = account
 const signedTx = util.web3.tx.sign(unsignedTx, privateKey)
+ctx.close()
 ```
 
 <a name="encodeFunctionCall"></a>
@@ -464,7 +469,7 @@ const encoded = util.web3.abi.encodeFunctionCall(abi, 'myFunctionName', ['arg1',
 
 Encodes a function parameter to its `ABI` signature.
 
-- `type` - Type of parameter
+- `type` - Type of parameter ([see Solidity types](https://solidity.readthedocs.io/en/v0.4.24/types.html))
 - `parameter` - Value of parameter
 
 Returns the encoded parameter as a `String`.
@@ -478,7 +483,7 @@ const encoded = util.web3.abi.encodeParameter('bytes', '0xFF')
 
 Encodes multiple function parameters to their `ABI` signatures.
 
-- `typesArray` - Array of types to encode
+- `typesArray` - Array of types to encode ([see Solidity types](https://solidity.readthedocs.io/en/v0.4.24/types.html))
 - `parameters` - Array of parameter values to encode
 
 Returns the encoded parameters as a `String`.
