@@ -120,7 +120,7 @@ const isCorrect = await util.isCorrectPassword({ ddo, password })
 <a name="validate"></a>
 ### `async util.validate(opts)`
 
-Validates that a resolved document based on a `DID` can be decrypted with the `password`, proving ownership. This uses `util.isCorrectPassword` internally after resolving the document and `throws` if the password is incorrect.
+Validates that a resolved document based on a `DID` can be decrypted with the `password`, proving ownership. This uses `util.isCorrectPassword` internally after resolving the document and `throws` if the password is incorrect or the keystore is not locally accessible.
 
 - `opts`
   - `did` - `DID` of identity to validate
