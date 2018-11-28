@@ -106,7 +106,7 @@ const address = await util.getAddressFromDID(did)
 <a name="isCorrectPassword"></a>
 ### `async util.isCorrectPassword(opts)`
 
-Validates if an identity's password is correct by attempting to decrypt the Ara keystore (`keystore/ara`).
+Validates if an identity's password is correct by attempting to decrypt the Ara keystore (`keystore/ara`). The identity must be archived locally for this function to work. To recover an existing identity, see [aid.recover](https://github.com/AraBlocks/ara-identity#recover).
 
 - `opts`
   - `ddo` - document to validate password for
