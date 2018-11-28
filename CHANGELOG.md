@@ -1,11 +1,16 @@
-## [0.8.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.8.1) (2018-11-27)
+# [0.9.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.0) (2018-11-28)
 
 
 ### Bug Fixes
 
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
-* **web3/tx:** Remove passing obj into new Error ([10868fc](https://github.com/arablocks/ara-util/commit/10868fc))
+* **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
+
+
+### Features
+
+* add context getter ([c4a4053](https://github.com/arablocks/ara-util/commit/c4a4053))
 
 
 
