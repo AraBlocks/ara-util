@@ -50,6 +50,7 @@ correctness. If given incorrect input, a function will throw a
 * [async util.web3.call(opts)](#call)
 * [util.web3.isAddress(address)](#isAddress)
 * [util.web3.sha3(params)](#sha3)
+* [util.web3.getContext(provider)](#getcontext)
 
 #### Contract
 
@@ -290,6 +291,23 @@ isAddress = util.web3.isAddress('Hello') // false
 
 ```js
 const result = util.web3.sha3({ param1: 1, param2: 2 })
+```
+
+<a name="getcontext"></a>
+### `util.web3.getContext(provider)`
+
+Creates and returns an Ara context `object` containing a Web3 instance.
+
+- `provider` - `Boolean` flag indicating whether a new Web3 provider should be created. Defaults to `true`
+
+```js
+const ctxProvider = util.web3.getContext()
+await ctxProvider.ready() // wait for provider to be ready
+let { web3 } = ctxProvider
+ctxProvider.close() // always close context if provider was created
+
+const ctxNoProvider = util.web3.getContext(false);
+({ web3 } = ctxNoProvider) // no need to wait for provider or close context
 ```
 
 <a name="deploy"></a>
