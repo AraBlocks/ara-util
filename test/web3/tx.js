@@ -41,17 +41,17 @@ test('create(opts, signTx) invalid opts', async (t) => {
   const initialAccount = getAccount(t)
 
   // invalid opts and account
-  await t.throws(tx.create(), TypeError, 'Expecting opts object')
-  await t.throws(tx.create({ }), TypeError, 'Expecting account to be valid Ethereum account object')
-  await t.throws(tx.create({ account: 'myAccount' }), TypeError, 'Expecting account to be valid Ethereum account object')
+  await t.throwsAsync(tx.create(), TypeError, 'Expecting opts object')
+  await t.throwsAsync(tx.create({ }), TypeError, 'Expecting account to be valid Ethereum account object')
+  await t.throwsAsync(tx.create({ account: 'myAccount' }), TypeError, 'Expecting account to be valid Ethereum account object')
 
   // invalid to
   const invalidAddress = kRandomEthAddress.slice(2)
-  await t.throws(
+  await t.throwsAsync(
     tx.create({ account: initialAccount, to: invalidAddress }),
     Error, 'Expecting \'to\' to be valid Ethereum address'
   )
-  await t.throws(
+  await t.throwsAsync(
     tx.create({ account: initialAccount, to: 123 }),
     TypeError, 'Expecting \'to\' to be valid Ethereum address'
   )
@@ -98,12 +98,12 @@ test('sendTransaction(tx) invalid tx', async (t) => {
   const account = getAccount(t)
   const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
 
-  await t.throws(tx.sendTransaction(), TypeError, 'Tx object is not valid')
-  await t.throws(tx.sendTransaction({ }), TypeError, 'Tx object is not valid')
+  await t.throwsAsync(tx.sendTransaction(), TypeError, 'Tx object is not valid')
+  await t.throwsAsync(tx.sendTransaction({ }), TypeError, 'Tx object is not valid')
 
   const { privateKey } = account
   const signedTx = tx.sign(unsignedTx, privateKey)
-  await t.throws(tx.sendTransaction(signedTx))
+  await t.throwsAsync(tx.sendTransaction(signedTx))
 })
 
 // TODO
@@ -114,11 +114,11 @@ test('sendTransaction(tx) valid tx', async (t) => {
 test('sendSignedTransaction(tx) invalid tx', async (t) => {
   const account = getAccount(t)
 
-  await t.throws(tx.sendSignedTransaction(), TypeError, 'Tx object is not valid')
-  await t.throws(tx.sendSignedTransaction({ }), TypeError, 'Tx object is not valid')
+  await t.throwsAsync(tx.sendSignedTransaction(), TypeError, 'Tx object is not valid')
+  await t.throwsAsync(tx.sendSignedTransaction({ }), TypeError, 'Tx object is not valid')
 
   const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
-  await t.throws(tx.sendSignedTransaction(unsignedTx))
+  await t.throwsAsync(tx.sendSignedTransaction(unsignedTx))
 })
 
 // TODO
