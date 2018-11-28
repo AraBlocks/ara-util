@@ -75,9 +75,15 @@ async function isCorrectPassword(opts) {
   const password = blake2b(Buffer.from(opts.password))
 
   const identityPath = resolve(createIdentityKeyPath(ddo), kAraKeystore)
+  let keys
+  try {
+    keys = JSON.parse(await pify(fs.readFile)(identityPath, 'utf8'))
+  } catch (err) {
+    throw new Error(`Identity ${ddo.id} does not exist locally. Please recover this AraID locally using the mnemonic then try again.`)
+  }
+
   let secretKey
   try {
-    const keys = JSON.parse(await pify(fs.readFile)(identityPath, 'utf8'))
     secretKey = ss.decrypt(keys, { key: password.slice(0, 16) })
   } catch (err) {
     return false
