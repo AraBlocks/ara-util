@@ -294,11 +294,11 @@ const result = util.web3.sha3({ param1: 1, param2: 2 })
 ```
 
 <a name="getcontext"></a>
-### `util.web3.getContext(provider)`
+### `util.web3.getContext([provider])`
 
 Creates and returns an Ara context `object` containing a Web3 instance.
 
-- `provider` - `Boolean` flag indicating whether a new Web3 provider should be created. Defaults to `true`
+- `provider` - optional `Boolean` flag indicating whether a new Web3 provider should be created. Defaults to `true`
 
 ```js
 const ctxProvider = util.web3.getContext()
