@@ -93,7 +93,7 @@ const resolvedOwner = await util.getAFSOwnerIdentity({ did: afs.did, mnemonic, p
 <a name="getaddress"></a>
 ### `async util.getAddressFromDID(did, keyringOpts)`
 
-Retrieves the Ethereum address associated with a DID.
+Retrieves the Ethereum address associated with a `DID`.
 
 - `did` - The `DID` from which to obtain the Ethereum address
 - `keyringOpts` - optional Keyring options
