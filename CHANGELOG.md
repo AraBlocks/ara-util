@@ -1,4 +1,4 @@
-# [0.9.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.0) (2018-11-28)
+## [0.9.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.1) (2018-11-28)
 
 
 ### Bug Fixes
@@ -10,7 +10,7 @@
 
 ### Features
 
-* add context getter ([c4a4053](https://github.com/arablocks/ara-util/commit/c4a4053))
+* add context getter ([9c83562](https://github.com/arablocks/ara-util/commit/9c83562))
 
 
 
