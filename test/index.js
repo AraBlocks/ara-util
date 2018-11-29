@@ -19,12 +19,13 @@ test.before((t) => {
 
   t.context.sandbox.stub(aid, 'resolve').callsFake(() => t.context.ddo)
 
-  t.context.sandbox.stub(fs, 'accessSync').callsFake((path, __) => {
+  t.context.sandbox.stub(fs, 'accessSync').callsFake((path) => {
     if ('b4dd4eedb83933b6e013971585befe56e26e4f0a875aea0938f406563e53eadb' === parse(path).base) {
       throw new Error()
     } else if ('971ffa1bd45e6ada6543d19830272ec61253adac8043b16fd99f9d5c744b44b4' === parse(path).base) {
       return true
     }
+    return undefined
   })
 
   t.context.sandbox.stub(aid, 'create').callsFake((opts) => {

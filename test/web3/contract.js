@@ -1,11 +1,11 @@
-const test = require('ava')
-const { call } = require('../../web3/call')
 const { deploy, get, estimateGas } = require('../../web3/contract')
-const createContext = require('ara-context')
-const { create } = require('ara-identity')
-const { writeIdentity } = require('ara-identity/util')
-const testWithArg = require('../../build/contracts/Test1.json')
 const testWithoutArg = require('../../build/contracts/Test2.json')
+const testWithArg = require('../../build/contracts/Test1.json')
+const { writeIdentity } = require('ara-identity/util')
+const createContext = require('ara-context')
+const { call } = require('../../web3/call')
+const { create } = require('ara-identity')
+const test = require('ava')
 
 const {
   kPassword,
@@ -80,7 +80,7 @@ test.serial('deploy(opts) valid opts without constructor', async (t) => {
 test.serial('deploy(opts) valid opts with constructor', async (t) => {
   const account = getAccount(t)
   const defaultNumber = 666
-  const abi = testWithArg.abi
+  const { abi } = testWithArg
   const result = await deploy({
     account,
     abi,
@@ -139,6 +139,7 @@ test('estimateGas(opts) invalid opts', async (t) => {
 
   // validate opts
   await t.throwsAsync(estimateGas(tx, 'opts'), TypeError, 'Expecting opts to be of type object')
+  ctx.close()
 })
 
 test('estimateGas(opts) valid opts', async (t) => {
