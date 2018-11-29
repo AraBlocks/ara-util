@@ -191,3 +191,16 @@ test('checkAFSExistence(opts)', (t) => {
   t.false(util.checkAFSExistence({ did: '123' }))
   t.true(util.checkAFSExistence({ did: 'f59bce4587b0f929f49603261256313de48213954aed1446524c5ee2415a7b50' }))
 })
+
+test('getAddressFromDID(did) invalid opts', async (t) => {
+  await t.throwsAsync(() => util.getAddressFromDID(), TypeError)
+  await t.throwsAsync(() => util.getAddressFromDID(123), TypeError)
+  await t.throwsAsync(() => util.getAddressFromDID({}), TypeError)
+})
+
+test('getAddressFromDID(did) valid opts', async (t) => {
+  const address = await util.getAddressFromDID('did:ara:37c514b47dbd1122ec6f1c825bc4cf3a0d9f84f3f27e39cf077fa431b8c095b1')
+  const { web3 } = createContext({ provider: false })
+  t.true(null !== address && web3.utils.isAddress(address))
+  t.is(address, constants.ddoAddress)
+})
