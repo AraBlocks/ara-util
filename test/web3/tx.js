@@ -60,18 +60,21 @@ test('create(opts, signTx) invalid opts', async (t) => {
 test('create(opts, signTx) valid signed tx', async (t) => {
   const account = getAccount(t)
 
-  const signedTx = await tx.create({ account, to: kRandomEthAddress })
+  const { tx: signedTx, ctx: ctx1 } = await tx.create({ account, to: kRandomEthAddress })
   t.true('object' === typeof signedTx)
   t.true(signedTx.verifySignature())
+  ctx1.close()
 
-  const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
+  const { tx: unsignedTx, ctx: ctx2 } = await tx.create({ account, to: kRandomEthAddress }, false)
   t.true('object' === typeof unsignedTx && null !== unsignedTx.raw)
   t.true('Transaction' === unsignedTx.constructor.name)
+  ctx2.close()
 })
 
 test('sign(tx, privateKey) invalid params', async (t) => {
   const account = getAccount(t)
-  const unsignedTx = await tx.create({ account, to: kRandomEthAddress })
+  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress })
+  ctx.close()
 
   // invalid tx
   t.throws(() => tx.sign(), TypeError, 'Expecting tx to be non-empty EthereumTx object')
@@ -85,8 +88,8 @@ test('sign(tx, privateKey) invalid params', async (t) => {
 
 test('sign(tx, privateKey) valid signing', async (t) => {
   const account = getAccount(t)
-  const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
-
+  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
+  ctx.close()
   const { privateKey } = account
   const signedTx = tx.sign(unsignedTx, privateKey)
 
@@ -96,7 +99,7 @@ test('sign(tx, privateKey) valid signing', async (t) => {
 
 test('sendTransaction(tx) invalid tx', async (t) => {
   const account = getAccount(t)
-  const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
+  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
 
   await t.throwsAsync(tx.sendTransaction(), TypeError, 'Tx object is not valid')
   await t.throwsAsync(tx.sendTransaction({ }), TypeError, 'Tx object is not valid')
@@ -104,6 +107,7 @@ test('sendTransaction(tx) invalid tx', async (t) => {
   const { privateKey } = account
   const signedTx = tx.sign(unsignedTx, privateKey)
   await t.throwsAsync(tx.sendTransaction(signedTx))
+  ctx.close()
 })
 
 // TODO
@@ -134,16 +138,17 @@ test('estimateCost(tx, denomination) invalid params', async (t) => {
   t.throws(() => tx.estimateCost({ }), TypeError, 'Tx object is not valid')
 
   // validate denomination
-  const transaction = await tx.create({ account })
+  const { tx: transaction, ctx } = await tx.create({ account })
   t.throws(() => tx.estimateCost(transaction, ''), TypeError, 'Denomination must be non-empty string')
   t.throws(() => tx.estimateCost(transaction, 1), TypeError, 'Denomination must be non-empty string')
   t.throws(() => tx.estimateCost(transaction, 'nonExistentDenom'), Error, 'Denomination doesn\'t exist')
+  ctx.close()
 })
 
 test('estimateCost(tx, denomination) valid params', async (t) => {
   // eslint-disable-next-line no-shadow
   const { address, account, abi } = t.context
-  const transaction = await tx.create({
+  const { tx: transaction, ctx } = await tx.create({
     account,
     to: address,
     data: {
@@ -159,4 +164,5 @@ test('estimateCost(tx, denomination) valid params', async (t) => {
   const costInFinney = tx.estimateCost(transaction, 'finney')
   t.true(costInFinney && 'string' === typeof costInFinney)
   t.true(Number(costInEth) < Number(costInFinney))
+  ctx.close()
 })

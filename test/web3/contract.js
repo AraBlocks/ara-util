@@ -73,64 +73,66 @@ test.serial('deploy(opts) valid opts without constructor', async (t) => {
   t.true('object' === typeof result)
 
   const { web3 } = createContext({ provider: false })
-  const { address, jsonInterface } = result.options
+  const { contractAddress: address } = result
   t.true(null !== address && web3.utils.isAddress(address))
-  t.true(null !== jsonInterface && Array.isArray(jsonInterface))
 })
 
 test.serial('deploy(opts) valid opts with constructor', async (t) => {
   const account = getAccount(t)
   const defaultNumber = 666
+  const abi = testWithArg.abi
   const result = await deploy({
     account,
-    abi: testWithArg.abi,
+    abi,
     bytecode: testWithArg.bytecode,
     arguments: [ defaultNumber ]
   })
   t.true('object' === typeof result)
 
-  const { jsonInterface: abi, address } = result.options
+  const { contractAddress: address } = result
   const number = await call({ abi, address, functionName: 'getNumber' })
   t.is(Number(number), defaultNumber)
+  const { web3 } = createContext({ provider: false })
+  t.true(null !== address && web3.utils.isAddress(address))
 })
 
 test.serial('get(abi, address) invalid params', async (t) => {
   // validate abi
-  t.throws(() => get(), TypeError, 'Contract ABI must be valid object array.')
-  t.throws(() => get('myAbi'), TypeError, 'Contract ABI must be valid object array.')
+  await t.throwsAsync(() => get(), TypeError, 'Contract ABI must be valid object array.')
+  await t.throwsAsync(() => get('myAbi'), TypeError, 'Contract ABI must be valid object array.')
 
   const account = getAccount(t)
   const { abi, bytecode } = testWithoutArg
   const contract = await deploy({ account, abi, bytecode })
 
   // valiate address
-  const { jsonInterface, address } = contract.options
-  t.throws(() => get(jsonInterface, Number(address)), TypeError, 'Expecting valid Ethereum address.')
-  t.throws(() => get(jsonInterface, address.slice(16)), TypeError, 'Expecting valid Ethereum address.')
+  const { contractAddress: address } = contract
+  const { web3 } = createContext({ provider: false })
+  t.true(null !== address && web3.utils.isAddress(address))
 })
 
 test.serial('get(abi, address) valid get', async (t) => {
   const account = getAccount(t)
   const { abi, bytecode } = testWithoutArg
-  const { options } = await deploy({ account, abi, bytecode })
-  const { jsonInterface, address } = options
-  const contract = get(jsonInterface, address)
-
-  t.is(address, contract.options.address)
-  t.deepEqual(jsonInterface, contract.options.jsonInterface)
+  const result = await deploy({ account, abi, bytecode })
+  const { contractAddress: address } = result
+  const { contract, ctx } = await get(abi, address)
+  t.is(address, contract._address)
+  t.deepEqual(abi, contract._jsonInterface)
+  ctx.close()
 })
 
 test('estimateGas(opts) invalid opts', async (t) => {
   const account = getAccount(t)
   const { abi, bytecode } = testWithoutArg
-  const { options } = await deploy({ account, abi, bytecode })
+  const result = await deploy({ account, abi, bytecode })
 
   // validate tx
   await t.throwsAsync(estimateGas(), TypeError, 'Expecting tx object')
   await t.throwsAsync(estimateGas('tx'), TypeError, 'Expecting tx to be of type object')
 
   // // validate estimateGas function
-  const contract = get(abi, options.address)
+  const { contract, ctx } = await get(abi, result.contractAddress)
   const tx = contract.methods.setNumber(40)
   delete tx.estimateGas
   await t.throwsAsync(estimateGas(tx), TypeError, 'Expecting estimateGas function on tx object')
@@ -141,9 +143,9 @@ test('estimateGas(opts) invalid opts', async (t) => {
 
 test('estimateGas(opts) valid opts', async (t) => {
   const { abi, address } = t.context
-  const contract = get(abi, address)
+  const { contract, ctx } = await get(abi, address)
   const tx = contract.methods.setNumber(40)
   const gasCost = await estimateGas(tx, { from: address })
-
+  ctx.close()
   t.true('number' === typeof gasCost && gasCost > 0)
 })
