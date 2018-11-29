@@ -1,6 +1,6 @@
-const test = require('ava')
-const { web3 } = require('ara-context')()
 const { abi } = require('../../build/contracts/Test1.json')
+const createContext = require('ara-context')
+const test = require('ava')
 
 const {
   encodeFunctionCall,
@@ -25,6 +25,7 @@ test('encodeFunctionCall() invalid params', (t) => {
 
 test('encodeFunctionCall() valid encode', (t) => {
   const encoded = encodeFunctionCall(abi, 'setNumber', [ 100 ])
+  const { web3 } = createContext({ provider: false })
   t.true(encoded && web3.utils.isHex(encoded))
 })
 
@@ -37,6 +38,7 @@ test('encodeParameter() invalid params', (t) => {
 
 test('encodeParameter() valid encode', (t) => {
   const encoded = encodeParameter('string', 'hello')
+  const { web3 } = createContext({ provider: false })
   t.true(encoded && web3.utils.isHex(encoded))
 })
 
@@ -66,5 +68,6 @@ test('encodeParameters() invalid params', (t) => {
 
 test('encodeParameters() valid encode', (t) => {
   const encoded = encodeParameters([ 'bytes', 'string' ], [ '0xFF', 'Hello' ])
+  const { web3 } = createContext({ provider: false })
   t.true(encoded && web3.utils.isHex(encoded))
 })

@@ -1,5 +1,5 @@
-const test = require('ava')
 const { transform } = require('../')
+const test = require('ava')
 
 const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
