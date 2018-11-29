@@ -63,7 +63,4 @@ typings/
 # ignore package-lock
 package-lock.json
 
-# truffle build folder
-# build/
-
 .DS_Store
