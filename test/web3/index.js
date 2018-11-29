@@ -79,3 +79,18 @@ test('toBuffer(input) valid input', (t) => {
   result = web3.toBuffer('hi')
   t.deepEqual(result, Buffer.from('hi', 'hex'))
 })
+
+test('getContext(provider)', async (t) => {
+  let ctx = web3.getContext()
+  await ctx.ready()
+  t.true(null !== ctx && 'object' === typeof ctx)
+  t.true(null !== ctx.web3 && 'object' === typeof ctx.web3)
+  t.true(null !== ctx.web3._provider && 'object' === typeof ctx.web3._provider)
+  t.true(ctx.web3._provider.connected)
+  ctx.close()
+  
+  ctx = web3.getContext(false)
+  t.true(null !== ctx && 'object' === typeof ctx)
+  t.true(null !== ctx.web3 && 'object' === typeof ctx)
+  t.true(null === ctx.web3._provider)
+})
