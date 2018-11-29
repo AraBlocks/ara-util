@@ -62,7 +62,7 @@ test('call(opts) valid call', async (t) => {
   const { address, account, abi } = t.context
 
   const number = 667
-  const transaction = await tx.create({
+  const { tx: transaction, ctx } = await tx.create({
     account,
     to: address,
     data: {
@@ -72,6 +72,7 @@ test('call(opts) valid call', async (t) => {
     }
   })
   await tx.sendSignedTransaction(transaction)
+  ctx.close()
 
   // test without arg
   let result = await call({ abi, address, functionName: 'getNumber' })
