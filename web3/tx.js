@@ -106,18 +106,6 @@ function sign(tx, privateKey) {
 }
 
 /**
- * Send an unsigned transaction
- * @param  {Object} tx
- */
-async function sendTransaction(tx) {
-  if (!tx || 'object' !== typeof tx || !(tx instanceof EthereumTx)) {
-    throw new TypeError('Tx object is not valid')
-  }
-
-  return _send(tx, false)
-}
-
-/**
  * Send a signed transaction
  * @param  {Object} tx
  */
@@ -126,7 +114,25 @@ async function sendSignedTransaction(tx) {
     throw new TypeError('Tx object is not valid')
   }
 
-  return _send(tx, true)
+  if (!tx.verifySignature()) {
+    throw new Error('Trying to send a signed transaction, but tx object is unsigned.')
+  }
+
+  const ctx = createContext()
+  await ctx.ready()
+  const { web3 } = ctx
+  if (!_isSerialized(tx)) {
+    tx = web3.utils.bytesToHex(tx.serialize())
+  }
+
+  let result
+  try {
+    result = await web3.eth.sendSignedTransaction(tx)
+  } catch (err) {
+    throw new Error(err.message)
+  }
+  ctx.close()
+  return result
 }
 
 /**
@@ -149,39 +155,6 @@ function estimateCost(tx, denomination = 'ether') {
 }
 
 /**
- * Send an existing transaction to the Ethereum network
- * @param  {Object} tx
- * @param  {Boolean} signed
- * @throws {Error}
- */
-async function _send(tx, signed) {
-  if (signed && !tx.verifySignature()) {
-    throw new Error('Trying to send a signed transaction, but tx object is unsigned.')
-  } else if (!signed && tx.verifySignature()) {
-    throw new Error('Trying to send an unsigned transaction, but tx object is signed.')
-  }
-  const ctx = createContext()
-  await ctx.ready()
-  const { web3 } = ctx
-  if (!_isSerialized(tx) && signed) {
-    tx = web3.utils.bytesToHex(tx.serialize())
-  }
-
-  let result
-  try {
-    if (signed) {
-      result = await web3.eth.sendSignedTransaction(tx)
-    } else {
-      result = await web3.eth.sendTransaction(tx)
-    }
-  } catch (err) {
-    throw new Error(err.message)
-  }
-  ctx.close()
-  return result
-}
-
-/**
  * Checks is a tx object has been serialized into hex
  * @param  {Object}  tx
  * @return {Boolean}
@@ -194,7 +167,6 @@ function _isSerialized(tx) {
 module.exports = {
   create,
   sign,
-  sendTransaction,
   sendSignedTransaction,
   estimateCost
 }
