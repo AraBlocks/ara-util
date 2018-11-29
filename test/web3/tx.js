@@ -1,10 +1,10 @@
-const test = require('ava')
-const tx = require('../../web3/tx')
-const createContext = require('ara-context')
-const { deploy } = require('../../web3/contract')
-const { create } = require('ara-identity')
-const { writeIdentity } = require('ara-identity/util')
 const { abi, bytecode } = require('../../build/contracts/Test2.json')
+const { writeIdentity } = require('ara-identity/util')
+const { deploy } = require('../../web3/contract')
+const createContext = require('ara-context')
+const { create } = require('ara-identity')
+const tx = require('../../web3/tx')
+const test = require('ava')
 
 const {
   kPassword,

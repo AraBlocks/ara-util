@@ -1,11 +1,11 @@
-const test = require('ava')
+const { create: createIdentity } = require('ara-identity')
+const { kPassword, supplyAccount } = require('./_util')
+const { writeIdentity } = require('ara-identity/util')
+const { deploy } = require('../../web3/contract')
+const createContext = require('ara-context')
 const { call } = require('../../web3/call')
 const tx = require('../../web3/tx')
-const createContext = require('ara-context')
-const { create: createIdentity } = require('ara-identity')
-const { writeIdentity } = require('ara-identity/util')
-const { kPassword, supplyAccount } = require('./_util')
-const { deploy } = require('../../web3/contract')
+const test = require('ava')
 
 test.before(async (t) => {
   // create account
