@@ -88,7 +88,7 @@ test('getContext(provider)', async (t) => {
   t.true(null !== ctx.web3._provider && 'object' === typeof ctx.web3._provider)
   t.true(ctx.web3._provider.connected)
   ctx.close()
-  
+
   ctx = web3.getContext(false)
   t.true(null !== ctx && 'object' === typeof ctx)
   t.true(null !== ctx.web3 && 'object' === typeof ctx)
