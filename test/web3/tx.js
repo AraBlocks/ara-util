@@ -97,37 +97,25 @@ test('sign(tx, privateKey) valid signing', async (t) => {
   t.true(signedTx.verifySignature())
 })
 
-test('sendTransaction(tx) invalid tx', async (t) => {
-  const account = getAccount(t)
-  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
-
-  await t.throwsAsync(tx.sendTransaction(), TypeError, 'Tx object is not valid')
-  await t.throwsAsync(tx.sendTransaction({ }), TypeError, 'Tx object is not valid')
-
-  const { privateKey } = account
-  const signedTx = tx.sign(unsignedTx, privateKey)
-  await t.throwsAsync(tx.sendTransaction(signedTx))
-  ctx.close()
-})
-
-// TODO
-test('sendTransaction(tx) valid tx', async (t) => {
-  t.pass()
-})
-
 test('sendSignedTransaction(tx) invalid tx', async (t) => {
   const account = getAccount(t)
 
   await t.throwsAsync(tx.sendSignedTransaction(), TypeError, 'Tx object is not valid')
   await t.throwsAsync(tx.sendSignedTransaction({ }), TypeError, 'Tx object is not valid')
 
-  const unsignedTx = await tx.create({ account, to: kRandomEthAddress }, false)
+  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
   await t.throwsAsync(tx.sendSignedTransaction(unsignedTx))
+  ctx.close()
 })
 
-// TODO
 test('sendSignedTransaction(tx) valid tx', async (t) => {
-  t.pass()
+  const account = getAccount(t)
+  const { tx: signedTx, ctx } = await tx.create({ account, to: kRandomEthAddress })
+  const receipt = await tx.sendSignedTransaction(signedTx)
+  ctx.close()
+  t.true(null !== receipt && 'object' === typeof receipt)
+  const { web3 } = createContext({ provider: false })
+  t.true(receipt.transactionHash && web3.utils.isHex(receipt.transactionHash))
 })
 
 test('estimateCost(tx, denomination) invalid params', async (t) => {
