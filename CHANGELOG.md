@@ -1,13 +1,20 @@
-## [0.9.2](https://github.com/arablocks/ara-util/compare/0.6.2...0.9.2) (2018-11-28)
+# [0.10.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.10.0) (2018-11-30)
 
 
 ### Bug Fixes
 
+* **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
+* update context usage and change normalize tests to getIdentifier ([6a286c5](https://github.com/arablocks/ara-util/commit/6a286c5))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
-* make arg optional ([37fa779](https://github.com/arablocks/ara-util/commit/37fa779))
-* make arg optional ([5dd97eb](https://github.com/arablocks/ara-util/commit/5dd97eb))
+* all tests passing ([eb2fdd1](https://github.com/arablocks/ara-util/commit/eb2fdd1))
+* index.js tests ([670ee1d](https://github.com/arablocks/ara-util/commit/670ee1d))
+* lint ([1f3441a](https://github.com/arablocks/ara-util/commit/1f3441a))
+* lint ([4738874](https://github.com/arablocks/ara-util/commit/4738874))
+* throws -> throwsAsync ([7c82f6d](https://github.com/arablocks/ara-util/commit/7c82f6d))
+* travis ([cba0d46](https://github.com/arablocks/ara-util/commit/cba0d46))
+* update context usage ([a754599](https://github.com/arablocks/ara-util/commit/a754599))
 
 
 ### Features
