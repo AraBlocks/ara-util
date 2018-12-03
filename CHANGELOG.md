@@ -1,20 +1,23 @@
-# [0.10.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.10.0) (2018-11-30)
+## [0.10.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.10.1) (2018-12-03)
 
 
 ### Bug Fixes
 
 * **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
-* update context usage and change normalize tests to getIdentifier ([6a286c5](https://github.com/arablocks/ara-util/commit/6a286c5))
+* throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
+* [#70](https://github.com/arablocks/ara-util/issues/70) ([5e9d332](https://github.com/arablocks/ara-util/commit/5e9d332))
+* all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
+* index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
+* lint ([70a4c29](https://github.com/arablocks/ara-util/commit/70a4c29))
+* lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
+* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
+* tests ([7805b9c](https://github.com/arablocks/ara-util/commit/7805b9c))
+* travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
+* update context usage ([d245400](https://github.com/arablocks/ara-util/commit/d245400))
+* update context usage and change normalize tests to getIdentifier ([f6d451e](https://github.com/arablocks/ara-util/commit/f6d451e))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
-* all tests passing ([eb2fdd1](https://github.com/arablocks/ara-util/commit/eb2fdd1))
-* index.js tests ([670ee1d](https://github.com/arablocks/ara-util/commit/670ee1d))
-* lint ([1f3441a](https://github.com/arablocks/ara-util/commit/1f3441a))
-* lint ([4738874](https://github.com/arablocks/ara-util/commit/4738874))
-* throws -> throwsAsync ([7c82f6d](https://github.com/arablocks/ara-util/commit/7c82f6d))
-* travis ([cba0d46](https://github.com/arablocks/ara-util/commit/cba0d46))
-* update context usage ([a754599](https://github.com/arablocks/ara-util/commit/a754599))
 
 
 ### Features
