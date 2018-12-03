@@ -73,9 +73,12 @@ test('getIdentifier(did) invalid did', (t) => {
 })
 
 test('getIdentifier(did) valid identifier', (t) => {
-  const normalized = util.getIdentifier(t.context.identity)
+  let normalized = util.getIdentifier(t.context.identity)
 
   t.true(!normalized.includes(t.context.aidPrefix))
+  t.is(normalized, t.context.identityIdentifier)
+  normalized = util.getIdentifier(`0x${t.context.identityIdentifier}`)
+  t.is(normalized, t.context.identityIdentifier)
 })
 
 test('isCorrectPassword(opts) invalid opts', async (t) => {
