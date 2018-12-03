@@ -54,7 +54,7 @@ function getIdentifier(did) {
   }
 
   if (0 === did.indexOf(kEthHexPrefix)) {
-    did = did.substring(kEthHexPrefix.length)
+    return did.substring(kEthHexPrefix.length)
   }
 
   const uri = diduri.parse(aid.did.normalize(did))

@@ -1,4 +1,4 @@
-const { kEthHexPrefix } = require('./')
+const { kEthHexPrefix } = require('./constants')
 const bufferFrom = require('buffer-from')
 const isBuffer = require('is-buffer')
 const { deprecate } = require('util')

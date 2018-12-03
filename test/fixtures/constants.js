@@ -2,6 +2,7 @@ const { resolve } = require('path')
 
 module.exports = {
   aidPrefix: 'did:ara:',
+  kEthHexPrefix: '0x',
   identifierLength: 64,
   secret: 'test',
   archiverNetworkName: 'archiver',
