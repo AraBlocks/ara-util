@@ -36,10 +36,9 @@ function toHexString(input, opts = {}) {
     return (ethify) ? `0x${input.toString('hex')}` : input.toString('hex')
   } else if ('number' === typeof input) {
     return toHexString(bufferFrom([ input ], encoding), opts)
-  } else if ('string' === typeof input) {
+  } else {
     return toHexString(bufferFrom(input, encoding), opts)
   }
-  return toHexString(bufferFrom(input, encoding), opts)
 }
 
 /**
@@ -59,13 +58,8 @@ function toBuffer(input, encoding = 'hex') {
     throw new TypeError('Encoding must be a String')
   }
 
-  if ('string' === typeof input) {
-    input = input.replace(/^0x/, '')
-    return bufferFrom(input, encoding)
-  } else if (input) {
-    return bufferFrom(input.toString(), encoding)
-  }
-  return null
+  input = input.replace(/^0x/, '')
+  return bufferFrom(input, encoding)
 }
 
 module.exports = {

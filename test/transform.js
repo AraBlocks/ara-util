@@ -28,9 +28,12 @@ test('toBuffer(input) invalid input', (t) => {
   t.throws(() => transform.toBuffer(), TypeError)
   t.throws(() => transform.toBuffer({ }), TypeError)
   t.throws(() => transform.toBuffer([]), TypeError)
+  t.throws(() => transform.toBuffer(123), TypeError)
+  t.throws(() => transform.toBuffer(false), TypeError)
   t.throws(() => transform.toBuffer(kAddress, { }), TypeError)
   t.throws(() => transform.toBuffer(kAddress, 123), TypeError)
   t.throws(() => transform.toBuffer(kAddress, []), TypeError)
+  t.throws(() => transform.toBuffer(kAddress, true), TypeError)
 })
 
 test('toBuffer(input) valid input', (t) => {
@@ -40,4 +43,25 @@ test('toBuffer(input) valid input', (t) => {
   t.deepEqual(result, Buffer.from(kAddress, 'hex'))
   result = transform.toBuffer('hi')
   t.deepEqual(result, Buffer.from('hi', 'hex'))
+})
+
+test('deprecated toHexBuffer(input) invalid input', (t) => {
+  t.throws(() => transform.toHexBuffer(), TypeError)
+  t.throws(() => transform.toHexBuffer({ }), TypeError)
+  t.throws(() => transform.toHexBuffer([]), TypeError)
+  t.throws(() => transform.toHexBuffer(kAddress, 123), TypeError)
+})
+
+test('deprecated toHexBuffer(input) valid input', (t) => {
+  let result = transform.toHexBuffer(10)
+  t.is(result, '0a')
+  result = transform.toHexBuffer('hi', 'utf8' )
+  t.is(result, '6869')
+  result = transform.toHexBuffer(Buffer.from('hi'), 'utf8')
+  t.is(result, '6869')
+  result = transform.toHexBuffer(kAddress, 'hex')
+  t.is(result, `${kAddress}`)
+  const buffer = Buffer.from(kAddress, 'hex')
+  result = transform.toHexBuffer(buffer, 'hex')
+  t.is(result, `${kAddress}`)
 })
