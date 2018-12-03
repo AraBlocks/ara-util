@@ -33,7 +33,6 @@
   "dependencies": {
     "ara-context": "github:arablocks/ara-context#semver:0.5.x",
     "ara-crypto": "github:arablocks/ara-crypto#semver:0.7.x",
-    "ara-filesystem": "github:arablocks/ara-filesystem#semver:0.5.x",
     "ara-identity": "github:arablocks/ara-identity#semver:0.31.x",
     "ara-network": "github:arablocks/ara-network#1.0.0-beta.4",
     "ara-runtime-configuration": "github:arablocks/ara-runtime-configuration#semver:1.1.x",
