@@ -1,4 +1,4 @@
-## [0.10.1](https://github.com/arablocks/ara-util/compare/0.6.2...0.10.1) (2018-12-03)
+# [0.11.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.11.0) (2018-12-03)
 
 
 ### Bug Fixes
@@ -7,13 +7,13 @@
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
 * throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
-* [#70](https://github.com/arablocks/ara-util/issues/70) ([5e9d332](https://github.com/arablocks/ara-util/commit/5e9d332))
+* [#70](https://github.com/arablocks/ara-util/issues/70) ([7e5300f](https://github.com/arablocks/ara-util/commit/7e5300f))
 * all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
-* lint ([70a4c29](https://github.com/arablocks/ara-util/commit/70a4c29))
+* lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
 * lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
 * lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
-* tests ([7805b9c](https://github.com/arablocks/ara-util/commit/7805b9c))
+* tests ([97e09a1](https://github.com/arablocks/ara-util/commit/97e09a1))
 * travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
 * update context usage ([d245400](https://github.com/arablocks/ara-util/commit/d245400))
 * update context usage and change normalize tests to getIdentifier ([f6d451e](https://github.com/arablocks/ara-util/commit/f6d451e))
