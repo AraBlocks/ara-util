@@ -36,9 +36,8 @@ function toHexString(input, opts = {}) {
     return (ethify) ? `0x${input.toString('hex')}` : input.toString('hex')
   } else if ('number' === typeof input) {
     return toHexString(bufferFrom([ input ], encoding), opts)
-  } else {
-    return toHexString(bufferFrom(input, encoding), opts)
   }
+  return toHexString(bufferFrom(input, encoding), opts)
 }
 
 /**
