@@ -1,3 +1,4 @@
+const { kEthHexPrefix } = require('../fixtures/constants')
 const { web3 } = require('../../')
 const test = require('ava')
 
@@ -37,11 +38,11 @@ test('ethify(input) invalid input', (t) => {
 
 test('ethify(input) valid conversion', (t) => {
   let result = web3.ethify(kAddress)
-  t.is(result, `0x${kAddress}`)
+  t.is(result, `${kEthHexPrefix}${kAddress}`)
 
   const buffer = Buffer.from(kAddress, 'hex')
   result = web3.ethify(buffer)
-  t.is(result, `0x${kAddress}`)
+  t.is(result, `${kEthHexPrefix}${kAddress}`)
 })
 
 test('toHex(input) invalid input', (t) => {

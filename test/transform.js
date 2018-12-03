@@ -1,3 +1,4 @@
+const { kEthHexPrefix } = require('./fixtures/constants')
 const { transform } = require('../')
 const test = require('ava')
 
@@ -18,10 +19,10 @@ test('toHexString(input) valid input', (t) => {
   result = transform.toHexString(Buffer.from('hi'), { encoding: 'utf8' })
   t.is(result, '6869')
   result = transform.toHexString(kAddress, { encoding: 'hex', ethify: true })
-  t.is(result, `0x${kAddress}`)
+  t.is(result, `${kEthHexPrefix}${kAddress}`)
   const buffer = Buffer.from(kAddress, 'hex')
   result = transform.toHexString(buffer, { encoding: 'hex', ethify: true })
-  t.is(result, `0x${kAddress}`)
+  t.is(result, `${kEthHexPrefix}${kAddress}`)
 })
 
 test('toBuffer(input) invalid input', (t) => {
