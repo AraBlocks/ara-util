@@ -55,7 +55,7 @@ test('deprecated toHexBuffer(input) invalid input', (t) => {
 test('deprecated toHexBuffer(input) valid input', (t) => {
   let result = transform.toHexBuffer(10)
   t.is(result, '0a')
-  result = transform.toHexBuffer('hi', 'utf8' )
+  result = transform.toHexBuffer('hi', 'utf8')
   t.is(result, '6869')
   result = transform.toHexBuffer(Buffer.from('hi'), 'utf8')
   t.is(result, '6869')
