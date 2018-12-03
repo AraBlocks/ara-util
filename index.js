@@ -1,4 +1,5 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
+const { kEthHexPrefix } = require('./constants')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const transform = require('./transform')
@@ -48,6 +49,14 @@ function hashDID(did, encoding = 'hex') {
  * @throws {TypeError}
  */
 function getIdentifier(did) {
+  if (!did || 'string' !== typeof did) {
+    throw new TypeError('DID must be a non-empty string.')
+  }
+
+  if (0 === did.indexOf(kEthHexPrefix)) {
+    did = did.substring(kEthHexPrefix.length)
+  }
+
   const uri = diduri.parse(aid.did.normalize(did))
   return uri.identifier
 }
