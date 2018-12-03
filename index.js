@@ -121,7 +121,7 @@ async function getAddressFromDID(did, keyringOpts = {}) {
       return type === kSecp256k1VerificationKey2018
     })
 
-    const hashpk = web3.sha3(`0x${publicKeyHex}`)
+    const hashpk = web3.sha3(`${kEthHexPrefix}${publicKeyHex}`)
     return web3.ethify(hashpk.slice(-ETH_ADDRESS_LENGTH))
   } catch (err) {
     throw err

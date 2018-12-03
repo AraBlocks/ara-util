@@ -77,7 +77,7 @@ test('getIdentifier(did) valid identifier', (t) => {
 
   t.true(!normalized.includes(t.context.aidPrefix))
   t.is(normalized, t.context.identityIdentifier)
-  normalized = util.getIdentifier(`0x${t.context.identityIdentifier}`)
+  normalized = util.getIdentifier(`${constants.kEthHexPrefix}${t.context.identityIdentifier}`)
   t.is(normalized, t.context.identityIdentifier)
 })
 

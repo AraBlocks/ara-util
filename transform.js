@@ -1,3 +1,4 @@
+const { kEthHexPrefix } = require('./')
 const bufferFrom = require('buffer-from')
 const isBuffer = require('is-buffer')
 const { deprecate } = require('util')
@@ -33,7 +34,7 @@ function toHexString(input, opts = {}) {
   }
 
   if (isBuffer(input)) {
-    return (ethify) ? `0x${input.toString('hex')}` : input.toString('hex')
+    return (ethify) ? `${kEthHexPrefix}${input.toString('hex')}` : input.toString('hex')
   } else if ('number' === typeof input) {
     return toHexString(bufferFrom([ input ], encoding), opts)
   }
