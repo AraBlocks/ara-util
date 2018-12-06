@@ -1,6 +1,5 @@
 # [0.12.0](https://github.com/arablocks/ara-util/compare/0.6.2...0.12.0) (2018-12-07)
 
-
 ### Bug Fixes
 
 * **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
