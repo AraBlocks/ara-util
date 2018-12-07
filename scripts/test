@@ -31,4 +31,6 @@ command="ava test --verbose"
 safeRunCommand "$command"
 
 # cleanup
-pkill -f ganache 
+pkill -f ganache
+
+rm -rf build
