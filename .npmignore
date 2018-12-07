@@ -1,0 +1,5 @@
+migrations/
+contracts/
+.github/
+scripts/
+test/
