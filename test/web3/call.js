@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+
 const { create: createIdentity } = require('ara-identity')
 const { kPassword, supplyAccount } = require('./_util')
 const { writeIdentity } = require('ara-identity/util')

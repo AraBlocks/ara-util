@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+
 const { deploy, get, estimateGas } = require('../../web3/contract')
 const testWithoutArg = require('../../build/contracts/Test2.json')
 const testWithArg = require('../../build/contracts/Test1.json')

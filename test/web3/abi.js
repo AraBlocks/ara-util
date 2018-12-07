@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+
 const { abi } = require('../../build/contracts/Test1.json')
 const createContext = require('ara-context')
 const test = require('ava')
