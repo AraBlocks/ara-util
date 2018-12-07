@@ -1,3 +1,5 @@
+/* eslint-disable import/no-unresolved */
+
 const { abi, bytecode } = require('../../build/contracts/Test2.json')
 const { writeIdentity } = require('ara-identity/util')
 const { deploy } = require('../../web3/contract')
