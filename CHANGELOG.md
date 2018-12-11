@@ -1,4 +1,4 @@
-# [1.0.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.0.0) (2018-12-07)
+# [1.1.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.1.0) (2018-12-11)
 
 
 ### Bug Fixes
@@ -9,7 +9,7 @@
 * all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * [#70](https://github.com/arablocks/ara-util/issues/70) ([7e5300f](https://github.com/arablocks/ara-util/commit/7e5300f))
-* add lint disables for build folder require statements ([a3d55e7](https://github.com/arablocks/ara-util/commit/a3d55e7))
+* add lint disables for build folder require statements ([202450d](https://github.com/arablocks/ara-util/commit/202450d))
 * index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
 * lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
