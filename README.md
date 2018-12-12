@@ -49,7 +49,7 @@ correctness. If given incorrect input, a function will throw a
 * [async util.web3.account.load(opts)](#load)
 * [async util.web3.call(opts)](#call)
 * [util.web3.isAddress(address)](#isAddress)
-* [util.web3.sha3(params, abiEncode)](#sha3)
+* [util.web3.sha3(params, [abiEncode])](#sha3)
 * [util.web3.getContext(provider)](#getcontext)
 
 #### Contract
@@ -187,7 +187,7 @@ const result = util.hash('Hello')
 ```
 
 <a name="hashDID"></a>
-### `util.hashDID(did, \[encoding\])`
+### `util.hashDID(did, [encoding])`
 
 `blake2b` hashes a `DID` with an optional `encoding`, which defaults to `hex`. The difference between this and `hash` is that this function takes care of extracting the identifer portion of the `DID` prior to hashing.
 
@@ -283,7 +283,7 @@ isAddress = util.web3.isAddress('Hello') // false
 ```
 
 <a name="sha3"></a>
-### `util.web3.sha3(params, abiEncode = true)`
+### `util.web3.sha3(params, [abiEncode = true])`
 
 `SHA3` hashes given parameters. By default, `ABI` encodes parameters before hashing.
 
