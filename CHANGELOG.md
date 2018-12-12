@@ -1,4 +1,4 @@
-# [1.1.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.1.0) (2018-12-11)
+## [1.1.1](https://github.com/arablocks/ara-util/compare/0.6.2...1.1.1) (2018-12-12)
 
 
 ### Bug Fixes
@@ -11,9 +11,10 @@
 * [#70](https://github.com/arablocks/ara-util/issues/70) ([7e5300f](https://github.com/arablocks/ara-util/commit/7e5300f))
 * add lint disables for build folder require statements ([202450d](https://github.com/arablocks/ara-util/commit/202450d))
 * index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
-* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
-* lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
 * lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
+* lint ([dd87959](https://github.com/arablocks/ara-util/commit/dd87959))
+* lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
+* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * tests ([97e09a1](https://github.com/arablocks/ara-util/commit/97e09a1))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
 * throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
@@ -25,6 +26,7 @@
 ### Features
 
 * add context getter ([9c83562](https://github.com/arablocks/ara-util/commit/9c83562))
+* add option for raw sha3 ([9314b9e](https://github.com/arablocks/ara-util/commit/9314b9e))
 
 
 
