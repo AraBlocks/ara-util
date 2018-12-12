@@ -28,6 +28,9 @@ test('sha3(params) valid input', (t) => {
   t.true(result && 'string' === typeof result)
   result = web3.sha3({ param1: 1, param2: 2 })
   t.true(result && 'string' === typeof result)
+  // https://emn178.github.io/online-tools/keccak_256.html
+  result = web3.sha3(123, false)
+  t.is(result, '0x64e604787cbf194841e7b68d7cd28786f6c9a0a3ab9f8b0a0e87cb4387ab0107')
 })
 
 test('ethify(input) invalid input', (t) => {

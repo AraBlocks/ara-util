@@ -31,7 +31,7 @@ function sha3(params, abiEncode = true) {
   if (abiEncode) {
     return web3.utils.soliditySha3(params)
   }
-  return web3.utils.sha3(params)
+  return web3.utils.sha3(params.toString())
 }
 
 /**
