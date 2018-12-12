@@ -49,7 +49,7 @@ correctness. If given incorrect input, a function will throw a
 * [async util.web3.account.load(opts)](#load)
 * [async util.web3.call(opts)](#call)
 * [util.web3.isAddress(address)](#isAddress)
-* [util.web3.sha3(params)](#sha3)
+* [util.web3.sha3(params, abiEncode)](#sha3)
 * [util.web3.getContext(provider)](#getcontext)
 
 #### Contract
@@ -283,11 +283,12 @@ isAddress = util.web3.isAddress('Hello') // false
 ```
 
 <a name="sha3"></a>
-### `util.web3.sha3(params)`
+### `util.web3.sha3(params, abiEncode = true)`
 
-`ABI` encodes and `SHA3` hashes given parameters.
+`SHA3` hashes given parameters. By default, `ABI` encodes parameters before hashing.
 
 - `params` - Parameters of any type or object containing parameters
+- `abiEncode` - Whether to `ABI` encode parameters prior to hashing. Defaults to true.
 
 ```js
 const result = util.web3.sha3({ param1: 1, param2: 2 })
