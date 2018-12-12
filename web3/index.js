@@ -22,13 +22,17 @@ function isAddress(address) {
  * @return {String}
  * @throws {Error}
  */
-function sha3(params) {
+function sha3(params, abiEncode = true) {
   if (!params || 0 === arguments.length) {
     throw new Error('Must provide arguments or object')
   }
   const { web3 } = createContext({ provider: false })
 
-  return web3.utils.soliditySha3(params)
+  if (abiEncode) {
+    return web3.utils.soliditySha3(params)
+  } else {
+    return web3.utils.sha3(params)
+  }
 }
 
 /**
