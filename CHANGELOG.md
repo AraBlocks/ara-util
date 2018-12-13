@@ -1,4 +1,4 @@
-## [1.1.2](https://github.com/arablocks/ara-util/compare/0.6.2...1.1.2) (2018-12-12)
+## [1.1.3](https://github.com/arablocks/ara-util/compare/0.6.2...1.1.3) (2018-12-13)
 
 
 ### Bug Fixes
@@ -15,7 +15,7 @@
 * lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
 * lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * lint ([b31a80b](https://github.com/arablocks/ara-util/commit/b31a80b))
-* PR comment ([82e8273](https://github.com/arablocks/ara-util/commit/82e8273))
+* PR comment ([1509497](https://github.com/arablocks/ara-util/commit/1509497))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
 * tests ([97e09a1](https://github.com/arablocks/ara-util/commit/97e09a1))
 * throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
