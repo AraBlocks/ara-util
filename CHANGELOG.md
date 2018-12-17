@@ -1,4 +1,4 @@
-## [1.2.1](https://github.com/arablocks/ara-util/compare/0.6.2...1.2.1) (2018-12-17)
+# [1.3.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.3.0) (2018-12-17)
 
 
 ### Bug Fixes
@@ -6,8 +6,8 @@
 * **.npmignore:** add build/ to npmignore ([a2a856d](https://github.com/arablocks/ara-util/commit/a2a856d))
 * **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
 * travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
-* **tx.js:** added ctx.close() before typeErrors in create ([0d0b66c](https://github.com/arablocks/ara-util/commit/0d0b66c))
-* **tx.js:** closes ctx if err during sendSignedTransaction ([b957133](https://github.com/arablocks/ara-util/commit/b957133))
+* **tx.js:** added ctx.close() before typeErrors in create ([abe6856](https://github.com/arablocks/ara-util/commit/abe6856))
+* **tx.js:** closes ctx if err during sendSignedTransaction ([a36b1aa](https://github.com/arablocks/ara-util/commit/a36b1aa))
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
 * all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
