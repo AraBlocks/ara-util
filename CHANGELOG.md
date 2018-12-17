@@ -1,27 +1,29 @@
-# [1.2.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.2.0) (2018-12-17)
+## [1.2.1](https://github.com/arablocks/ara-util/compare/0.6.2...1.2.1) (2018-12-17)
 
 
 ### Bug Fixes
 
 * **.npmignore:** add build/ to npmignore ([a2a856d](https://github.com/arablocks/ara-util/commit/a2a856d))
 * **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
+* travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
+* **tx.js:** added ctx.close() before typeErrors in create ([0d0b66c](https://github.com/arablocks/ara-util/commit/0d0b66c))
+* **tx.js:** closes ctx if err during sendSignedTransaction ([b957133](https://github.com/arablocks/ara-util/commit/b957133))
 * **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
-* lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
+* all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * [#70](https://github.com/arablocks/ara-util/issues/70) ([7e5300f](https://github.com/arablocks/ara-util/commit/7e5300f))
 * add lint disables for build folder require statements ([202450d](https://github.com/arablocks/ara-util/commit/202450d))
-* all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
 * lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
-* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * lint ([b31a80b](https://github.com/arablocks/ara-util/commit/b31a80b))
+* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
+* lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
 * PR comment ([1509497](https://github.com/arablocks/ara-util/commit/1509497))
-* **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
 * tests ([97e09a1](https://github.com/arablocks/ara-util/commit/97e09a1))
 * throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
-* travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
 * update context usage ([d245400](https://github.com/arablocks/ara-util/commit/d245400))
 * update context usage and change normalize tests to getIdentifier ([f6d451e](https://github.com/arablocks/ara-util/commit/f6d451e))
+* **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
 
 
 ### Features
