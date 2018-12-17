@@ -129,6 +129,7 @@ async function sendSignedTransaction(tx) {
   try {
     result = await web3.eth.sendSignedTransaction(tx)
   } catch (err) {
+    ctx.close()
     throw new Error(err.message)
   }
   ctx.close()
