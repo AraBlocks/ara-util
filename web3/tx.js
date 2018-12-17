@@ -34,11 +34,13 @@ async function create(opts, signTx = true) {
   await ctx.ready()
   const { web3 } = ctx
   if (opts.to && ('string' !== typeof opts.to || !web3.utils.isAddress(opts.to))) {
+    ctx.close()
     throw new TypeError('Expecting \'to\' to be valid Ethereum address')
   }
 
   const { address, privateKey } = opts.account
   if (!address || (!privateKey && signTx)) {
+    ctx.close()
     throw new TypeError('Account object expecting address and privateKey')
   }
   const nonce = await web3.eth.getTransactionCount(address)
