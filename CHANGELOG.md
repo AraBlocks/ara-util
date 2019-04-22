@@ -1,28 +1,28 @@
-# [1.3.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.3.0) (2018-12-17)
+# [1.4.0](https://github.com/arablocks/ara-util/compare/0.6.2...1.4.0) (2019-04-22)
 
 
 ### Bug Fixes
 
-* **.npmignore:** add build/ to npmignore ([a2a856d](https://github.com/arablocks/ara-util/commit/a2a856d))
-* **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
-* travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
 * **tx.js:** added ctx.close() before typeErrors in create ([abe6856](https://github.com/arablocks/ara-util/commit/abe6856))
 * **tx.js:** closes ctx if err during sendSignedTransaction ([a36b1aa](https://github.com/arablocks/ara-util/commit/a36b1aa))
-* **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
-* all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
-* **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * [#70](https://github.com/arablocks/ara-util/issues/70) ([7e5300f](https://github.com/arablocks/ara-util/commit/7e5300f))
 * add lint disables for build folder require statements ([202450d](https://github.com/arablocks/ara-util/commit/202450d))
-* index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
-* lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
+* all tests passing ([05d38a4](https://github.com/arablocks/ara-util/commit/05d38a4))
 * lint ([b31a80b](https://github.com/arablocks/ara-util/commit/b31a80b))
-* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * lint ([f75dd79](https://github.com/arablocks/ara-util/commit/f75dd79))
 * PR comment ([1509497](https://github.com/arablocks/ara-util/commit/1509497))
+* **.npmignore:** add build/ to npmignore ([a2a856d](https://github.com/arablocks/ara-util/commit/a2a856d))
+* index.js tests ([16a3b1a](https://github.com/arablocks/ara-util/commit/16a3b1a))
+* lint ([c3fc548](https://github.com/arablocks/ara-util/commit/c3fc548))
+* lint ([d3744aa](https://github.com/arablocks/ara-util/commit/d3744aa))
 * tests ([97e09a1](https://github.com/arablocks/ara-util/commit/97e09a1))
 * throws -> throwsAsync ([e9bf535](https://github.com/arablocks/ara-util/commit/e9bf535))
+* travis ([159be1c](https://github.com/arablocks/ara-util/commit/159be1c))
 * update context usage ([d245400](https://github.com/arablocks/ara-util/commit/d245400))
 * update context usage and change normalize tests to getIdentifier ([f6d451e](https://github.com/arablocks/ara-util/commit/f6d451e))
+* **keyring.js:** Cast secret to Buffer in getPublic, fix tests ([0955a87](https://github.com/arablocks/ara-util/commit/0955a87))
+* **web3/contract.js:** oops ([b5ca67b](https://github.com/arablocks/ara-util/commit/b5ca67b))
+* **web3/contract.js:** sign contract deployments ([a7fe661](https://github.com/arablocks/ara-util/commit/a7fe661))
 * **web3/tx:** Remove passing obj into new Error ([8ab072c](https://github.com/arablocks/ara-util/commit/8ab072c))
 
 
@@ -82,9 +82,9 @@
 
 ### Bug Fixes
 
-* remove rc.js and keyring.js ([d36094d](https://github.com/arablocks/ara-util/commit/d36094d))
 * **index:** Fix issue with not detecting AFS w no content ([a0333ce](https://github.com/arablocks/ara-util/commit/a0333ce))
 * **transform:** Change toHex calls to toHexBuffer ([8ac9f5d](https://github.com/arablocks/ara-util/commit/8ac9f5d))
+* remove rc.js and keyring.js ([d36094d](https://github.com/arablocks/ara-util/commit/d36094d))
 
 
 ### Features
@@ -99,27 +99,27 @@
 
 ### Bug Fixes
 
-* get correct doc owner ([b017093](https://github.com/arablocks/ara-util/commit/b017093))
-* **index.validate:** Add back ddo opt ([81e5fcc](https://github.com/arablocks/ara-util/commit/81e5fcc))
-* update secret to keyrings ([835e8f6](https://github.com/arablocks/ara-util/commit/835e8f6))
 * **errors, test:** Fix error export, fix tests ([67526a3](https://github.com/arablocks/ara-util/commit/67526a3))
 * **index:** destructure and default keyringOpts in getAFSownerid ([5019160](https://github.com/arablocks/ara-util/commit/5019160))
 * **index:** pass non-null object to resolve ([3521731](https://github.com/arablocks/ara-util/commit/3521731))
 * **index:** type check of keyringOpts ([cdfd402](https://github.com/arablocks/ara-util/commit/cdfd402))
-* **index.resolveDDO:** Fix issue with reference to non-existent property ([acccb1b](https://github.com/arablocks/ara-util/commit/acccb1b))
 * **index.resolveDDO:** Fix issue with reference to non-existent property ([00f83f1](https://github.com/arablocks/ara-util/commit/00f83f1))
+* **index.resolveDDO:** Fix issue with reference to non-existent property ([acccb1b](https://github.com/arablocks/ara-util/commit/acccb1b))
+* **index.validate:** Add back ddo opt ([81e5fcc](https://github.com/arablocks/ara-util/commit/81e5fcc))
 * **keyring:** Fix issues raised by tests ([166e69c](https://github.com/arablocks/ara-util/commit/166e69c))
 * **package.json:** revert to stable ara-identity ([e7ed073](https://github.com/arablocks/ara-util/commit/e7ed073))
+* get correct doc owner ([b017093](https://github.com/arablocks/ara-util/commit/b017093))
+* update secret to keyrings ([835e8f6](https://github.com/arablocks/ara-util/commit/835e8f6))
 
 
 ### Features
 
-* Add MissingOptionError ([7b3e8b4](https://github.com/arablocks/ara-util/commit/7b3e8b4))
-* get eth address from did ([7db293f](https://github.com/arablocks/ara-util/commit/7db293f))
-* support pass in ddo to validate ([f0885d4](https://github.com/arablocks/ara-util/commit/f0885d4))
 * **errors:** Allow MissingOptionError.expectedKey to be array ([98b68fc](https://github.com/arablocks/ara-util/commit/98b68fc))
+* Add MissingOptionError ([7b3e8b4](https://github.com/arablocks/ara-util/commit/7b3e8b4))
 * **errors,keyring:** Add keyring funcs, add Ara errs ([41cdfa8](https://github.com/arablocks/ara-util/commit/41cdfa8))
+* get eth address from did ([7db293f](https://github.com/arablocks/ara-util/commit/7db293f))
 * **index:** added keyring opts to validate and getAFSOwnerIdentity ([42e2568](https://github.com/arablocks/ara-util/commit/42e2568))
+* support pass in ddo to validate ([f0885d4](https://github.com/arablocks/ara-util/commit/f0885d4))
 
 
 
@@ -169,20 +169,20 @@
 
 ### Bug Fixes
 
+* **index.js:** remove old log ([7facb3b](https://github.com/arablocks/ara-util/commit/7facb3b))
+* **web3/abi.js:** remove string conversion for function params ([08f506b](https://github.com/arablocks/ara-util/commit/08f506b))
 * cleanup error messages, start resolve migrate, secret-storage ([0ecdba6](https://github.com/arablocks/ara-util/commit/0ecdba6))
 * cleanup error messages, start resolve migrate, secret-storage ([b98ecb7](https://github.com/arablocks/ara-util/commit/b98ecb7))
-* **index.js:** remove old log ([7facb3b](https://github.com/arablocks/ara-util/commit/7facb3b))
 * **index.js:** remove pw requirement for validate ([88c2a47](https://github.com/arablocks/ara-util/commit/88c2a47))
-* **web3/abi.js:** remove string conversion for function params ([08f506b](https://github.com/arablocks/ara-util/commit/08f506b))
 
 
 ### Features
 
+* **.npmrc:** npmrc file ([14096db](https://github.com/arablocks/ara-util/commit/14096db))
 * allow for configurable resolve opts, fix gitignore typo ([6537efa](https://github.com/arablocks/ara-util/commit/6537efa))
 * first pass, migrate ara-web3 into ara-util/web3 ([e48bb6d](https://github.com/arablocks/ara-util/commit/e48bb6d))
-* utility methods around did and ddos ([120e9ab](https://github.com/arablocks/ara-util/commit/120e9ab))
-* **.npmrc:** npmrc file ([14096db](https://github.com/arablocks/ara-util/commit/14096db))
 * **index.js:** fleshed out rest of utility functions ([b0530ac](https://github.com/arablocks/ara-util/commit/b0530ac))
+* utility methods around did and ddos ([120e9ab](https://github.com/arablocks/ara-util/commit/120e9ab))
 
 
 
