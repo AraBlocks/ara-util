@@ -48,8 +48,16 @@ async function deploy(opts) {
       data: contract.encodeABI()
     })
 
-    const { contractAddress } = await tx.sendSignedTransaction(deployTx)
-    ctx2.close()
+    const contractAddress = await new Promise((resolve, reject) => {
+      tx.sendSignedTransaction(deployTx, 
+        { 
+          onreceipt: ({ contractAddress }) => {
+            resolve(contractAddress)
+            ctx2.close()
+          },
+          onerror: (err) => reject(err)
+        })
+    })
     return {
       contractAddress,
       gasLimit

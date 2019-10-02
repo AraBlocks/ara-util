@@ -111,7 +111,7 @@ function sign(tx, privateKey) {
  * Send a signed transaction
  * @param  {Object} tx
  */
-async function sendSignedTransaction(tx, onHash, onReceipt, onConfirmation, onError, onMined) {
+async function sendSignedTransaction(tx, { onhash = null, onreceipt = null, onconfirmation = null, onerror = null, onmined = null }) {
   if (!tx || 'object' !== typeof tx || !(tx instanceof EthereumTx)) {
     throw new TypeError('Tx object is not valid')
   }
@@ -129,16 +129,16 @@ async function sendSignedTransaction(tx, onHash, onReceipt, onConfirmation, onEr
 
   try {
     web3.eth.sendSignedTransaction(tx)
-      .once('transactionHash', onHash)
+      .once('transactionHash', onhash)
       .once('receipt', (receipt) => {
         ctx.close()
-        onReceipt(receipt)
+        onreceipt(receipt)
       })
-      .on('confirmation', onConfirmation)
-      .on('error', onError)
+      .on('confirmation', onconfirmation)
+      .on('error', onerror)
       .then((receipt) => {
         ctx.close()
-        onMined(receipt)
+        onmined(receipt)
       })
   } catch (err) {
     ctx.close()
