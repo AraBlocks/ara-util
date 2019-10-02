@@ -122,7 +122,7 @@ async function getAddressFromDID(did, keyringOpts = {}) {
     })
 
     const hashpk = web3.sha3(`${kEthHexPrefix}${publicKeyHex}`)
-    return web3.ethify(hashpk.slice(-ETH_ADDRESS_LENGTH))
+    return transform.toHexString(hashpk.slice(-ETH_ADDRESS_LENGTH), { encoding: 'hex', ethify: true })
   } catch (err) {
     throw err
   }
