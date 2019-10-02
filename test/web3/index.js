@@ -1,8 +1,5 @@
-const { kEthHexPrefix } = require('../fixtures/constants')
 const { web3 } = require('../../')
 const test = require('ava')
-
-const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
 test('isAddress(address) invalid input', (t) => {
   t.false(web3.isAddress())

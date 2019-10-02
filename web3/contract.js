@@ -49,14 +49,16 @@ async function deploy(opts) {
     })
 
     const contractAddress = await new Promise((resolve, reject) => {
-      tx.sendSignedTransaction(deployTx, 
-        { 
-          onreceipt: ({ contractAddress }) => {
-            resolve(contractAddress)
+      tx.sendSignedTransaction(
+        deployTx,
+        {
+          onreceipt: ({ contractAddress: address }) => {
+            resolve(address)
             ctx2.close()
           },
-          onerror: (err) => reject(err)
-        })
+          onerror: err => reject(err)
+        }
+      )
     })
     return {
       contractAddress,
