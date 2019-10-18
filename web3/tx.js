@@ -49,7 +49,7 @@ async function create(opts, signTx = true) {
     opts.gasPrice = opts.gasPrice.toString()
   }
 
-  const gasPrice = opts.gasPrice || await web3.eth.getGasPrice()
+  const gasPrice = web3.utils.toWei(opts.gasPrice, 'gwei') || await web3.eth.getGasPrice()
   const gasLimit = opts.gasLimit || kGasLimit
   const to = opts.to || undefined
 
