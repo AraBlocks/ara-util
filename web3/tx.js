@@ -49,7 +49,7 @@ async function create(opts, signTx = true) {
     opts.gasPrice = opts.gasPrice.toString()
   }
 
-  const gasPrice = opts.gasPrice && web3.utils.toWei(opts.gasPrice, 'gwei') || await web3.eth.getGasPrice()
+  const gasPrice = (opts.gasPrice && web3.utils.toWei(opts.gasPrice, 'gwei')) || await web3.eth.getGasPrice()
   const gasLimit = opts.gasLimit || kGasLimit
   const to = opts.to || undefined
 
@@ -142,23 +142,23 @@ async function sendSignedTransaction(tx, {
     result = await new Promise((resolve, reject) => {
       web3.eth.sendSignedTransaction(tx)
         .once('transactionHash', onhash)
-        .once('receipt', receipt => {
+        .once('receipt', (receipt) => {
           ctx.close()
           if ('function' === typeof onreceipt) onreceipt(receipt)
           resolve(receipt)
         })
         .on('confirmation', onconfirmation)
-        .on('error', error => {
+        .on('error', (error) => {
           ctx.close()
           if ('function' === typeof onerror) onerror(error)
           reject(error)
         })
-        .then(receipt => {
+        .then((receipt) => {
           ctx.close()
           if ('function' === typeof onmined) onmined(receipt)
           resolve(receipt)
         })
-        .catch(error => {
+        .catch((error) => {
           ctx.close()
           if ('function' === typeof onerror) onerror(error)
           reject(error)
