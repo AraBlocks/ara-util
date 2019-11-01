@@ -65,6 +65,7 @@ correctness. If given incorrect input, a function will throw a
 * [async util.web3.tx.sendTransaction(tx)](#sendTransaction)
 * [util.web3.tx.estimateCost(tx, \[denomination\])](#estimateCost)
 * [util.web3.tx.sign(tx, privateKey)](#sign)
+* [util.web3.tx.getTransactionReceipt(hash)](#receipt)
 
 #### ABI
 
@@ -466,6 +467,17 @@ const { privateKey } = account
 const signedTx = util.web3.tx.sign(unsignedTx, privateKey)
 ctx.close()
 ```
+
+<a name="receipt"></a>
+### `util.web3.tx.getTransactionReceipt(hash)`
+
+Returns the transaction `receipt` `object` for a mined transaction. Returns `null` for pending transactions.
+
+- `hash` - The transaction hash of a mined transaction
+
+```js
+  const receipt = await util.web3.tx.getTransactionReceipt(hash)
+````
 
 <a name="encodeFunctionCall"></a>
 ### `util.web3.abi.encodeFunctionCall(abi, functionName, values)`
