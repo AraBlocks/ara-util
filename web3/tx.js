@@ -145,7 +145,6 @@ async function sendSignedTransaction(tx, {
         .once('receipt', (receipt) => {
           ctx.close()
           if ('function' === typeof onreceipt) onreceipt(receipt)
-          resolve(receipt)
         })
         .on('confirmation', onconfirmation)
         .on('error', (error) => {
@@ -191,6 +190,23 @@ function estimateCost(tx, denomination = 'ether') {
   return web3.utils.fromWei(cost, denomination)
 }
 
+async function getTransactionReceipt(hash) {
+  if ('string' !== typeof hash) {
+    throw new TypeError('Expecting transaction hash to be a string.')
+  }
+
+  try {
+    const ctx = createContext()
+    await ctx.ready()
+    const { web3 } = ctx
+    const receipt = await web3.eth.getTransactionReceipt(hash)
+    ctx.close()
+    return receipt
+  } catch (err) {
+    throw err
+  }
+}
+
 /**
  * Checks is a tx object has been serialized into hex
  * @param  {Object}  tx
@@ -202,8 +218,9 @@ function _isSerialized(tx) {
 }
 
 module.exports = {
-  create,
   sign,
-  sendSignedTransaction,
-  estimateCost
+  create,
+  estimateCost,
+  getTransactionReceipt,
+  sendSignedTransaction
 }
