@@ -114,12 +114,18 @@ test('sendSignedTransaction(tx) valid tx', async (t) => {
   const account = getAccount(t)
   const { tx: signedTx, ctx } = await tx.create({ account, to: kRandomEthAddress })
   const { web3 } = createContext({ provider: false })
+  let HASH = ''
   const receipt = await tx.sendSignedTransaction(signedTx, {
-    onhash: hash => t.true(hash && web3.utils.isHex(hash)),
+    onhash: (hash) => {
+      HASH = hash
+      t.true(hash && web3.utils.isHex(hash))
+    },
     onreceipt: r => t.true(null !== r && 'object' === typeof r),
     onmined: r => t.true(null !== r && 'object' === typeof r)
   })
   ctx.close()
+
+  t.is(JSON.stringify(await tx.getTransactionReceipt(HASH)), JSON.stringify(receipt))
   t.true(null !== receipt && 'object' === typeof receipt)
   t.true(receipt.transactionHash && web3.utils.isHex(receipt.transactionHash))
 })
