@@ -62,7 +62,6 @@ correctness. If given incorrect input, a function will throw a
 
 * [async util.web3.tx.create(opts, \[signTx\])](#create)
 * [async util.web3.tx.sendSignedTransaction(tx)](#sendSignedTransaction)
-* [async util.web3.tx.sendTransaction(tx)](#sendTransaction)
 * [util.web3.tx.estimateCost(tx, \[denomination\])](#estimateCost)
 * [util.web3.tx.sign(tx, privateKey)](#sign)
 * [util.web3.tx.getTransactionReceipt(hash)](#receipt)
@@ -428,21 +427,6 @@ const account = await util.web3.account.load({ did, password })
 const { tx: signedTx, ctx } = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' })
 const receipt = await util.web3.tx.sendSignedTransaction(signedTx)
 ctx.close()
-```
-
-<a name="sendTransaction"></a>
-### `async util.web3.tx.sendTransaction(tx)`
-
-Sends an unsigned transaction to the current network.
-
-- `tx` - The unsigned `EthereumTx` `object` to publish to the network
-
-Returns the transaction `receipt` `object`.
-
-```js
-const account = await util.web3.account.load({ did, password })
-const unsignedTx = await util.web3.tx.create({ account, to: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48' }, false)
-const receipt = await util.web3.tx.sendTransaction(unsignedTx)
 ```
 
 <a name="estimateCost"></a>
