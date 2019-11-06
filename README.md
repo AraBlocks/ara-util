@@ -410,11 +410,16 @@ ctx3.close()
 ```
 
 <a name="sendSignedTransaction"></a>
-### `async util.web3.tx.sendSignedTransaction(tx)`
+### `async util.web3.tx.sendSignedTransaction(tx[, { onhash, onreceipt, onconfirmation, onerror, onmined }])`
 
 Sends a signed transaction to the current network.
 
 - `tx` - The signed `EthereumTx` `object` to publish to the network
+- `onhash` - Optional callback fired right after the transaction is sent and a transaction hash `string` is available
+- `onreceipt` - Optional callback fired when the transaction receipt `Object` is available
+- `onconfirmation` - Optional callback fired for every confirmation up to the 12th confirmation. Receives the confirmation number as the first and the receipt `Object` as the second argument. Fired from confirmation 0 on, which is the block where its mined.
+- `onerror` - Optional callback fired if an error occurs during sending. If an out of gas error, the second parameter is the receipt.
+- `onmined` - Optional callback fired when receipt `Object` is available
 
 Returns the transaction `receipt` `object`.
 
