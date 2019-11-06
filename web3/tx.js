@@ -147,9 +147,9 @@ async function sendSignedTransaction(tx, {
           if ('function' === typeof onreceipt) onreceipt(receipt)
         })
         .on('confirmation', onconfirmation)
-        .on('error', (error) => {
+        .on('error', (error, receipt) => {
           ctx.close()
-          if ('function' === typeof onerror) onerror(error)
+          if ('function' === typeof onerror) onerror(error, receipt)
           reject(error)
         })
         .then((receipt) => {
