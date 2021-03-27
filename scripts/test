@@ -17,7 +17,7 @@ safeRunCommand() {
 PATH=$(npm bin):$PATH
 
 # installation
-npm install -g ganache-cli truffle@4.1.14
+npm install -g ganache-cli truffle@5.1.65
 
 # run local ganache node
 ganache-cli -l 0x7A1200 -q &
@@ -27,7 +27,7 @@ command="truffle migrate --reset --network local"
 safeRunCommand "$command"
 
 # ava tests
-command="ava test --verbose"
+command="ava test/** --verbose"
 safeRunCommand "$command"
 
 # cleanup
