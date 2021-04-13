@@ -1,7 +1,6 @@
-const { MissingParamError } = require('./errors')
+const { unpack, keyRing, derive } = require('ara-network/keys')
 const { readFile } = require('fs')
 const { resolve } = require('path')
-const { unpack, keyRing, derive } = require('ara-network/keys')
 const { lstat } = require('fs')
 const { DID } = require('did-uri')
 const crypto = require('ara-crypto')
@@ -10,6 +9,8 @@ const pify = require('pify')
 const url = require('url')
 const ss = require('ara-secret-storage')
 const rc = require('ara-runtime-configuration')()
+
+const { MissingParamError } = require('./errors')
 
 /**
  * Checks if a keyring exists on local system
@@ -109,11 +110,16 @@ async function getSecret(opts) {
     }
 
     const buffer = await keyring.get(opts.network)
-
     const unpacked = unpack({ buffer })
-
     const kp = derive({ secretKey, name: opts.network })
-    return { identity: { publicKey: kp.publicKey, secretKey: kp.secretKey }, ...unpacked }
+
+    return {
+      ...unpacked,
+      identity: {
+        publicKey: kp.publicKey,
+        secretKey: kp.secretKey
+      }
+    }
   } catch (e) {
     throw new Error(`Error occurred while getting secret key of ${opts.network} (${e})`)
   }

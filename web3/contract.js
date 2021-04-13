@@ -31,41 +31,32 @@ async function deploy(opts) {
   const { account, abi, bytecode } = opts
   const args = opts.arguments || []
 
-  let contract
-  try {
-    const instance = new web3.eth.Contract(abi)
-    contract = await instance
-      .deploy({
-        data: bytecode,
-        arguments: args
-      })
-    const gasLimit = await contract.estimateGas()
-    ctx1.close()
+  const instance = new web3.eth.Contract(abi)
+  const contract = await instance.deploy({ data: bytecode, arguments: args })
+  const gasLimit = await contract.estimateGas()
+  ctx1.close()
 
-    const { tx: deployTx, ctx: ctx2 } = await tx.create({
-      account,
-      gasLimit,
-      data: contract.encodeABI()
-    })
+  const { tx: deployTx, ctx: ctx2 } = await tx.create({
+    account,
+    gasLimit,
+    data: contract.encodeABI()
+  })
 
-    const contractAddress = await new Promise((resolve, reject) => {
-      tx.sendSignedTransaction(
-        deployTx,
-        {
-          onreceipt: ({ contractAddress: address }) => {
-            resolve(address)
-            ctx2.close()
-          },
-          onerror: (err) => reject(err)
-        }
-      )
-    })
-    return {
-      contractAddress,
-      gasLimit
-    }
-  } catch (err) {
-    throw err
+  const contractAddress = await new Promise((resolve, reject) => {
+    tx.sendSignedTransaction(
+      deployTx,
+      {
+        onreceipt: ({ contractAddress: address }) => {
+          resolve(address)
+          ctx2.close()
+        },
+        onerror: (err) => reject(err)
+      }
+    )
+  })
+  return {
+    contractAddress,
+    gasLimit
   }
 }
 

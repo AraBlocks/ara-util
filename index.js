@@ -1,5 +1,4 @@
 const { createIdentityKeyPath } = require('ara-identity/key-path')
-const { kEthHexPrefix } = require('./constants')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
 const ss = require('ara-secret-storage')
@@ -17,9 +16,11 @@ const {
   kEd25519VerificationKey2018,
   kSecp256k1VerificationKey2018
 } = require('ld-cryptosuite-registry')
-const web3 = require('./web3')
-const errors = require('./errors')
+
+const { kEthHexPrefix } = require('./constants')
 const transform = require('./transform')
+const errors = require('./errors')
+const web3 = require('./web3')
 
 const ETH_ADDRESS_LENGTH = 40
 
@@ -113,19 +114,16 @@ async function getAddressFromDID(did, keyringOpts = {}) {
   if (!did || 'string' !== typeof did) {
     throw new TypeError(`Expected DID to be a non-empty string. Got ${did}. Ensure identity exists.`)
   }
-  try {
-    const ddo = await aid.resolve(did, keyringOpts)
 
-    const { publicKeyHex } = ddo.publicKey.find((element) => {
-      const { type } = element
-      return type === kSecp256k1VerificationKey2018
-    })
+  const ddo = await aid.resolve(did, keyringOpts)
 
-    const hashpk = web3.sha3(`${kEthHexPrefix}${publicKeyHex}`)
-    return transform.toHexString(hashpk.slice(-ETH_ADDRESS_LENGTH), { encoding: 'hex', ethify: true })
-  } catch (err) {
-    throw err
-  }
+  const { publicKeyHex } = ddo.publicKey.find((element) => {
+    const { type } = element
+    return type === kSecp256k1VerificationKey2018
+  })
+
+  const hashpk = web3.sha3(`${kEthHexPrefix}${publicKeyHex}`)
+  return transform.toHexString(hashpk.slice(-ETH_ADDRESS_LENGTH), { encoding: 'hex', ethify: true })
 }
 
 /**
@@ -280,11 +278,7 @@ async function validate(opts) {
   let { did, ddo } = opts
   const { password, keyringOpts = {} } = opts
 
-  try {
-    did = getIdentifier(did)
-  } catch (err) {
-    throw err
-  }
+  did = getIdentifier(did)
 
   if (!ddo) {
     ddo = await aid.resolve(did, keyringOpts)

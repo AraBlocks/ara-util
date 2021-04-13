@@ -195,16 +195,12 @@ async function getTransactionReceipt(hash) {
     throw new TypeError('Expecting transaction hash to be a string.')
   }
 
-  try {
-    const ctx = createContext()
-    await ctx.ready()
-    const { web3 } = ctx
-    const receipt = await web3.eth.getTransactionReceipt(hash)
-    ctx.close()
-    return receipt
-  } catch (err) {
-    throw err
-  }
+  const ctx = createContext()
+  await ctx.ready()
+  const { web3 } = ctx
+  const receipt = await web3.eth.getTransactionReceipt(hash)
+  ctx.close()
+  return receipt
 }
 
 /**

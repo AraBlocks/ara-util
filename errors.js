@@ -6,9 +6,9 @@ class MissingParamError extends Error {
   /**
    * Create a missing param error
    *
-   * @param  {String} options.expected      Description of expected key (It should be a path like 'opts.keyring' or 'keyring')
-   * @param  {Object} options.actual        Object of the received value
-   * @param  {String} options.suggestion    Prepended with `Try`, (ex: `passing the variable`)
+   * @param  {String} options.expected   Description of expected key ('opts.keyring' or 'keyring')
+   * @param  {Object} options.actual     Object of the received value
+   * @param  {String} options.suggestion Prepended with `Try`, (ex: `passing the variable`)
    *
    * @return {MissingParamError}
    */

@@ -27,19 +27,20 @@ async function call(opts) {
 
   const { abi, address, functionName } = opts
   const { contract: deployed, ctx } = await get(abi, address)
-  if (!Object.prototype.hasOwnProperty.call(deployed.methods, functionName) && !Object.prototype.hasOwnProperty.call(deployed.abiModel.abi.methods, functionName)) {
+  if (
+    !Object.prototype.hasOwnProperty.call(deployed.methods, functionName)
+    && !Object.prototype.hasOwnProperty.call(
+      deployed.abiModel.abi.methods, functionName
+    )
+  ) {
     throw new Error('Methods does not contain', functionName)
   }
 
   const args = opts.arguments || []
-
-  let result
-  try {
-    result = deployed.methods ? await deployed.methods[functionName](...args).call() : await deployed.abiModel.abi.methods[functionName](...args).call()
-    ctx.close()
-  } catch (err) {
-    throw err
-  }
+  const result = deployed.methods
+    ? await deployed.methods[functionName](...args).call()
+    : await deployed.abiModel.abi.methods[functionName](...args).call()
+  ctx.close()
   return result
 }
 

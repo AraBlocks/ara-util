@@ -1,13 +1,9 @@
 const createContext = require('ara-context')
 
 module.exports = {
-
   kPassword: 'pass',
-
   kPrefix: 'did:ara:',
-
   kEthHexPrefix: '0x',
-
   kRandomEthAddress: '0xef61059258414a65bf2d94a4fd3b503b5fee8b48',
 
   getDID({ context }) {
@@ -36,8 +32,13 @@ module.exports = {
     }
 
     if (accounts[i]) {
-      await web3.eth.sendTransaction({ from: accounts[i], to: address, value: transferAmount })
+      await web3.eth.sendTransaction({
+        from: accounts[i],
+        to: address,
+        value: transferAmount
+      })
     }
+
     ctx.close()
   }
 

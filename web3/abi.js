@@ -26,7 +26,10 @@ function encodeFunctionCall(abi, functionName, values) {
     throw new Error('Provided args count does not match ABI count')
   }
   const { web3 } = createContext({ provider: false })
-  const encodedFunctionCall = web3.eth.abi.encodeFunctionCall(jsonInterface, values)
+  const encodedFunctionCall = web3.eth.abi.encodeFunctionCall(
+    jsonInterface,
+    values
+  )
   return encodedFunctionCall
 }
 
@@ -62,7 +65,10 @@ function encodeParameters(typesArray, parameters) {
     throw new TypeError('Parameters must be valid array')
   }
   const { web3 } = createContext({ provider: false })
-  const encodedParameters = web3.eth.abi.encodeParameters(typesArray, parameters)
+  const encodedParameters = web3.eth.abi.encodeParameters(
+    typesArray,
+    parameters
+  )
   return encodedParameters
 }
 
