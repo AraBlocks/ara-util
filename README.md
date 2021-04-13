@@ -1,8 +1,6 @@
 <img src="https://github.com/AraBlocks/docs/blob/master/ara.png" width="30" height="30" /> ara-util
 ======================================
 
-[![Build Status](https://travis-ci.com/AraBlocks/ara-util.svg?token=93ySMW14xn3tP6eZMEza&branch=master)](https://travis-ci.com/AraBlocks/ara-util)
-
 Common utility functions to be used in various Ara modules.
 
 ## Status
@@ -16,7 +14,7 @@ This project is in active development.
 ## Installation
 
 ```bash
-# npm install arablocks/ara-util --save
+# npm install ara-util --save
 ```
 
 ## Dependencies
