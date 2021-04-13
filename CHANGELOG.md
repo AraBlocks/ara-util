@@ -1,12 +1,12 @@
-## [1.4.2](https://github.com/arablocks/ara-util/compare/0.6.2...1.4.2) (2019-11-06)
+# [2.0.0](https://github.com/arablocks/ara-util/compare/0.6.2...2.0.0) (2021-04-13)
 
 
 ### Bug Fixes
 
-* add catch to promievent ([b101423](https://github.com/arablocks/ara-util/commit/b10142398bd5cea8d9c54a046ab657fa3ef3ccfd))
-* check if gasPrice was passed in ([70db816](https://github.com/arablocks/ara-util/commit/70db81673367dd7079ed34ce56de0980ca427133))
-* convert gwei input to wei ([ad3f982](https://github.com/arablocks/ara-util/commit/ad3f98212ce1a7dfc7577643a3c4e6e530f3478c))
-* lint ([a4a06c2](https://github.com/arablocks/ara-util/commit/a4a06c2a377c0d776118133d7b7299f5f755fb48))
+* add catch to promievent ([d921b1d](https://github.com/arablocks/ara-util/commit/d921b1d80bbea7ad5c88432148df1a31d44bb6b1))
+* check if gasPrice was passed in ([746a813](https://github.com/arablocks/ara-util/commit/746a81392bfd736baf0be7b7943e543b6c73d521))
+* convert gwei input to wei ([9544af3](https://github.com/arablocks/ara-util/commit/9544af3fcf11e4922361467d2d987eee1d28351b))
+* lint ([9c169e2](https://github.com/arablocks/ara-util/commit/9c169e2828acc8e56b70701bd017cb055ee0a3a2))
 * **.npmignore:** add build/ to npmignore ([a2a856d](https://github.com/arablocks/ara-util/commit/a2a856d7a4098bd054c04ac977e133db991797b3))
 * **tx.js:** added ctx.close() before typeErrors in create ([abe6856](https://github.com/arablocks/ara-util/commit/abe6856509ddaa5d0f945d843d58804d96996a27))
 * **tx.js:** closes ctx if err during sendSignedTransaction ([a36b1aa](https://github.com/arablocks/ara-util/commit/a36b1aa44289745b45bc505011b30047d350aa65))
@@ -33,10 +33,10 @@
 ### Features
 
 * add context getter ([9c83562](https://github.com/arablocks/ara-util/commit/9c8356295dc3b0ebbc2f485e5de9cfe177baa1f0))
-* add getTransactionReceipt ([d6dce41](https://github.com/arablocks/ara-util/commit/d6dce41b058d7ef4c2781168421d58177a04cbb5))
+* add getTransactionReceipt ([7256442](https://github.com/arablocks/ara-util/commit/7256442344354bc583106d76c49e2e777bd6bed0))
 * add option for raw sha3 ([29ead17](https://github.com/arablocks/ara-util/commit/29ead1726539c48bc84c2e480d3935c97be13a0b))
-* support in contract ([f9e291f](https://github.com/arablocks/ara-util/commit/f9e291fcd3a068f6fbd61d9f2f565b7deebd9deb))
-* support transaction callbacks ([f8c91a5](https://github.com/arablocks/ara-util/commit/f8c91a52ddb2aea42bcb3937a1c72f139b748019))
+* support in contract ([2060335](https://github.com/arablocks/ara-util/commit/2060335df987751f01536fbbbd5dfd1e4f5c88a4))
+* support transaction callbacks ([7a8d366](https://github.com/arablocks/ara-util/commit/7a8d366a51ac6a808d0b47d70693160f1a914b8d))
 
 
 
