@@ -14,7 +14,7 @@ This project is in active development.
 ## Installation
 
 ```bash
-# npm install ara-util --save
+$ npm install ara-util --save
 ```
 
 ## Dependencies
