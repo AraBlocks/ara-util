@@ -1,17 +1,16 @@
-const constants = require('./fixtures/constants')
 const createContext = require('ara-context')
-const aid = require('ara-identity')
 const { parse } = require('path')
 const sinon = require('sinon')
 const test = require('ava')
+const aid = require('ara-identity')
 const fs = require('fs')
 
-const getDDO = t => t.context.ddo
+const constants = require('./fixtures/constants')
+
+const getDDO = (t) => t.context.ddo
 
 test.before((t) => {
-  t.context = Object.assign({}, constants, {
-    sandbox: sinon.createSandbox(),
-  })
+  t.context = { ...constants, sandbox: sinon.createSandbox() }
 
   t.context.sandbox.stub(fs, 'readFile').callsFake((_, __, cb) => cb(null, JSON.stringify(t.context.araKeystore)))
 
@@ -47,13 +46,16 @@ test.after((t) => {
 })
 
 // Do not move this. We have to import this last so we can stub methods
-const util = require('../')
+const util = require('..')
 
 test('hashIdentity(did, encoding) invalid params', (t) => {
-  t.throws(() => util.hashDID(), TypeError)
-  t.throws(() => util.hashDID(1234), Error)
-  t.throws(() => util.hashDID(t.context.identity, 1234), TypeError)
-  t.throws(() => util.hashDID(t.context.identity, 'wrongEncoding'), TypeError)
+  t.throws(() => util.hashDID(), { instanceOf: TypeError })
+  t.throws(() => util.hashDID(1234), { instanceOf: Error })
+  t.throws(() => util.hashDID(t.context.identity, 'wrongEncoding'), { instanceOf: TypeError })
+  t.throws(
+    () => util.hashDID(t.context.identity, 1234),
+    { instanceOf: TypeError }
+  )
 })
 
 test('hashIdentity(did, encoding) valid identity', (t) => {
@@ -68,8 +70,8 @@ test('hashIdentity(did, encoding) valid identity', (t) => {
 })
 
 test('getIdentifier(did) invalid did', (t) => {
-  t.throws(() => util.getIdentifier(), TypeError)
-  t.throws(() => util.getIdentifier(1234), TypeError)
+  t.throws(() => util.getIdentifier(), { instanceOf: TypeError })
+  t.throws(() => util.getIdentifier(1234), { instanceOf: TypeError })
 })
 
 test('getIdentifier(did) valid identifier', (t) => {
@@ -84,10 +86,25 @@ test('getIdentifier(did) valid identifier', (t) => {
 test('isCorrectPassword(opts) invalid opts', async (t) => {
   const ddo = getDDO(t)
 
-  await t.throwsAsync(util.isCorrectPassword, TypeError)
-  await t.throwsAsync(util.isCorrectPassword({}), TypeError)
-  await t.throwsAsync(util.isCorrectPassword({ ddo }), TypeError)
-  await t.throwsAsync(util.isCorrectPassword({ ddo, password: 123 }), TypeError)
+  await t.throwsAsync(
+    () => util.isCorrectPassword(),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.isCorrectPassword({}),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.isCorrectPassword({ ddo }),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.isCorrectPassword({ ddo, password: 123 }),
+    { instanceOf: TypeError }
+  )
 })
 
 test('isCorrectPassword(opts) valid check', async (t) => {
@@ -100,11 +117,11 @@ test('isCorrectPassword(opts) valid check', async (t) => {
 })
 
 test('getDocumentOwner(ddo) invalid ddo', (t) => {
-  const ddo = Object.assign({}, getDDO(t))
-  t.throws(() => util.getDocumentOwner(), TypeError)
-  t.throws(() => util.getDocumentOwner('identity'), TypeError)
+  const ddo = { ...getDDO(t) }
+  t.throws(() => util.getDocumentOwner(), { instanceOf: TypeError })
+  t.throws(() => util.getDocumentOwner('identity'), { instanceOf: TypeError })
   ddo.authentication = []
-  t.throws(() => util.getDocumentOwner(ddo), RangeError)
+  t.throws(() => util.getDocumentOwner(ddo), { instanceOf: RangeError })
 })
 
 test('getDocumentOwner(ddo) valid ddo', (t) => {
@@ -117,8 +134,8 @@ test('getDocumentOwner(ddo) valid ddo', (t) => {
 })
 
 test('getDocumentKeyHex(ddo) invalid ddo', (t) => {
-  t.throws(() => util.getDocumentKeyHex(), TypeError)
-  t.throws(() => util.getDocumentKeyHex('did:ara:1234'), TypeError)
+  t.throws(() => util.getDocumentKeyHex(), { instanceOf: TypeError })
+  t.throws(() => util.getDocumentKeyHex('did:ara:1234'), { instanceOf: TypeError })
 })
 
 test('getDocumentKeyHex(ddo) valid ddo', (t) => {
@@ -130,9 +147,9 @@ test('getDocumentKeyHex(ddo) valid ddo', (t) => {
 })
 
 test('hash(str, encoding) invalid', (t) => {
-  t.throws(() => util.hash(), TypeError)
-  t.throws(() => util.hash(1234), TypeError)
-  t.throws(() => util.hash(t.context.identity, 'wrongEncoding'), Error)
+  t.throws(() => util.hash(), { instanceOf: TypeError })
+  t.throws(() => util.hash(1234), { instanceOf: TypeError })
+  t.throws(() => util.hash(t.context.identity, 'wrongEncoding'), { instanceOf: Error })
 })
 
 test('hash(str, encoding) valid hash', (t) => {
@@ -143,9 +160,20 @@ test('hash(str, encoding) valid hash', (t) => {
 })
 
 test('getAFSOwnerIdentity(opts) invalid opts', async (t) => {
-  await t.throwsAsync(util.getAFSOwnerIdentity(), TypeError)
-  await t.throwsAsync(util.getAFSOwnerIdentity({}), TypeError)
-  await t.throwsAsync(util.getAFSOwnerIdentity({ did: 'did:ara:1234' }), TypeError)
+  await t.throwsAsync(
+    () => util.getAFSOwnerIdentity(),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.getAFSOwnerIdentity({}),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.getAFSOwnerIdentity({ did: 'did:ara:1234' }),
+    { instanceOf: TypeError }
+  )
 })
 
 test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
@@ -160,14 +188,13 @@ test('getAFSOwnerIdentity(opts) correct opts', async (t) => {
 })
 
 test('validate(opts) invalid opts', async (t) => {
-  await t.throwsAsync(util.validate(), TypeError)
-  await t.throwsAsync(util.validate('opts'), TypeError)
-  await t.throwsAsync(util.validate({}), Error)
-  await t.throwsAsync(util.validate({
-    did: '123',
-    owner: 'test',
-    password: t.context.password
-  }), Error)
+  await t.throwsAsync(() => util.validate(), { instanceOf: TypeError })
+  await t.throwsAsync(() => util.validate('opts'), { instanceOf: TypeError })
+  await t.throwsAsync(() => util.validate({}), { instanceOf: Error })
+  await t.throwsAsync(
+    () => util.validate({ did: '123', owner: 'test', password: t.context.password }),
+    { instanceOf: Error }
+  )
 })
 
 test('validate(opts)', async (t) => {
@@ -185,9 +212,9 @@ test('validate(opts)', async (t) => {
 })
 
 test('checkAFSExistence(opts) invalid opts', async (t) => {
-  t.throws(() => util.checkAFSExistence(), Error)
-  t.throws(() => util.checkAFSExistence(123), TypeError)
-  t.throws(() => util.checkAFSExistence({}), Error)
+  t.throws(() => util.checkAFSExistence(), { instanceOf: Error })
+  t.throws(() => util.checkAFSExistence(123), { instanceOf: TypeError })
+  t.throws(() => util.checkAFSExistence({}), { instanceOf: Error })
 })
 
 test('checkAFSExistence(opts)', (t) => {
@@ -196,9 +223,20 @@ test('checkAFSExistence(opts)', (t) => {
 })
 
 test('getAddressFromDID(did) invalid opts', async (t) => {
-  await t.throwsAsync(() => util.getAddressFromDID(), TypeError)
-  await t.throwsAsync(() => util.getAddressFromDID(123), TypeError)
-  await t.throwsAsync(() => util.getAddressFromDID({}), TypeError)
+  await t.throwsAsync(
+    () => util.getAddressFromDID(),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.getAddressFromDID(123),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => util.getAddressFromDID({}),
+    { instanceOf: TypeError }
+  )
 })
 
 test('getAddressFromDID(did) valid opts', async (t) => {

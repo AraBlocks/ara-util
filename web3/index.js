@@ -1,6 +1,6 @@
-const { toHexString, toBuffer } = require('../transform')
 const { deprecate } = require('util')
 const createContext = require('ara-context')
+const { toHexString, toBuffer } = require('../transform')
 const contract = require('./contract')
 const account = require('./account')
 const { call } = require('./call')

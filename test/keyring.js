@@ -1,17 +1,19 @@
-const { MissingParamError } = require('../errors')
 const { resolve } = require('path')
-const constants = require('./fixtures/constants')
 const sinon = require('sinon')
 const test = require('ava')
 const aid = require('ara-identity')
 const fs = require('fs')
 
+const { MissingParamError } = require('../errors')
+const constants = require('./fixtures/constants')
+
 let keyring
 test.before((t) => {
-  t.context = Object.assign({}, constants, {
+  t.context = {
+    ...constants,
     sandbox: sinon.createSandbox(),
-    keyring: resolve('./test/fixtures/keyrings/keyring'),
-  })
+    keyring: resolve('./test/fixtures/keyrings/keyring')
+  }
 
   t.context.sandbox.stub(fs, 'lstat').callsFake((_, cb) => cb(null, { ctime: 10 }))
 
@@ -32,6 +34,7 @@ test.before((t) => {
     t.is(opts.password, password)
   })
 
+  // eslint-disable-next-line
   keyring = require('../keyring')
 })
 
@@ -48,21 +51,35 @@ test('getSecret(opts) invalid opts', async (t) => {
     password, keyring: keyringPath, identity: did
   } = t.context
 
-  await t.throwsAsync(keyring.getSecret(), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getSecret(123), TypeError)
-  await t.throwsAsync(keyring.getSecret({}), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getSecret({
-    keyring: keyringPath
-  }), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getSecret({
-    keyring: keyringPath,
-    password
-  }), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getSecret({
-    keyring: keyringPath,
-    password,
-    did
-  }), { instanceOf: MissingParamError })
+  await t.throwsAsync(
+    () => keyring.getSecret(),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getSecret(123),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getSecret({}),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getSecret({ keyring: keyringPath }),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getSecret({ keyring: keyringPath, password }),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getSecret({ keyring: keyringPath, password, did }),
+    { instanceOf: MissingParamError }
+  )
 })
 
 test('getSecret(opts)', async (t) => {
@@ -79,16 +96,30 @@ test('getSecret(opts)', async (t) => {
 test('getPublic(opts) invalid opts', async (t) => {
   const { keyring: keyringPath, secret } = t.context
 
-  await t.throwsAsync(keyring.getPublic(), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getPublic(123), TypeError)
-  await t.throwsAsync(keyring.getPublic({}), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getPublic({
-    keyring: keyringPath
-  }), { instanceOf: MissingParamError })
-  await t.throwsAsync(keyring.getPublic({
-    keyring: keyringPath,
-    secret
-  }), { instanceOf: MissingParamError })
+  await t.throwsAsync(
+    () => keyring.getPublic(),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getPublic(123),
+    { instanceOf: TypeError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getPublic({}),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getPublic({ keyring: keyringPath }),
+    { instanceOf: MissingParamError }
+  )
+
+  await t.throwsAsync(
+    () => keyring.getPublic({ keyring: keyringPath, secret }),
+    { instanceOf: MissingParamError }
+  )
 })
 
 test('getPublic(opts)', async (t) => {

@@ -1,14 +1,18 @@
-const { kEthHexPrefix } = require('./fixtures/constants')
-const { transform } = require('../')
 const test = require('ava')
+
+const { kEthHexPrefix } = require('./fixtures/constants')
+const { transform } = require('..')
 
 const kAddress = 'ef61059258414a65bf2d94a4fd3b503b5fee8b48'
 
 test('toHexString(input) invalid input', (t) => {
-  t.throws(() => transform.toHexString(), TypeError)
-  t.throws(() => transform.toHexString({ }), TypeError)
-  t.throws(() => transform.toHexString([]), TypeError)
-  t.throws(() => transform.toHexString(kAddress, 123), TypeError)
+  t.throws(() => transform.toHexString(), { instanceOf: TypeError })
+  t.throws(() => transform.toHexString({ }), { instanceOf: TypeError })
+  t.throws(() => transform.toHexString([]), { instanceOf: TypeError })
+  t.throws(
+    () => transform.toHexString(kAddress, 123),
+    { instanceOf: TypeError }
+  )
 })
 
 test('toHexString(input) valid input', (t) => {
@@ -26,15 +30,15 @@ test('toHexString(input) valid input', (t) => {
 })
 
 test('toBuffer(input) invalid input', (t) => {
-  t.throws(() => transform.toBuffer(), TypeError)
-  t.throws(() => transform.toBuffer({ }), TypeError)
-  t.throws(() => transform.toBuffer([]), TypeError)
-  t.throws(() => transform.toBuffer(123), TypeError)
-  t.throws(() => transform.toBuffer(false), TypeError)
-  t.throws(() => transform.toBuffer(kAddress, { }), TypeError)
-  t.throws(() => transform.toBuffer(kAddress, 123), TypeError)
-  t.throws(() => transform.toBuffer(kAddress, []), TypeError)
-  t.throws(() => transform.toBuffer(kAddress, true), TypeError)
+  t.throws(() => transform.toBuffer(), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer({ }), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer([]), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(123), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(false), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(kAddress, { }), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(kAddress, 123), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(kAddress, []), { instanceOf: TypeError })
+  t.throws(() => transform.toBuffer(kAddress, true), { instanceOf: TypeError })
 })
 
 test('toBuffer(input) valid input', (t) => {

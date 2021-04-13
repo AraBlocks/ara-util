@@ -32,7 +32,7 @@ async function exists(keyring) {
 
     let result
     if ('http:' === uri.protocol && 'https:' === uri.protocol) {
-      result = await http.request(Object.assign({}, uri, { method: 'HEAD' }))
+      result = await http.request({ ...uri, method: 'HEAD' })
     } else {
       result = await pify(lstat)(resolve(keyring))
     }
@@ -113,7 +113,7 @@ async function getSecret(opts) {
     const unpacked = unpack({ buffer })
 
     const kp = derive({ secretKey, name: opts.network })
-    return Object.assign({ identity: { publicKey: kp.publicKey, secretKey: kp.secretKey } }, unpacked)
+    return { identity: { publicKey: kp.publicKey, secretKey: kp.secretKey }, ...unpacked }
   } catch (e) {
     throw new Error(`Error occurred while getting secret key of ${opts.network} (${e})`)
   }
@@ -191,7 +191,7 @@ async function getPublic(opts) {
     const buffer = await keyring.get(opts.network)
     const unpacked = unpack({ buffer })
 
-    return Object.assign({ identity: { publicKey, secretKey } }, unpacked)
+    return { identity: { publicKey, secretKey }, ...unpacked }
   } catch (e) {
     throw new Error(`Error occurred while getting public key of ${opts.network}: ${e}`)
   }

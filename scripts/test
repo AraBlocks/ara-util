@@ -1,16 +1,18 @@
 #!/bin/bash
 safeRunCommand() {
-  typeset cmnd="$*"
+  typeset cmd="$*"
   typeset ret_code
 
-  echo cmnd=$cmnd
-  eval $cmnd
+  echo cmd="$cmd"
+  eval "$cmd"
 
   ret_code=$?
   if [ $ret_code != 0 ]; then
-    printf "Error : [%d] when executing command: '$cmndE'" $ret_code
+    printf "Error : [%d] when executing command: '$cmd'" $ret_code
     exit $ret_code
   fi
+
+  return $ret_code
 }
 
 # ara node_modules/.bin to PATH
@@ -21,16 +23,18 @@ npm install -g ganache-cli truffle@4.1.14
 
 # run local ganache node
 ganache-cli -l 0x7A1200 -q &
+pid=$!
 sleep 5
 
 command="truffle migrate --reset --network local"
 safeRunCommand "$command"
 
 # ava tests
-command="ava test --verbose"
+command="ava test/* --verbose"
 safeRunCommand "$command"
 
 # cleanup
 pkill -f ganache
+kill -9 "$pid"
 
 rm -rf build

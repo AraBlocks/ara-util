@@ -1,13 +1,13 @@
 /* eslint-disable import/no-unresolved */
 
+const { writeIdentity } = require('ara-identity/util')
+const createContext = require('ara-context')
+const { create } = require('ara-identity')
+const test = require('ava')
 const { deploy, get, estimateGas } = require('../../web3/contract')
 const testWithoutArg = require('../../build/contracts/Test2.json')
 const testWithArg = require('../../build/contracts/Test1.json')
-const { writeIdentity } = require('ara-identity/util')
-const createContext = require('ara-context')
 const { call } = require('../../web3/call')
-const { create } = require('ara-identity')
-const test = require('ava')
 
 const {
   kPassword,

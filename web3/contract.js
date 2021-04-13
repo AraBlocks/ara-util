@@ -1,5 +1,5 @@
-const tx = require('./tx')
 const createContext = require('ara-context')
+const tx = require('./tx')
 
 /**
  * Deploys a new contract to the provided network.
@@ -56,7 +56,7 @@ async function deploy(opts) {
             resolve(address)
             ctx2.close()
           },
-          onerror: err => reject(err)
+          onerror: (err) => reject(err)
         }
       )
     })

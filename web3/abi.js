@@ -17,7 +17,7 @@ function encodeFunctionCall(abi, functionName, values) {
     throw new TypeError('Values must be an array')
   }
 
-  const jsonInterface = abi.find(f => functionName === f.name)
+  const jsonInterface = abi.find((f) => functionName === f.name)
   const { inputs } = jsonInterface
 
   values = values || []

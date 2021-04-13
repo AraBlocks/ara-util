@@ -1,7 +1,8 @@
 const { writeIdentity } = require('ara-identity/util')
-const account = require('../../web3/account')
 const { create } = require('ara-identity')
 const test = require('ava')
+
+const account = require('../../web3/account')
 
 const {
   kPassword,
@@ -21,21 +22,42 @@ test.before(async (t) => {
 
 test('load(opts) invalid opts', async (t) => {
   const did = getDID(t)
-  await t.throwsAsync(account.load(), TypeError, 'Expecting opts object')
+  await t.throwsAsync(
+    () => account.load(),
+    { instanceOf: TypeError },
+    'Expecting opts object'
+  )
 
   // did validation
-  await t.throwsAsync(account.load({ did: 123 }), TypeError, 'Expecting DID URI to be non-empty string')
+  await t.throwsAsync(
+    () => account.load({ did: 123 }),
+    { instanceOf: TypeError },
+    'Expecting DID URI to be non-empty string'
+  )
+
   const withoutPrefix = did.replace(kPrefix, '')
-  await t.throwsAsync(account.load({ did: withoutPrefix, password: kPassword }), Error, 'Invalid DID protocol')
+  await t.throwsAsync(
+    () => account.load({ did: withoutPrefix, password: kPassword }),
+    { instanceOf: Error },
+    'Invalid DID protocol'
+  )
 
   // password validation
-  await t.throwsAsync(account.load({ did, password: 123 }), TypeError, 'Expecting password to be non-empty string')
+  await t.throwsAsync(
+    () => account.load({ did, password: 123 }),
+    { instanceOf: TypeError },
+    'Expecting password to be non-empty string'
+  )
 })
 
 test('load(opts) incorrect password', async (t) => {
   const did = getDID(t)
-  await t.throwsAsync(account.load({ did, password: 'wrongPass' }), Error, 'Incorrect password')
-  await t.notThrowsAsync(account.load({ did, password: kPassword }))
+  await t.notThrowsAsync(() => account.load({ did, password: kPassword }))
+  await t.throwsAsync(
+    () => account.load({ did, password: 'wrongPass' }),
+    { instanceOf: Error },
+    'Incorrect password'
+  )
 })
 
 test('load(opts) valid opts', async (t) => {

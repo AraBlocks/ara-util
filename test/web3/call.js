@@ -1,13 +1,14 @@
 /* eslint-disable import/no-unresolved */
 
 const { create: createIdentity } = require('ara-identity')
-const { kPassword, supplyAccount } = require('./_util')
 const { writeIdentity } = require('ara-identity/util')
-const { deploy } = require('../../web3/contract')
 const createContext = require('ara-context')
+const test = require('ava')
+
+const { kPassword, supplyAccount } = require('./_util')
+const { deploy } = require('../../web3/contract')
 const { call } = require('../../web3/call')
 const tx = require('../../web3/tx')
-const test = require('ava')
 
 test.before(async (t) => {
   // create account
@@ -26,6 +27,7 @@ test.before(async (t) => {
   await supplyAccount(address, defaultAccounts, oneEthInWei)
 
   // deploy
+  // eslint-disable-next-line
   const { abi, bytecode } = require('../../build/contracts/Test2.json')
   const options = await deploy({ account, abi, bytecode })
   t.context = {
@@ -40,24 +42,58 @@ test('call(opts) invalid opts', async (t) => {
   const functionName = 'getNumber'
 
   // validate opts
-  await t.throwsAsync(call(), TypeError, 'Expecting opts object.')
+  await t.throwsAsync(
+    () => call(),
+    { instanceOf: TypeError },
+    'Expecting opts object.'
+  )
 
   // validate abi
-  await t.throwsAsync(call({ }, TypeError, 'Contract ABI must be valid object array.'))
-  await t.throwsAsync(call({ abi: 'myAbi' }), TypeError, 'Contract ABI must be valid object array.')
+  await t.throwsAsync(
+    () => call({ },
+      { instanceOf: TypeError },
+      'Contract ABI must be valid object array.')
+  )
+
+  await t.throwsAsync(
+    () => call({ abi: 'myAbi' }),
+    { instanceOf: TypeError },
+    'Contract ABI must be valid object array.'
+  )
 
   // validate address
-  await t.throwsAsync(call({ abi }), TypeError, 'Address must be valid Ethereum address.')
-  await t.throwsAsync(call({ abi, address: 1234 }), TypeError, 'Address must be valid Ethereum address.')
+  await t.throwsAsync(
+    () => call({ abi }),
+    { instanceOf: TypeError },
+    'Address must be valid Ethereum address.'
+  )
+
+  await t.throwsAsync(
+    () => call({ abi, address: 1234 }),
+    { instanceOf: TypeError },
+    'Address must be valid Ethereum address.'
+  )
 
   // validate functionName
-  await t.throwsAsync(call({ abi, address, functionName: 1234 }), TypeError, 'Function name must be non-empty string.')
-  await t.throwsAsync(call({ abi, address, functionName: 'doesntExist' }), Error, 'Method doesn\'t exist on ABI.')
+  await t.throwsAsync(
+    () => call({ abi, address, functionName: 1234 }),
+    { instanceOf: TypeError },
+    'Function name must be non-empty string.'
+  )
+
+  await t.throwsAsync(
+    () => call({ abi, address, functionName: 'doesntExist' }),
+    { instanceOf: Error },
+    'Method doesn\'t exist on ABI.'
+  )
 
   // validate arguments
-  await t.throwsAsync(call({
-    abi, address, functionName, arguments: 'myArg'
-  }), TypeError, 'Arguments is not a valid array.')
+  await t.throwsAsync(
+    // eslint-disable-next-line
+    () => call({ abi, address, functionName, arguments: 'myArg' }),
+    { instanceOf: TypeError },
+    'Arguments is not a valid array.'
+  )
 })
 
 test('call(opts) valid call', async (t) => {

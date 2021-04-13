@@ -1,8 +1,8 @@
-const { toBuffer } = require('../transform')
-const { encodeFunctionCall } = require('./abi')
-const EthereumTx = require('ethereumjs-tx')
+const EthereumTx = require('ethereumjs-tx').Transaction
 const createContext = require('ara-context')
 const isBuffer = require('is-buffer')
+const { encodeFunctionCall } = require('./abi')
+const { toBuffer } = require('../transform')
 
 // 100,000
 const kGasLimit = 100000

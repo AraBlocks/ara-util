@@ -1,5 +1,5 @@
-const { web3 } = require('../../')
 const test = require('ava')
+const { web3 } = require('../..')
 
 test('isAddress(address) invalid input', (t) => {
   t.false(web3.isAddress())
@@ -16,8 +16,8 @@ test('isAddress(address) valid input', (t) => {
 })
 
 test('sha3(params) invalid input', (t) => {
-  t.throws(() => web3.sha3(), Error)
-  t.throws(() => web3.sha3(null), Error)
+  t.throws(() => web3.sha3(), { instanceOf: Error })
+  t.throws(() => web3.sha3(null), { instanceOf: Error })
 })
 
 test('sha3(params) valid input', (t) => {

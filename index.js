@@ -2,14 +2,11 @@ const { createIdentityKeyPath } = require('ara-identity/key-path')
 const { kEthHexPrefix } = require('./constants')
 const hasDIDMethod = require('has-did-method')
 const { blake2b } = require('ara-crypto')
-const transform = require('./transform')
 const ss = require('ara-secret-storage')
 const { deprecate } = require('util')
 const aid = require('ara-identity')
 const { resolve } = require('path')
-const errors = require('./errors')
 const diduri = require('did-uri')
-const web3 = require('./web3')
 const pify = require('pify')
 const fs = require('fs')
 const os = require('os')
@@ -20,6 +17,9 @@ const {
   kEd25519VerificationKey2018,
   kSecp256k1VerificationKey2018
 } = require('ld-cryptosuite-registry')
+const web3 = require('./web3')
+const errors = require('./errors')
+const transform = require('./transform')
 
 const ETH_ADDRESS_LENGTH = 40
 

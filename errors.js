@@ -14,7 +14,7 @@ class MissingParamError extends Error {
    */
   constructor({ expected, actual, suggestion }) {
     if (Array.isArray(expected)) {
-      expected = expected.map(k => `\`${k}\``).join('or')
+      expected = expected.map((k) => `\`${k}\``).join('or')
     } else {
       expected = `\`${expected}\``
     }

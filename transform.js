@@ -1,7 +1,7 @@
-const { kEthHexPrefix } = require('./constants')
 const bufferFrom = require('buffer-from')
 const isBuffer = require('is-buffer')
 const { deprecate } = require('util')
+const { kEthHexPrefix } = require('./constants')
 
 /**
  * Convert a String, Number or Buffer
@@ -35,7 +35,7 @@ function toHexString(input, opts = {}) {
 
   if (isBuffer(input)) {
     return (ethify) ? `${kEthHexPrefix}${input.toString('hex')}` : input.toString('hex')
-  } else if ('number' === typeof input) {
+  } if ('number' === typeof input) {
     return toHexString(bufferFrom([ input ], encoding), opts)
   }
   return toHexString(bufferFrom(input, encoding), opts)

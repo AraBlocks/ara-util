@@ -1,12 +1,12 @@
 /* eslint-disable import/no-unresolved */
 
-const { abi, bytecode } = require('../../build/contracts/Test2.json')
 const { writeIdentity } = require('ara-identity/util')
-const { deploy } = require('../../web3/contract')
 const createContext = require('ara-context')
 const { create } = require('ara-identity')
-const tx = require('../../web3/tx')
 const test = require('ava')
+const tx = require('../../web3/tx')
+const { deploy } = require('../../web3/contract')
+const { abi, bytecode } = require('../../build/contracts/Test2.json')
 
 const {
   kPassword,
@@ -43,9 +43,23 @@ test('create(opts, signTx) invalid opts', async (t) => {
   const initialAccount = getAccount(t)
 
   // invalid opts and account
-  await t.throwsAsync(tx.create(), TypeError, 'Expecting opts object')
-  await t.throwsAsync(tx.create({ }), TypeError, 'Expecting account to be valid Ethereum account object')
-  await t.throwsAsync(tx.create({ account: 'myAccount' }), TypeError, 'Expecting account to be valid Ethereum account object')
+  await t.throwsAsync(
+    () => tx.create(),
+    { instanceOf: TypeError },
+    'Expecting opts object'
+  )
+
+  await t.throwsAsync(
+    () => tx.create({ }),
+    { instanceOf: TypeError },
+    'Expecting account to be valid Ethereum account object'
+  )
+
+  await t.throwsAsync(
+    () => tx.create({ account: 'myAccount' }),
+    { instanceOf: TypeError },
+    'Expecting account to be valid Ethereum account object'
+  )
 
   // invalid to
   const invalidAddress = kRandomEthAddress.slice(2)
@@ -62,12 +76,20 @@ test('create(opts, signTx) invalid opts', async (t) => {
 test('create(opts, signTx) valid signed tx', async (t) => {
   const account = getAccount(t)
 
-  const { tx: signedTx, ctx: ctx1 } = await tx.create({ account, to: kRandomEthAddress })
+  const {
+    tx: signedTx,
+    ctx: ctx1
+  } = await tx.create({ account, to: kRandomEthAddress })
+
   t.true('object' === typeof signedTx)
   t.true(signedTx.verifySignature())
   ctx1.close()
 
-  const { tx: unsignedTx, ctx: ctx2 } = await tx.create({ account, to: kRandomEthAddress }, false)
+  const {
+    tx: unsignedTx,
+    ctx: ctx2
+  } = await tx.create({ account, to: kRandomEthAddress }, false)
+
   t.true('object' === typeof unsignedTx && null !== unsignedTx.raw)
   t.true('Transaction' === unsignedTx.constructor.name)
   ctx2.close()
@@ -75,22 +97,53 @@ test('create(opts, signTx) valid signed tx', async (t) => {
 
 test('sign(tx, privateKey) invalid params', async (t) => {
   const account = getAccount(t)
-  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress })
+  const {
+    tx: unsignedTx,
+    ctx
+  } = await tx.create({ account, to: kRandomEthAddress })
+
   ctx.close()
 
   // invalid tx
-  t.throws(() => tx.sign(), TypeError, 'Expecting tx to be non-empty EthereumTx object')
-  t.throws(() => tx.sign({ }), TypeError, 'Expecting tx to be non-empty EthereumTx object')
+  t.throws(
+    () => tx.sign(),
+    { instanceOf: TypeError },
+    'Expecting tx to be non-empty EthereumTx object'
+  )
+
+  t.throws(
+    () => tx.sign({ }),
+    { instanceOf: TypeError },
+    'Expecting tx to be non-empty EthereumTx object'
+  )
 
   // invalid privateKey
-  t.throws(() => tx.sign(unsignedTx), TypeError, 'Expecting privateKey to be non-empty string')
-  t.throws(() => tx.sign(unsignedTx, 123), TypeError, 'Expecting privateKey to be non-empty string or buffer')
-  t.throws(() => tx.sign(unsignedTx, 123), TypeError, 'Expecting privateKey to be non-empty string or buffer')
+  t.throws(
+    () => tx.sign(unsignedTx),
+    { instanceOf: TypeError },
+    'Expecting privateKey to be non-empty string'
+  )
+
+  t.throws(
+    () => tx.sign(unsignedTx, 123),
+    { instanceOf: TypeError },
+    'Expecting privateKey to be non-empty string or buffer'
+  )
+
+  t.throws(
+    () => tx.sign(unsignedTx, 123),
+    { instanceOf: TypeError },
+    'Expecting privateKey to be non-empty string or buffer'
+  )
 })
 
 test('sign(tx, privateKey) valid signing', async (t) => {
   const account = getAccount(t)
-  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
+  const {
+    tx: unsignedTx,
+    ctx
+  } = await tx.create({ account, to: kRandomEthAddress }, false)
+
   ctx.close()
   const { privateKey } = account
   const signedTx = tx.sign(unsignedTx, privateKey)
@@ -102,11 +155,24 @@ test('sign(tx, privateKey) valid signing', async (t) => {
 test('sendSignedTransaction(tx) invalid tx', async (t) => {
   const account = getAccount(t)
 
-  await t.throwsAsync(tx.sendSignedTransaction(), TypeError, 'Tx object is not valid')
-  await t.throwsAsync(tx.sendSignedTransaction({ }), TypeError, 'Tx object is not valid')
+  await t.throwsAsync(
+    () => tx.sendSignedTransaction(),
+    { instanceOf: TypeError },
+    'Tx object is not valid'
+  )
 
-  const { tx: unsignedTx, ctx } = await tx.create({ account, to: kRandomEthAddress }, false)
-  await t.throwsAsync(tx.sendSignedTransaction(unsignedTx))
+  await t.throwsAsync(
+    () => tx.sendSignedTransaction({ }),
+    { instanceOf: TypeError },
+    'Tx object is not valid'
+  )
+
+  const {
+    tx: unsignedTx,
+    ctx
+  } = await tx.create({ account, to: kRandomEthAddress }, false)
+
+  await t.throwsAsync(() => tx.sendSignedTransaction(unsignedTx))
   ctx.close()
 })
 
@@ -120,8 +186,8 @@ test('sendSignedTransaction(tx) valid tx', async (t) => {
       HASH = hash
       t.true(hash && web3.utils.isHex(hash))
     },
-    onreceipt: r => t.true(null !== r && 'object' === typeof r),
-    onmined: r => t.true(null !== r && 'object' === typeof r)
+    onreceipt: (r) => t.true(null !== r && 'object' === typeof r),
+    onmined: (r) => t.true(null !== r && 'object' === typeof r)
   })
   ctx.close()
 
