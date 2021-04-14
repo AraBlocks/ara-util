@@ -1,3 +1,7 @@
+## [2.0.2](https://github.com/arablocks/ara-util/compare/2.0.1...2.0.2) (2021-04-14)
+
+
+
 ## [2.0.1](https://github.com/arablocks/ara-util/compare/2.0.0...2.0.1) (2021-04-13)
 
 
