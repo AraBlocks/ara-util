@@ -1,3 +1,4 @@
+const debug = require('debug')('ara-util:contract')
 const createContext = require('ara-context')
 const tx = require('./tx')
 
@@ -50,7 +51,10 @@ async function deploy(opts) {
           resolve(address)
           ctx2.close()
         },
-        onerror: (err) => reject(err)
+        onerror: (err) => reject(err),
+        onhash: (hash) => debug('onhash:', hash),
+        onconfirmation: (confNumber, receipt) => debug('onconfirmation:', confNumber, receipt),
+        onmined: (receipt) => debug('onmined:', receipt)
       }
     )
   })

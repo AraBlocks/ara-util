@@ -1,3 +1,4 @@
+const debug = require('debug')('ara-util:tx')
 const EthereumTx = require('ethereumjs-tx').Transaction
 const createContext = require('ara-context')
 const isBuffer = require('is-buffer')
@@ -136,6 +137,12 @@ async function sendSignedTransaction(tx, {
   if (!_isSerialized(tx)) {
     tx = web3.utils.bytesToHex(tx.serialize())
   }
+
+  onhash = onhash || ((hash) => debug('onhash:', hash))
+  onreceipt = onreceipt || ((receipt) => debug('onreceipt:', receipt))
+  onconfirmation = onconfirmation || ((confNumber, receipt) => debug('onconfirmation:', confNumber, receipt))
+  onerror = onerror || ((err) => debug('onerror:', err))
+  onmined = onmined || ((receipt) => debug('onmined:', receipt))
 
   let result
   try {
