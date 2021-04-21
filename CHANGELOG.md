@@ -1,3 +1,12 @@
+## [2.0.3](https://github.com/arablocks/ara-util/compare/2.0.2...2.0.3) (2021-04-21)
+
+
+### Bug Fixes
+
+* handle null functions ([fffe5f7](https://github.com/arablocks/ara-util/commit/fffe5f77ff585b2c3fe35d8b6b8158053582c78a))
+
+
+
 ## [2.0.2](https://github.com/arablocks/ara-util/compare/2.0.1...2.0.2) (2021-04-14)
 
 
